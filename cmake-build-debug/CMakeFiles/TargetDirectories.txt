@@ -1,0 +1,3 @@
+/home/diegoubuntu/Universidad/I Semestre 2021/Algoritmos y Estructuras de Datos II/Proyectos DII/Let's Play/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/diegoubuntu/Universidad/I Semestre 2021/Algoritmos y Estructuras de Datos II/Proyectos DII/Let's Play/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/diegoubuntu/Universidad/I Semestre 2021/Algoritmos y Estructuras de Datos II/Proyectos DII/Let's Play/cmake-build-debug/CMakeFiles/client.dir
