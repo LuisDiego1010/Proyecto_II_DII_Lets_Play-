@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/garroakion/Desktop/TEC/src/cpp/main.cpp
+SFML/Graphics.hpp
+-
+iostream
+-
+SFML/Graphics/Color.hpp
+-
+SFML/Graphics/Rect.hpp
+-
+SFML/Graphics/Sprite.hpp
+-
+SFML/Graphics/Texture.hpp
+-
+
