@@ -11,12 +11,24 @@ using namespace std;
 int main()
 {
     RenderWindow window(sf::VideoMode(1000, 1000), "Let's Play");
-    Texture texture;
-    texture.loadFromFile("bg.png");
-    Sprite sprite;
-    Vector2u size = texture.getSize();
-    sprite.setTexture(texture);
-    sprite.setOrigin(size.x / 2, size.y / 2);
+    Texture BpGame;
+    Texture PuzzleGame;
+    if(!BpGame.loadFromFile("/home/garroakion/Desktop/TEC/src/cpp/bg.png")){
+        cout<<"No se puede cargar la imagen";
+    }
+    if(!PuzzleGame.loadFromFile("/home/garroakion/Desktop/TEC/src/cpp/bg.png")){
+        cout<<"No se puede cargar la imagen";
+    }
+
+    Sprite bpSprite;
+    bpSprite.setTexture(BpGame);
+
+    Sprite puzzleSprite;
+    puzzleSprite.setTexture(PuzzleGame);
+
+    bpSprite.setOrigin(-80,-100 );
+    //Vector2u size = texture.getSize();
+    puzzleSprite.setOrigin(-80,-500 );
 
 
     while (window.isOpen())
@@ -29,7 +41,8 @@ int main()
         }
         window.clear(Color(255, 255, 255));
         //window.clear(Color(35, 181, 184));
-        window.draw(sprite);
+        window.draw(bpSprite);
+        window.draw(puzzleSprite);
         window.display();
     }
 
