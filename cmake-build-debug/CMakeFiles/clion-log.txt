@@ -1,5 +1,0 @@
-/snap/clion/151/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/diegoubuntu/Universidad/I Semestre 2021/Algoritmos y Estructuras de Datos II/Proyectos DII/Let's Play"
--- Found SFML 2.5.1 in /usr/lib/x86_64-linux-gnu/cmake/SFML
--- Configuring done
--- Generating done
--- Build files have been written to: /home/diegoubuntu/Universidad/I Semestre 2021/Algoritmos y Estructuras de Datos II/Proyectos DII/Let's Play/cmake-build-debug
