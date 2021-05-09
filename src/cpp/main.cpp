@@ -44,6 +44,7 @@ int main()
         window.draw(bpSprite);
         window.draw(puzzleSprite);
         window.display();
+        cout<<"Hola";
     }
 
     return 0;
