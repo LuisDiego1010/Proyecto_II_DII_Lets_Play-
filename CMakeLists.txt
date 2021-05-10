@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Proyecto_II)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
+set(CMAKE_CXX_FLAGS -lzmqpp)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
