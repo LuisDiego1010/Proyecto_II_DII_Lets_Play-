@@ -2,11 +2,11 @@
 // Created by isaac on 9/5/21.
 //
 
-#include "Socket.h"
+#include "Socket_Server.h"
 #include <zmqpp/socket.hpp>
 #include <zmqpp/context.hpp>
 
-void Socket::init() {
+void Socket_Server::init() {
     std::string endpoint="tcp://*:4040";
 
     // initialize the 0MQ context
@@ -19,7 +19,7 @@ void Socket::init() {
     // bind to the socket
     socket->bind(endpoint);
 }
-std::string Socket::comunicatte(std::string msg) {
+std::string Socket_Server::comunicatte(std::string msg) {
     std::cout<<"[S]Recieved: "<<msg;
     socket->receive(msg);
     socket->send(msg);

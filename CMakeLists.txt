@@ -15,14 +15,16 @@ set(SFML_DIR "/usr/include/SFML/lib/cmake/SFML")
 
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 add_executable(client src/cpp/main.cpp
-        src/cpp/Socket.cpp
-        src/cpp/Socket.h)
+        src/cpp/Socket_Client.cpp
+        src/cpp/Socket_Client.h)
 target_link_libraries(client
         sfml-graphics
         sfml-audio
         ${CONAN_LIBS})
 
 add_executable(Server
-        src/cpp/Server/main.cpp src/cpp/Server/Socket.cpp src/cpp/Server/Socket.h)
-target_link_libraries(client
+        src/cpp/Server/main.cpp
+        src/cpp/Server/Socket_Server.cpp
+        src/cpp/Server/Socket_Server.h)
+target_link_libraries(Server
         ${CONAN_LIBS})

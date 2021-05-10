@@ -5,14 +5,17 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <filesystem>
-#include "Socket.h"
+#include "Socket_Client.h"
 
 void windowBPGame();
 void windowGeneticPuzzle();
 using namespace sf;
 using namespace std;
+Socket_Client * Socket_Client::self= new Socket_Client();
+
 int main() {
-    Socket::Init();
+    Socket_Client * socket = Socket_Client::self;
+//    socket->Init();
     RenderWindow window(sf::VideoMode(1200, 1400), "Let's Play");
     Texture BpGame;
     Texture PuzzleGame;

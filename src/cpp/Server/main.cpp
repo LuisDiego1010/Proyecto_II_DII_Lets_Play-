@@ -5,13 +5,14 @@
 #include <zmqpp/socket.hpp>
 #include <zmqpp/context.hpp>
 #include <nlohmann/json.hpp>
-#include "Socket.h"
+#include "Socket_Server.h"
+Socket_Server* Socket_Server::self= new Socket_Server();
 
 int main(int argc, char *argv[]){
-
-    Socket::init();
+    auto socket=Socket_Server::self;
+    socket->init();
     std::string msg;
-    Socket::socket->receive(msg);
+    socket->socket->receive(msg);
 
     // Call to engine loops
     nlohmann::json Json = nlohmann::json::parse(msg);
