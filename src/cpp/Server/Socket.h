@@ -11,8 +11,16 @@
 
 class Socket {
 public:
+    /**
+     * \brief Call at ther start of the Server, No need to be called again.
+     * Init and connect the socket
+     */
     static void init();
     static zmqpp::socket * socket ;
+    /**
+     * \brief Not Expected to be called, because only send the string that recieve as a parameter
+     * @return
+     */
     static std::string comunicatte(std::string);
 
 
