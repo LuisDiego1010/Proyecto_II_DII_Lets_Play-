@@ -9,9 +9,13 @@
 Socket_Server* Socket_Server::self= new Socket_Server();
 
 int main(int argc, char *argv[]){
+    std::cout<<"init socket";
+
     auto socket=Socket_Server::self;
     socket->init();
     std::string msg;
+    std::cout<<"Socket inited";
+
     socket->socket->receive(msg);
 
     // Call to engine loops

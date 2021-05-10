@@ -18,6 +18,7 @@ void Socket_Server::init() {
 
     // bind to the socket
     socket->bind(endpoint);
+    std::cout<<"binded";
 }
 std::string Socket_Server::comunicatte(std::string msg) {
     std::cout<<"[S]Recieved: "<<msg;
