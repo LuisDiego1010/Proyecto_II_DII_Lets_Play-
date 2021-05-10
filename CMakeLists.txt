@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(Proyecto_II)
-
+set(CMAKE_CXX_STANDARD_REQUIRED 17)
 ## If you want to link SFML statically
 # set(SFML_STATIC_LIBRARIES TRUE)
 

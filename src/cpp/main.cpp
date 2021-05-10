@@ -4,7 +4,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-
+#include <filesystem>
 
 using namespace sf;
 using namespace std;
@@ -13,10 +13,10 @@ int main()
     RenderWindow window(sf::VideoMode(1200, 1400), "Let's Play");
     Texture BpGame;
     Texture PuzzleGame;
-    if(!BpGame.loadFromFile("/home/garroakion/Desktop/LetsPlayProject/src/cpp/images/BPGAME.png")){
+    if(!BpGame.loadFromFile("src/images/BPGAME.png")){
         cout<<"No se puede cargar la imagen";
     }
-    if(!PuzzleGame.loadFromFile("/home/garroakion/Desktop/LetsPlayProject/src/cpp/images/Genetic Puzzle.png")){
+    if(!PuzzleGame.loadFromFile("src/images/Genetic Puzzle.png")){
         cout<<"No se puede cargar la imagen";
     }
 
