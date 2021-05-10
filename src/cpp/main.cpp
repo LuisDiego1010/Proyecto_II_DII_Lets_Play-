@@ -5,12 +5,14 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <filesystem>
+#include "Socket.h"
 
 void windowBPGame();
 void windowGeneticPuzzle();
 using namespace sf;
 using namespace std;
 int main() {
+    Socket::Init();
     RenderWindow window(sf::VideoMode(1200, 1400), "Let's Play");
     Texture BpGame;
     Texture PuzzleGame;
