@@ -3,8 +3,9 @@
 //
 
 #include "mainWindow.h"
-#include "BpWindow.h"
-#include "PuzzleWindow.h"
+#include "bpGameMode.h"
+#include "puzzleGameMode.h"
+
 
 
 mainWindow::mainWindow() {
@@ -13,7 +14,7 @@ mainWindow::mainWindow() {
 
 void mainWindow::show() {
 
-    RenderWindow window(sf::VideoMode(1200, 1400), "Let's Play");
+    RenderWindow window(sf::VideoMode(1200, 750), "Let's Play");
     Texture BpGame;
     Texture PuzzleGame;
     if(!BpGame.loadFromFile("src/images/BPGAME.png")){
@@ -32,8 +33,9 @@ void mainWindow::show() {
     bpSprite.setOrigin(-80, -100);
     puzzleSprite.setOrigin(-650,-150 );
 
-    BpWindow bpWindow;
-    PuzzleWindow puzzleWindow;
+    bpGameMode bpGameMode;
+    puzzleGameMode puzzleGameMode;
+
     while (window.isOpen()) {
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
@@ -43,15 +45,15 @@ void mainWindow::show() {
                 window.close();
             } else if (bpSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
-                    bpWindow.Show();
+                    bpGameMode.show();
                 }
             } else if (puzzleSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
-                    puzzleWindow.show();
+                    puzzleGameMode.show();
                 }
             }
         }
-        window.clear(Color(255, 255, 255));
+        window.clear(Color(55, 177, 188));
         window.draw(bpSprite);
         window.draw(puzzleSprite);
         window.display();

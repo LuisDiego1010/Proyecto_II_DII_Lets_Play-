@@ -52,8 +52,7 @@ void BpWindow::Show() {
                 window.close();
             }
         }
-        window.clear(Color(255, 255, 255));
-        //window.clear(Color(35, 181, 184));
+        window.clear(Color(35, 181, 184));
         window.draw(fieldSprite);
         window.draw(obstacule1Sprite);
         window.draw(obstacule2Sprite);

@@ -3,11 +3,52 @@
 //
 
 #include "bpGameMode.h"
+#include "BpWindow.h"
+#include "mainWindow.h"
 
 bpGameMode::bpGameMode() {}
 
 void bpGameMode::show() {
-    RenderWindow window(sf::VideoMode(200, 200), "GAME SETTINGS");
+    Texture btnPlay;
+    Texture btnMenu;
+    if(!btnPlay.loadFromFile("src/images/btn/btnPlay.png")){
+        cout<<"Error to charge image";
+    }
+    if(!btnMenu.loadFromFile("src/images/btn/btnMenu.png")){
+        cout<<"Error to charge image";
+    }
+    sf::Font font;
+    if (!font.loadFromFile("src/cpp/Client/Interface/Fonts/Ubuntu-Bold.ttf"))
+    {
+    cout<<"Error to charge font";
+    }
+    RenderWindow window(sf::VideoMode(1200, 800), "GAME SETTINGS");
+    sf::Text text;
+
+    text.setFont(font);
+    text.setString("NUMBER OF OBSTACLES");
+    text.setCharacterSize(30); // in pixels, not points!
+    text.setFillColor(sf::Color::White);
+    text.setPosition(450,110);
+    sf::Text atext;
+    atext.setFont(font);
+    atext.setString("NUMBER OF ANNOTATIONS");
+    atext.setCharacterSize(30); // in pixels, not points!
+    atext.setFillColor(sf::Color::White);
+    atext.setPosition(430,310);
+
+    Sprite btnPSprite;
+    btnPSprite.setTexture(btnPlay);
+
+    Sprite btnMSprite;
+    btnMSprite.setTexture(btnMenu);
+
+    btnPSprite.setOrigin(-80, -100);
+    btnMSprite.setOrigin(-650,-150 );
+
+    BpWindow bpWindow;
+    mainWindow mainWindow;
+
     while (window.isOpen()) {
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
@@ -15,14 +56,24 @@ void bpGameMode::show() {
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
+            }else if (btnPSprite.getGlobalBounds().contains(translated_pos)) {
+                if (event.type == Event::MouseButtonPressed) {
+                    bpWindow.Show();
+                }
+            } else if (btnMSprite.getGlobalBounds().contains(translated_pos)) {
+                if (event.type == Event::MouseButtonPressed) {
+                    mainWindow.show();
+                }
             }
             else{
-
             }
         }
-        window.clear(Color(255, 255, 255));
+        window.clear(Color(35, 181, 184));
+        window.draw(text);
+        window.draw(atext);
+        window.draw(btnPSprite);
+        window.draw(btnMSprite);
         window.display();
+
     }
-
-
 }
