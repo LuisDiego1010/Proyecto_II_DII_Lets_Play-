@@ -4,23 +4,21 @@
 
 #ifndef PROYECTO_II_SOCKET_SERVER_H
 #define PROYECTO_II_SOCKET_SERVER_H
-
-#include <zmqpp/socket.hpp>
-#include <zmqpp/context.hpp>
-#include <zmqpp/message.hpp>
-
+#include <zmq.hpp>
 
 class Socket_Server {
 public:
-
     static Socket_Server* self;
 
+    zmq::context_t ctx;
+    std::string endpoint="tcp://*:4040";
+    zmq::socket_t * socket;
+
     /**
-     * \brief Call at ther start of the Server, No need to be called again.
+     * \brief Call at the start of the Server, No need to be called again.
      * Init and connect the socket
      */
     void init();
-    zmqpp::socket * socket ;
     /**
      * \brief Not Expected to be called, because only send the string that recieve as a parameter
      * @return

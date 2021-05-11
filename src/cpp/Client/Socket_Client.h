@@ -14,7 +14,6 @@ public:
     std::string endpoint="tcp://*:4040";
     zmq::socket_t * socket;
     std::string comunicatte(std::string);
-
 };
 
 

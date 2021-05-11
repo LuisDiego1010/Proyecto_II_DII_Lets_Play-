@@ -15,9 +15,9 @@ int main(int argc, char *argv[]){
     socket->init();
     std::string msg;
     std::cout<<"Socket inited";
-
-    socket->socket->receive(msg);
-
+    zmq::message_t msg_recv(msg);
+    socket->socket->recv(msg_recv);
+    msg= msg_recv.to_string();
     // Call to engine loops
     nlohmann::json Json = nlohmann::json::parse(msg);
     std::cout << Json <<std::endl;

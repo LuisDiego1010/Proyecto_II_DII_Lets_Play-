@@ -3,27 +3,26 @@
 //
 
 #include "Socket_Server.h"
-#include <zmqpp/socket.hpp>
-#include <zmqpp/context.hpp>
+#include <zmq.hpp>
+#include <iostream>
 
 void Socket_Server::init() {
-    std::string endpoint="tcp://*:4040";
 
-    // initialize the 0MQ context
-    zmqpp::context context;
 
-    // generate a reply socket
-    zmqpp::socket_type type = zmqpp::socket_type::reply;
-    socket =new zmqpp::socket(context, type);
+
+    // generate a request socket
+    zmq::socket_type type = zmq::socket_type::rep;
+    socket= new zmq::socket_t(ctx, type);
 
     // bind to the socket
     socket->bind(endpoint);
     std::cout<<"binded";
 }
 std::string Socket_Server::comunicatte(std::string msg) {
+    zmq::message_t msg_send(msg);
     std::cout<<"[S]Recieved: "<<msg;
-    socket->receive(msg);
-    socket->send(msg);
+    socket->recv(msg_send);
+    socket->send(msg_send, zmq::send_flags::none);
     std::cout<<"[S]Sended: "<<msg;
     return msg;
 }
