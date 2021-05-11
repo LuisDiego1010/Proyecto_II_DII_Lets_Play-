@@ -30,8 +30,7 @@ void mainWindow::show() {
     puzzleSprite.setTexture(PuzzleGame);
 
     bpSprite.setOrigin(-80, -100);
-    //Vector2u size = texture.getSize();
-    puzzleSprite.setOrigin(-650,-100 );
+    puzzleSprite.setOrigin(-650,-150 );
 
     BpWindow bpWindow;
     PuzzleWindow puzzleWindow;
@@ -53,7 +52,6 @@ void mainWindow::show() {
             }
         }
         window.clear(Color(255, 255, 255));
-        //window.clear(Color(35, 181, 184));
         window.draw(bpSprite);
         window.draw(puzzleSprite);
         window.display();

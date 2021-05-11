@@ -8,22 +8,23 @@
 BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
-    RenderWindow window(sf::VideoMode(1600, 1400), "BP GAME");
+
+    RenderWindow window(sf::VideoMode(1440, 998), "BP GAME");
     Texture field;
     Texture obstacule1;
     Texture obstacule2;
     Texture ball;
-    if (!field.loadFromFile(
-            "src/images/sprfield.jpg")) {
+    if (!field.loadFromFile("src/images/sprfield.jpg")) {
+
     }
-    if (!obstacule1.loadFromFile(
-            "src/images/sprPlayer1.png")) {
+    if (!obstacule1.loadFromFile("src/images/sprPlayer1.png")) {
+
     }
-    if (!obstacule2.loadFromFile(
-            "src/images/sprPlayer2.png")) {
+    if (!obstacule2.loadFromFile("src/images/sprPlayer2.png")) {
+
     }
-    if (!ball.loadFromFile(
-            "src/images/sprball.png")) {
+    if (!ball.loadFromFile("src/images/sprball.png")) {
+
     }
 
     Sprite fieldSprite;
@@ -38,10 +39,9 @@ void BpWindow::Show() {
     Sprite ballSprite;
     ballSprite.setTexture(ball);
 
-    fieldSprite.setOrigin(-80, -100);
-    obstacule1Sprite.setOrigin(-650, -100);
-    obstacule2Sprite.setOrigin(-80, -100);
-    ballSprite.setOrigin(-650, -100);
+    obstacule1Sprite.setOrigin(-50, -420);
+    obstacule2Sprite.setOrigin(-1300, -420);
+    ballSprite.setOrigin(-690, -460);
 
     while (window.isOpen()) {
         Event event;
