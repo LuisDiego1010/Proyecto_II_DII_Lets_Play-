@@ -3,14 +3,12 @@
 //
 
 #include "mainWindow.h"
-#include "bpGameMode.h"
-#include "puzzleGameMode.h"
+#include "BP/bpGameMode.h"
+#include "PZ/puzzleGameMode.h"
 
 
 
-mainWindow::mainWindow() {
-
-}
+mainWindow::mainWindow() = default;
 
 void mainWindow::show() {
 
@@ -46,10 +44,12 @@ void mainWindow::show() {
             } else if (bpSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
                     bpGameMode.show();
+                    window.requestFocus();
                 }
             } else if (puzzleSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
                     puzzleGameMode.show();
+                    window.requestFocus();
                 }
             }
         }

@@ -4,7 +4,7 @@
 
 #include "bpGameMode.h"
 #include "BpWindow.h"
-#include "mainWindow.h"
+#include "../mainWindow.h"
 
 bpGameMode::bpGameMode() {}
 
@@ -47,7 +47,6 @@ void bpGameMode::show() {
     btnMSprite.setOrigin(-650,-150 );
 
     BpWindow bpWindow;
-    mainWindow mainWindow;
 
     while (window.isOpen()) {
         Event event;
@@ -58,11 +57,13 @@ void bpGameMode::show() {
                 window.close();
             }else if (btnPSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
+                    window.close();
                     bpWindow.Show();
                 }
             } else if (btnMSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
-                    mainWindow.show();
+                    window.close();
+                    return;
                 }
             }
             else{

@@ -4,7 +4,7 @@
 
 #include "puzzleGameMode.h"
 #include "PuzzleWindow.h"
-#include "mainWindow.h"
+#include "../mainWindow.h"
 
 puzzleGameMode::puzzleGameMode() {}
 
@@ -41,7 +41,6 @@ void puzzleGameMode::show() {
     btnMSprite.setOrigin(-650,-150 );
 
     PuzzleWindow puzzleWindow;
-    mainWindow mainWindow;
 
     while (window.isOpen()) {
         Event event;
@@ -52,11 +51,13 @@ void puzzleGameMode::show() {
                 window.close();
             }else if (btnPSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
+                    window.close();
                     puzzleWindow.show();
                 }
             } else if (btnMSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
-                    mainWindow.show();
+                    window.close();
+                    return;
                 }
             }
         }
