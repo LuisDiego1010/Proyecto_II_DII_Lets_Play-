@@ -37,8 +37,8 @@ void puzzleGameMode::show() {
     Sprite btnMSprite;
     btnMSprite.setTexture(btnMenu);
 
-    btnPSprite.setOrigin(-80, -100);
-    btnMSprite.setOrigin(-650,-150 );
+    btnPSprite.setOrigin(-930, -700);
+    btnMSprite.setOrigin(-1070,-700 );
 
     PuzzleWindow puzzleWindow;
 
