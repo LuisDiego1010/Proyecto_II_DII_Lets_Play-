@@ -1,24 +1,22 @@
 //
 // Created by isaac on 9/5/21.
 //
-#include <zmqpp/socket.hpp>
-#include <zmqpp/context.hpp>
-#include <zmqpp/message.hpp>
+#include <zmq.hpp>
+#include <iostream>
 #include "Socket_Client.h"
 
 void Socket_Client::Init() {
-    zmqpp::context context;
-
     // generate a request socket
-    zmqpp::socket_type type = zmqpp::socket_type::request;
-    socket= new zmqpp::socket(context, type);
+    zmq::socket_type type = zmq::socket_type::req;
+    socket= new zmq::socket_t(ctx, type);
     socket->connect("tcp://127.0.0.1:4040");
 }
 
 std::string Socket_Client::comunicatte(std::string msg) {
+    zmq::message_t msg_send(msg);
+    socket->send(msg_send,zmq::send_flags::none);
     std::cout<<"[C]Sended: "<<msg;
-    socket->send(msg);
-    socket->receive(msg);
+    socket->recv(msg_send);
     std::cout<<"[C]Recieved: "<<msg;
     return msg;
 }

@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Proyecto_II)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
-set(CMAKE_CXX_FLAGS -lzmqpp)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
@@ -15,9 +14,10 @@ set(CMAKE_PREFIX_PATH ${CONAN_LIBS})
 set(SFML_DIR "/usr/include/SFML/lib/cmake/SFML")
 
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
-add_executable(client src/cpp/main.cpp
-        src/cpp/Socket_Client.cpp
-        src/cpp/Socket_Client.h)
+
+add_executable(client src/cpp/Client/main.cpp
+        src/cpp/Client/Socket_Client.cpp
+        src/cpp/Client/Socket_Client.h)
 target_link_libraries(client
         sfml-graphics
         sfml-audio

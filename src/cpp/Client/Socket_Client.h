@@ -4,16 +4,15 @@
 
 #ifndef PROYECTO_II_SOCKET_SERVER_H
 #define PROYECTO_II_SOCKET_H
-#include <zmqpp/socket.hpp>
-#include <zmqpp/context.hpp>
-#include <zmqpp/message.hpp>
+#include <zmq.hpp>
 
 class Socket_Client {
 public:
     static Socket_Client * self;
     void Init();
+    zmq::context_t ctx;
     std::string endpoint="tcp://*:4040";
-    zmqpp::socket * socket;
+    zmq::socket_t * socket;
     std::string comunicatte(std::string);
 
 };
