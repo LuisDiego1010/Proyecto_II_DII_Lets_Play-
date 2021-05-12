@@ -71,6 +71,8 @@ void puzzleGameMode::show() {
             }else if (event.type == Event::MouseButtonPressed){
                 if (btnPSprite.getGlobalBounds().contains(translated_pos)){
                     window.close();
+                    PuzzleWindow::row=std::stoi(row.text);
+                    PuzzleWindow::col=std::stoi(colum.text);
                     puzzleWindow.show();
                 }else if (btnMSprite.getGlobalBounds().contains(translated_pos)){
                     window.close();
