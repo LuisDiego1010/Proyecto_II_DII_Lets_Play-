@@ -18,6 +18,8 @@ using namespace std;
 
 class PuzzleWindow {
 public:
+    static int col;
+    static int row;
     PuzzleWindow();
     void show();
 
