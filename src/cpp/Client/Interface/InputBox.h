@@ -17,7 +17,6 @@ public:
     explicit InputBox(Vector2f size);
     static sf::Font font;
     static bool LFont;
-    int cursor;
 
 public:
     RectangleShape rectangle;

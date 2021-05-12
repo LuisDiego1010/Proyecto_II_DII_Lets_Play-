@@ -39,21 +39,26 @@ void InputBox::select(Vector2<float> point) {
 }
 
 void InputBox::write(Event event) {
+
     if(!selected){
         return;
     }
-    if(event.key.code==sf::Keyboard::BackSpace){
+
+    if(event.key.code==8){
         if(!text.empty()){
             text.pop_back();
-            std::cout<<text;
+
             print.setString(text);
         }
         return;
 
     }
     text+=event.text.unicode;
+
     print.setString(text);
+
 }
+
 
 
 
