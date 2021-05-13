@@ -6,7 +6,6 @@
 
 
 BpWindow::BpWindow() {}
-
 void BpWindow::Show() {
 
     RenderWindow window(sf::VideoMode(1440, 998), "BP GAME");
