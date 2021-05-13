@@ -10,6 +10,10 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
 
 
 using namespace sf;
@@ -19,6 +23,12 @@ class BpWindow {
 public:
     BpWindow();
     void Show();
+    vector<Sprite> players;
+    void setPlayers(int n);
+    float xpos();
+    float ypos();
+
+
 };
 
 
