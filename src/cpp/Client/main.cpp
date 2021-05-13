@@ -1,7 +1,6 @@
 
 #include <iostream>
 #include "Socket_Client.h"
-
 #include "Interface/mainWindow.h"
 
 
@@ -13,7 +12,6 @@ int main() {
     socket->Init();
     mainWindow mainInterface;
     mainInterface.show();
-
 
 
     return 0;

@@ -25,8 +25,7 @@ public:
     void Show();
     vector<Sprite> players;
     void setPlayers(int n);
-    float xpos();
-    float ypos();
+
 
 
 };

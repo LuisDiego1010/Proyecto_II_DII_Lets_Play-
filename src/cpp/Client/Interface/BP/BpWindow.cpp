@@ -6,6 +6,7 @@
 
 
 BpWindow::BpWindow() {}
+
 void BpWindow::Show() {
 
     RenderWindow window(sf::VideoMode(1440, 998), "BP GAME");
@@ -13,7 +14,6 @@ void BpWindow::Show() {
     Texture obstacule1;
     Texture obstacule2;
     Texture ball;
-
 
 
     if (!field.loadFromFile("src/images/sprfield.jpg")) {
@@ -42,16 +42,17 @@ void BpWindow::Show() {
     Sprite ballSprite;
     ballSprite.setTexture(ball);
 
-    setPlayers(5);
-
+    setPlayers(10);
 
 
     obstacule1Sprite.setOrigin(-50, -420);
     obstacule2Sprite.setOrigin(-1300, -420);
     ballSprite.setOrigin(-900, -1300);
 
+    Texture square;
+    if (!square.loadFromFile("src/images/sprPlayer1.png")) {
 
-
+    }
 
 
     while (window.isOpen()) {
@@ -69,9 +70,9 @@ void BpWindow::Show() {
         window.draw(obstacule2Sprite);
         window.draw(ballSprite);
         for (int i = 0; i < players.size(); i++) {
+            players[i].setTexture(square);
             window.draw(players[i]);
-            cout <<players[i].getOrigin().x;
-            cout <<players[i].getOrigin().y;
+
 
         }
         window.display();
@@ -84,36 +85,22 @@ void BpWindow::Show() {
 
 
 void BpWindow::setPlayers(int n) {
-    Texture square;
-    if (!square.loadFromFile("src/images/square.png")) {
 
-    }
+    time_t seconds;
+    time(&seconds);
+    srand((unsigned) seconds);
 
-    for(int i=0;i<n;i++){
+    for (int i = 0; i < n; i++) {
+        float xpos = -1 * 100 * (rand() % 12 + 2);
+        float ypos = -1 * 100 * (rand() % 8 + 1);
         Sprite sprite;
-        sprite.setTexture(square);
-        sprite.setColor(Color::Black);
-        sprite.setOrigin(xpos(), ypos());
+        sprite.setOrigin(xpos, ypos);
         players.push_back(sprite);
 
     }
 
-}
 
-float BpWindow::xpos() {
-    srand((unsigned) (time(0)));
-    int x = rand() % 13 + 1; // El x va con j
-    float xpos = -(x * 100);
-    return xpos;
 }
-
-float BpWindow::ypos() {
-    srand((unsigned) (time(0)));
-    int y = rand() % 9 + 1; // El y va con i
-    float ypos = -(y * 100);
-    return ypos;
-}
-
 
 
 
