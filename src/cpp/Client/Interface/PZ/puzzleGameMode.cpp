@@ -63,8 +63,6 @@ void puzzleGameMode::show() {
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
 
-
-
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
@@ -81,6 +79,9 @@ void puzzleGameMode::show() {
                     row.select(translated_pos);
                     colum.select(translated_pos);
                 }
+            }else if(event.type==Event::TextEntered){
+                row.write(event);
+                colum.write(event);
             }else if(event.type==Event::TextEntered){
                 row.write(event);
                 colum.write(event);
