@@ -82,9 +82,6 @@ void puzzleGameMode::show() {
             }else if(event.type==Event::TextEntered){
                 row.write(event);
                 colum.write(event);
-            }else if(event.type==Event::TextEntered){
-                row.write(event);
-                colum.write(event);
             }
         }
         window.clear(Color(35, 181, 184));

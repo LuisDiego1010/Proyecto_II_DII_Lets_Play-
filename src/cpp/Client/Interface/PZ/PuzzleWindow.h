@@ -20,9 +20,11 @@ class PuzzleWindow {
 public:
     static int col;
     static int row;
+    static int length_x;
+    static int length_y;
     PuzzleWindow();
     void show();
-
+    void order(Sprite *subimages, int *order );
 };
 
 

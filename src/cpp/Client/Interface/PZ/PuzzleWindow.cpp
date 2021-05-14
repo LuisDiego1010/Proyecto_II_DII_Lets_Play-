@@ -7,6 +7,8 @@
 PuzzleWindow::PuzzleWindow() {}
 int PuzzleWindow::row=0;
 int PuzzleWindow::col=0;
+int PuzzleWindow::length_x=0;
+int PuzzleWindow::length_y=0;
 void PuzzleWindow::show() {
     RenderWindow window(sf::VideoMode(1200, 1400), "GENETIC PUZZLE");
 
@@ -27,8 +29,8 @@ void PuzzleWindow::show() {
 
     sf::Texture subImages[row*col];
     sf::Sprite Frames[row*col];
-    int length_x=CompleteImage.getSize().x/col;
-    int length_y=CompleteImage.getSize().y/row;
+    length_x=CompleteImage.getSize().x/col;
+    length_y=CompleteImage.getSize().y/row;
     int id=0;
     for(int x=0;x<row;x++){
         for (int i = 0; i < col ; ++i) {
@@ -42,7 +44,6 @@ void PuzzleWindow::show() {
         }
     }
 
-Frames[int(col+row)].setPosition(55,87);
     while (window.isOpen()) {
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
@@ -60,3 +61,17 @@ Frames[int(col+row)].setPosition(55,87);
         window.display();
     }
 }
+
+void PuzzleWindow::order(Sprite *subimages, int *order) {
+    int id=0;
+    for(int x=0;x<row;x++){
+        for (int i = 0; i < col ; ++i) {
+            subimages[order[id]].setPosition(140+length_x*i,140+length_y*x);
+            id++;
+        }
+    }
+
+}
+
+
+
