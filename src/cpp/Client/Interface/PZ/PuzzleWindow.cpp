@@ -10,17 +10,21 @@ int PuzzleWindow::col=0;
 void PuzzleWindow::show() {
     RenderWindow window(sf::VideoMode(1200, 1400), "GENETIC PUZZLE");
 
-    char *file =new char[100];
+    char *file =new char[150];
     FILE *image=popen("zenity --file-selection", "r");
-    fgets(file,100,image);
+    fgets(file,150,image);
     string fileDir(file);
     delete file;
+    fileDir.pop_back();
     std::cout<<fileDir;
+    std::cout<<fileDir.size();
+    std::cout<<fileDir.length();
 
     sf::Image CompleteImage;
-    if(!CompleteImage.loadFromFile("Genetic Puzzle.png")){
+    if(!CompleteImage.loadFromFile(fileDir.data())){
         std::cout<<"Error opening the image";
     }
+
     sf::Texture subImages[row*col];
     sf::Sprite Frames[row*col];
     int length_x=CompleteImage.getSize().x/col;
@@ -38,7 +42,7 @@ void PuzzleWindow::show() {
         }
     }
 
-Frames[0].setPosition(55,87);
+Frames[int(col+row)].setPosition(55,87);
     while (window.isOpen()) {
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
@@ -53,8 +57,6 @@ Frames[0].setPosition(55,87);
         for (const sf::Sprite& x:Frames) {
             window.draw(x);
         }
-        window.draw(Frames[2]);
-        window.draw(Frames[2]);
         window.display();
     }
 }
