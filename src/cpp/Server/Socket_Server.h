@@ -24,7 +24,8 @@ public:
      * @return
      */
     std::string comunicatte(std::string);
-
+    std::string recieve();
+    std::string send(std::string);
 
 };
 

@@ -8,6 +8,8 @@
 #include "Socket_Server.h"
 Socket_Server* Socket_Server::self= new Socket_Server();
 
+
+
 int main(int argc, char *argv[]){
     std::cout<<"init socket";
 
@@ -15,16 +17,19 @@ int main(int argc, char *argv[]){
     socket->init();
     std::string msg;
     std::cout<<"Socket inited";
-    zmq::message_t msg_recv(msg);
-    socket->socket->recv(msg_recv);
-    msg= msg_recv.to_string();
+    msg= socket->recieve();
+
     // Call to engine loops
     nlohmann::json Json = nlohmann::json::parse(msg);
     std::cout << Json <<std::endl;
+
     if (Json.contains("Game")) {
         if (Json["Game"] == "BP") {
+            socket->send("connectect to BP");
             //call to Game Engine
         } else if (Json["Game"] == "Genetic") {
+            socket->send("connectect to Genetic");
+
             //call to Genetic Engine
         }
     }else if(msg=="/Stop"){
