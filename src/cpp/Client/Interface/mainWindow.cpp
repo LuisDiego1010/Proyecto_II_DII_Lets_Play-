@@ -48,7 +48,7 @@ void mainWindow::show() {
                 if (event.type == Event::MouseButtonPressed) {
                     nlohmann::json game;
                     game["Game"]="BP";
-                    std::cout<<socket->comunicatte(to_string(game));
+//                    std::cout<<socket->comunicatte(to_string(game));
                     bpGameMode.show();
                     window.requestFocus();
                 }
@@ -56,7 +56,7 @@ void mainWindow::show() {
                 if (event.type == Event::MouseButtonPressed) {
                     nlohmann::json game;
                     game["Game"]="Genetic";
-                    std::cout<<socket->comunicatte(to_string(game));
+//                    std::cout<<socket->comunicatte(to_string(game));
                     puzzleGameMode.show();
                     window.requestFocus();
                 }
