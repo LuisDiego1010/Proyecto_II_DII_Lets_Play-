@@ -122,13 +122,13 @@ void BpWindow::setPlayers(int n) {
         Sprite sprite;
         sprite.setOrigin(xpos, ypos);
         players.push_back(sprite);
-        backpath[x*y]=-1;
+        backpath[y*9+x]=1;
 
     }
     int id=0;
     for(int i = 0; i < 9; i++){
         cout<<endl;
-        for(int j = 0; i < 14; j++){
+        for(int j = 0; j < 14; j++){
 
             cout<<backpath[id];
             id++;

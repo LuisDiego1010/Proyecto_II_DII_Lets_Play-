@@ -14,9 +14,11 @@ public:
     static int col;
     Fila** chromosomas;
     int Genotype ;
+    int fitnnes;
     Individuo();
     bool validar_Gen(Fila*);
     void aplicar_Gen(Fila*);
+    void calculate_Fitnnes();
 };
 
 

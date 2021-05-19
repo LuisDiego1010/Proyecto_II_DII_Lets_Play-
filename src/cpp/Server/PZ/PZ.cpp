@@ -9,7 +9,7 @@
 int PZ::row=0;
 int PZ::col=0;
 void PZ::run() {
-auto socket=Socket_Server::self;
+//auto socket=Socket_Server::self;
 
 
 }
