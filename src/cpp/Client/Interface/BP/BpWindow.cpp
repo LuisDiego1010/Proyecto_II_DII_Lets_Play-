@@ -122,7 +122,7 @@ void BpWindow::setPlayers(int n) {
         Sprite sprite;
         sprite.setOrigin(xpos, ypos);
         players.push_back(sprite);
-        backpath[y*9+x]=1;
+        backpath[(y*14)+x]=1;
 
     }
     int id=0;
