@@ -12,7 +12,7 @@
 mainWindow::mainWindow() = default;
 
 void mainWindow::show() {
-    Socket_Client * socket = Socket_Client::self;
+//    Socket_Client * socket = Socket_Client::self;
 
     RenderWindow window(sf::VideoMode(1200, 750), "Let's Play");
 

@@ -24,6 +24,7 @@ public:
     BpWindow();
     void Show();
     vector<Sprite> players;
+    vector<int> backpath;
     void setPlayers(int n);
 
 

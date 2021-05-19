@@ -9,13 +9,20 @@ BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
 
+    backpath = vector<int>(14*9,0);
     RenderWindow window(sf::VideoMode(1440, 998), "BP GAME");
     Texture field;
     Texture obstacule1;
     Texture obstacule2;
     Texture ball;
+    Texture blockers;
 
 
+
+
+    if (!blockers.loadFromFile("src/images/blockers.png")) {
+
+    }
     if (!field.loadFromFile("src/images/sprfield.jpg")) {
 
     }
@@ -42,12 +49,22 @@ void BpWindow::Show() {
     Sprite ballSprite;
     ballSprite.setTexture(ball);
 
+    Sprite blockerSprite;
+    blockerSprite.setTexture(blockers);
+
+    Sprite blockerSpriteDown;
+    blockerSpriteDown.setTexture(blockers);
+
     setPlayers(10);
 
 
     obstacule1Sprite.setOrigin(-50, -420);
     obstacule2Sprite.setOrigin(-1300, -420);
-    ballSprite.setOrigin(-900, -1300);
+    ballSprite.setOrigin(-460, -500);
+    blockerSprite.setOrigin(0,0);
+    blockerSpriteDown.setOrigin(0,-972);
+  //  blockerSpriteDown.setColor(Color(255, 0, 0));
+  //  blockerSprite.setColor(Color(255, 0, 0));
 
     Texture square;
     if (!square.loadFromFile("src/images/sprPlayer1.png")) {
@@ -64,11 +81,16 @@ void BpWindow::Show() {
                 window.close();
             }
         }
-        window.clear(Color(35, 181, 184));
+        window.clear(Color::Transparent);
+
         window.draw(fieldSprite);
+        window.draw(ballSprite);
         window.draw(obstacule1Sprite);
         window.draw(obstacule2Sprite);
         window.draw(ballSprite);
+        window.draw(blockerSprite);
+        window.draw(blockerSpriteDown);
+
         for (int i = 0; i < players.size(); i++) {
             players[i].setTexture(square);
             window.draw(players[i]);
@@ -90,13 +112,28 @@ void BpWindow::setPlayers(int n) {
     time(&seconds);
     srand((unsigned) seconds);
 
+
     for (int i = 0; i < n; i++) {
-        float xpos = -1 * 100 * (rand() % 12 + 2);
-        float ypos = -1 * 100 * (rand() % 8 + 1);
+        int x = (rand() % 12 + 2);
+        int y = (rand() % 8 + 1);
+        float xpos = -1 * 100 * x;
+        float ypos = -1 * 100 * y;
+
         Sprite sprite;
         sprite.setOrigin(xpos, ypos);
         players.push_back(sprite);
+        backpath[x*y]=-1;
 
+    }
+    int id=0;
+    for(int i = 0; i < 9; i++){
+        cout<<endl;
+        for(int j = 0; i < 14; j++){
+
+            cout<<backpath[id];
+            id++;
+
+        }
     }
 
 
