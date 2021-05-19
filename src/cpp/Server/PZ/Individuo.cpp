@@ -7,7 +7,7 @@ int Individuo::row=0;
 int Individuo::col=0;
 
 Individuo::Individuo() {
-    chromosomas= new Fila*[row];
+    chromosomas= new Fila[row];
     Genotype=0;
 
 }
@@ -32,9 +32,35 @@ void Individuo::aplicar_Gen(Fila* gen) {
         }
     }
     for (int i = 0; i < row; ++i) {
-        if(chromosomas[i]== nullptr){
-            chromosomas[i]=gen;
+        if(chromosomas[i].gen== 0){
+            chromosomas[i]=*gen;
             return;
+        }
+    }
+}
+
+Individuo::Individuo(Individuo* Father, Individuo* Mother) {
+    int chromosome_c=0;
+    while (chromosome_c<row-1){
+        Fila* fila=new Fila(Father->chromosomas[chromosome_c], Mother->chromosomas[chromosome_c]);
+        if(validar_Gen(fila)){
+            aplicar_Gen(fila);
+            chromosome_c++;
+        }else{
+            *fila= Fila(Mother->chromosomas[chromosome_c],Father->chromosomas[chromosome_c]);
+            if(validar_Gen(fila)){
+                aplicar_Gen(fila);
+                chromosome_c++;
+            }else{
+//                Mutacion
+                *fila= Fila();
+                if(validar_Gen(fila)){
+                    aplicar_Gen(fila);
+                    chromosome_c++;
+                }else{
+                    delete fila;
+                }
+            }
         }
     }
 }

@@ -12,13 +12,13 @@ class Individuo {
 public:
     static int row;
     static int col;
-    Fila** chromosomas;
+    Fila* chromosomas;
     int Genotype ;
     int fitnnes;
     Individuo();
+    Individuo(Individuo* Father, Individuo* Mother);
     bool validar_Gen(Fila*);
     void aplicar_Gen(Fila*);
-    void calculate_Fitnnes();
 };
 
 

@@ -9,9 +9,11 @@
 class Fila {
 public:
     Fila();
-    static int row;
+
+    Fila(Fila mother, Fila father);
+
     static int col;
-    int gen;
+    int gen=0;
 };
 
 

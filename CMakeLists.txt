@@ -17,7 +17,20 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 add_executable(client src/cpp/Client/main.cpp
         src/cpp/Client/Socket_Client.cpp
-        src/cpp/Client/Socket_Client.h src/cpp/Client/Interface/mainWindow.cpp src/cpp/Client/Interface/mainWindow.h src/cpp/Client/Interface/BP/BpWindow.cpp src/cpp/Client/Interface/BP/BpWindow.h src/cpp/Client/Interface/PZ/PuzzleWindow.cpp src/cpp/Client/Interface/PZ/PuzzleWindow.h src/cpp/Client/Interface/BP/bpGameMode.cpp src/cpp/Client/Interface/BP/bpGameMode.h src/cpp/Client/Interface/PZ/puzzleGameMode.cpp src/cpp/Client/Interface/PZ/puzzleGameMode.h src/cpp/Client/Interface/InputBox.cpp src/cpp/Client/Interface/InputBox.h src/cpp/Server/PZ/PZ.cpp src/cpp/Server/PZ/PZ.h src/cpp/Server/PZ/Fila.cpp src/cpp/Server/PZ/Fila.h src/cpp/Server/PZ/Individuo.cpp src/cpp/Server/PZ/Individuo.h)
+        src/cpp/Client/Socket_Client.h
+        src/cpp/Client/Interface/mainWindow.cpp
+        src/cpp/Client/Interface/mainWindow.h
+        src/cpp/Client/Interface/BP/BpWindow.cpp
+        src/cpp/Client/Interface/BP/BpWindow.h
+        src/cpp/Client/Interface/PZ/PuzzleWindow.cpp
+        src/cpp/Client/Interface/PZ/PuzzleWindow.h
+        src/cpp/Client/Interface/BP/bpGameMode.cpp
+        src/cpp/Client/Interface/BP/bpGameMode.h
+        src/cpp/Client/Interface/PZ/puzzleGameMode.cpp
+        src/cpp/Client/Interface/PZ/puzzleGameMode.h
+        src/cpp/Client/Interface/InputBox.cpp
+        src/cpp/Client/Interface/InputBox.h
+)
 target_link_libraries(client
         sfml-graphics
         sfml-audio
@@ -26,6 +39,12 @@ target_link_libraries(client
 add_executable(Server
         src/cpp/Server/main.cpp
         src/cpp/Server/Socket_Server.cpp
-        src/cpp/Server/Socket_Server.h)
+        src/cpp/Server/Socket_Server.h
+        src/cpp/Server/PZ/PZ.cpp
+        src/cpp/Server/PZ/PZ.h
+        src/cpp/Server/PZ/Fila.cpp
+        src/cpp/Server/PZ/Fila.h
+        src/cpp/Server/PZ/Individuo.cpp
+        src/cpp/Server/PZ/Individuo.h)
 target_link_libraries(Server
         ${CONAN_LIBS})
