@@ -3,73 +3,113 @@
 //
 
 #include "BpWindow.h"
-
+#include "bpGameMode.h"
 
 BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
+    bpGameMode game;
+
 
     backpath = vector<int>(14*9,0);
     RenderWindow window(sf::VideoMode(1440, 998), "BP GAME");
+
+    //Creacion de las texturas.
     Texture field;
-    Texture obstacule1;
-    Texture obstacule2;
     Texture ball;
     Texture blockers;
+    Texture square;
+    Texture blockersLateral;
+    Texture goalLeft;
+    Texture obstacule1;
+    Texture obstacule2;
 
 
 
 
+    //Asignacion de las imagenes
     if (!blockers.loadFromFile("src/images/blockers.png")) {
+
+    }
+    if (!goalLeft.loadFromFile("src/images/goalLeft.png")) {
+
+    }
+    if (!blockersLateral.loadFromFile("src/images/blockerslateral.png")) {
 
     }
     if (!field.loadFromFile("src/images/sprfield.jpg")) {
 
     }
-    if (!obstacule1.loadFromFile("src/images/sprPlayer1.png")) {
+    if (!obstacule1.loadFromFile("src/images/player1.png")) {
 
     }
-
-    if (!obstacule2.loadFromFile("src/images/sprPlayer2.png")) {
+    if (!obstacule2.loadFromFile("src/images/player2.png")) {
 
     }
     if (!ball.loadFromFile("src/images/sprball.png")) {
 
     }
 
+    if (!square.loadFromFile("src/images/sprPlayer1.png")) {
+
+    }
+
+    //Creacion de los sprites
     Sprite fieldSprite;
     fieldSprite.setTexture(field);
 
-    Sprite obstacule1Sprite;
-    obstacule1Sprite.setTexture(obstacule1);
+    Sprite blockersLateralLeft;
+    blockersLateralLeft.setTexture(blockersLateral);
 
-    Sprite obstacule2Sprite;
-    obstacule2Sprite.setTexture(obstacule2);
+    Sprite blockersLateralLeftDown;
+    blockersLateralLeftDown.setTexture(blockersLateral);
 
-    Sprite ballSprite;
-    ballSprite.setTexture(ball);
 
+    Sprite blockersLateralRight;
+    blockersLateralRight.setTexture(blockersLateral);
+
+    Sprite blockersLateralRightDown;
+    blockersLateralRightDown.setTexture(blockersLateral);
+
+    Sprite goalKLeft;
+    goalKLeft.setTexture(goalLeft);
+
+    Sprite goalKRight;
+    goalKRight.setTexture(goalLeft);
+
+
+
+    ballBackPath.setTexture(ball);
     Sprite blockerSprite;
     blockerSprite.setTexture(blockers);
 
     Sprite blockerSpriteDown;
     blockerSpriteDown.setTexture(blockers);
 
-    setPlayers(10);
 
 
-    obstacule1Sprite.setOrigin(-50, -420);
-    obstacule2Sprite.setOrigin(-1300, -420);
-    ballSprite.setOrigin(-460, -500);
+    cout<<gameModeGoals;
+    setPlayers(gameModePlayers);        //Cantidad maxima 126
+    displayBackpath();
+
+    ballBackPath.setOrigin(-690, -465);
+    //Blockers horizontales
+
     blockerSprite.setOrigin(0,0);
     blockerSpriteDown.setOrigin(0,-972);
-  //  blockerSpriteDown.setColor(Color(255, 0, 0));
-  //  blockerSprite.setColor(Color(255, 0, 0));
 
-    Texture square;
-    if (!square.loadFromFile("src/images/sprPlayer1.png")) {
+    //Blockers laterales
+    blockersLateralLeft.setOrigin(0,0);
+    blockersLateralLeftDown.setOrigin(0,-658);
 
-    }
+    blockersLateralRight.setOrigin(-1415,0);
+    blockersLateralRightDown.setOrigin(-1415,-658);
+
+
+
+    goalKLeft.setOrigin(0,-342);
+    goalKRight.setOrigin(-1415,-342);
+
 
 
     while (window.isOpen()) {
@@ -81,19 +121,32 @@ void BpWindow::Show() {
                 window.close();
             }
         }
-        window.clear(Color::Transparent);
 
+        window.clear(Color::Transparent);
         window.draw(fieldSprite);
-        window.draw(ballSprite);
-        window.draw(obstacule1Sprite);
-        window.draw(obstacule2Sprite);
-        window.draw(ballSprite);
+        window.draw(ballBackPath);
         window.draw(blockerSprite);
+        window.draw(blockersLateralLeft);
         window.draw(blockerSpriteDown);
+        window.draw(blockersLateralLeftDown);
+        window.draw(blockersLateralRight);
+        window.draw(blockersLateralRightDown);
+
+
+        window.draw(goalKRight);
+        window.draw(goalKLeft);
+
 
         for (int i = 0; i < players.size(); i++) {
-            players[i].setTexture(square);
-            window.draw(players[i]);
+            if(i<players.size()/2){
+                players[i].setTexture(obstacule1);
+                window.draw(players[i]);
+            }
+            else if(i>=players.size()/2){
+                players[i].setTexture(obstacule2);
+                window.draw(players[i]);
+            }
+
 
 
         }
@@ -107,26 +160,80 @@ void BpWindow::Show() {
 
 
 void BpWindow::setPlayers(int n) {
+    //bola en la fila 5*8colum
 
+    int obst=0;
     time_t seconds;
     time(&seconds);
     srand((unsigned) seconds);
 
+    if(n%2==1){
+        obst = n+1;
+        cout<< "impar"<<endl;
+    }else{
+        obst = n;
+        cout<< "par"<<endl;
+    }
 
-    for (int i = 0; i < n; i++) {
-        int x = (rand() % 12 + 2);
-        int y = (rand() % 8 + 1);
-        float xpos = -1 * 100 * x;
-        float ypos = -1 * 100 * y;
 
-        Sprite sprite;
-        sprite.setOrigin(xpos, ypos);
-        players.push_back(sprite);
-        backpath[(y*14)+x]=1;
+
+    for (int i = 0; i < obst;) {
+
+        if(i<(obst/2)){
+
+
+            int x = (rand() % 7 );
+            int y = (rand() % 9 );
+            float xpos = -1 * 100 * x;
+            float ypos = -1 * 100 * y;
+            //Cuando se cumple que no esta en la misma posicion se aumenta el iterador
+
+            if(backpath[(y*14)+x]==1){
+                cout<<"Posicion igual"<<endl;
+
+            }else{
+
+
+                Sprite sprite;
+                sprite.setOrigin(xpos, ypos);
+                players.push_back(sprite);
+                backpath[(y*14)+x]=1;
+                i++;
+            }
+        }else{
+            int x = (rand() % 7 + 7);
+            int y = (rand() % 9 );
+            float xpos = -1 * 100 * x;
+            float ypos = -1 * 100 * y;
+            //Cuando se cumple que no esta en la misma posicion se aumenta el iterador
+
+            if(backpath[(y*14)+x]==1){
+                cout<<"Posicion igual"<<endl;
+
+            }else{
+
+
+                Sprite sprite;
+                sprite.setOrigin(xpos, ypos);
+                players.push_back(sprite);
+                backpath[(y*14)+x]=1;
+                i++;
+            }
+        }
+
+
+
+
+
 
     }
+
+
+}
+
+void BpWindow::displayBackpath() {
     int id=0;
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i <= 9; i++){
         cout<<endl;
         for(int j = 0; j < 14; j++){
 
@@ -135,9 +242,16 @@ void BpWindow::setPlayers(int n) {
 
         }
     }
-
-
 }
+
+void BpWindow::setGameModePlayers(int gameModePlayers) {
+    BpWindow::gameModePlayers = gameModePlayers;
+}
+
+void BpWindow::setGameModeGoals(int gameModeGoals) {
+    BpWindow::gameModeGoals = gameModeGoals;
+}
+
 
 
 
