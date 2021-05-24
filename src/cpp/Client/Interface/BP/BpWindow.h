@@ -23,9 +23,19 @@ class BpWindow {
 public:
     BpWindow();
     void Show();
+    int gameModePlayers;
+    int gameModeGoals;
+
+    void setGameModeGoals(int gameModeGoals);
+
+    void setGameModePlayers(int gameModePlayers);
+
+
     vector<Sprite> players;
+    Sprite ballBackPath;
     vector<int> backpath;
     void setPlayers(int n);
+    void displayBackpath();
 
 
 

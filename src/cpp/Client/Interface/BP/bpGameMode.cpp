@@ -6,6 +6,7 @@
 #include "BpWindow.h"
 #include "../mainWindow.h"
 #include "../InputBox.h"
+#include <string>
 
 bpGameMode::bpGameMode() {}
 
@@ -68,8 +69,18 @@ void bpGameMode::show() {
                 window.close();
             }else if (event.type == Event::MouseButtonPressed) {
                 if (btnPSprite.getGlobalBounds().contains(translated_pos)) {
-                    window.close();
-                    bpWindow.Show();
+                    if(n_Obstacles.text!="" && n_Annotations.text!=""){
+                        bpWindow.setGameModePlayers(stoi(n_Obstacles.text));
+                        bpWindow.setGameModeGoals(stoi(n_Annotations.text));
+                        bpWindow.Show();
+
+                        window.close();
+
+
+                    }else{
+                        cout<<"Espacios vacios"<<endl;
+                    }
+
                 }else if (btnMSprite.getGlobalBounds().contains(translated_pos)) {
                     window.close();
                     return;
@@ -95,3 +106,7 @@ void bpGameMode::show() {
         window.display();
     }
 }
+
+
+
+
