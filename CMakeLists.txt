@@ -45,6 +45,6 @@ add_executable(Server
         src/cpp/Server/PZ/Fila.cpp
         src/cpp/Server/PZ/Fila.h
         src/cpp/Server/PZ/Individuo.cpp
-        src/cpp/Server/PZ/Individuo.h)
+        src/cpp/Server/PZ/Individuo.h src/cpp/Server/PZ/Generation.cpp src/cpp/Server/PZ/Generation.h)
 target_link_libraries(Server
         ${CONAN_LIBS})

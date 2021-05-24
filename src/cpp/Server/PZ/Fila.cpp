@@ -8,21 +8,24 @@
 #include <ctime>
 
 int Fila::col=0;
+int Fila::row=0;
 
 Fila::Fila() {
     gen= 0;
     time_t seconds;
     time(&seconds);
     srand((unsigned) seconds);
-    for (int i = 0; i < 4; ++i) {
-        int a_rand=rand()%col;
+    for (int i = 0; i < col; ++i) {
+        int a_rand=rand()%(col*row);
         for (int j = 0; j < 1; j) {
             if((gen>>a_rand)%2==0){
                 break;
             }
-            a_rand=rand()%col;
+            a_rand=rand()%(col*row);
         }
-        gen=gen|(1>>a_rand);
+        int bit=1;
+        bit=bit<<a_rand;
+        gen=gen|bit;
     }
 }
 
@@ -31,12 +34,13 @@ Fila::Fila(Fila mother,Fila father ) {
     time(&seconds);
     srand((unsigned) seconds);
     gen= 0;
-    int gen_F=father.gen;
-    int gen_M=mother.gen;
-    int M_c= ceil(col/2);
-    int F_c= floor(col/2);
+    unsigned int gen_F=father.gen;
+    unsigned int gen_M=mother.gen;
+    float coltmp=col;
+    int M_c= ceil(coltmp/2);
+    int F_c= floor(coltmp/2);
     int id_counter=0;
-    for (int i = 0; i < M_c; ++i) {
+    for (int i = 0; i < M_c; i) {
         if(gen_F%2==1){
             i++;
         }
@@ -53,14 +57,14 @@ Fila::Fila(Fila mother,Fila father ) {
             gen_M=gen_M>>1;
             id_counter++;
     }
-    id_counter=0;
     for (int i = 0; i < F_c; i) {
-        if(id_counter>col){return;}
         if(gen_F%2==1){
             gen=gen|(1<<id_counter);
             i++;
         }
         gen_F=gen_F>>1;
         id_counter++;
+        if(id_counter>col*row){return;}
+
     }
 }

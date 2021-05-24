@@ -88,6 +88,14 @@ void PuzzleWindow::show() {
             if (event.type == Event::Closed) {
                 window.close();
             }
+            if(event.type==Event::MouseButtonPressed){
+                data=nlohmann::basic_json<>();
+                data["action"]="+";
+                std::string Order=socket->comunicatte(to_string(data));
+                data=nlohmann::basic_json<>::parse(Order);
+                auto imageOrder =data["Order"].get<std::vector<int>>();
+                order(Frames,imageOrder);
+            }
         }
 
         window.clear(Color(120, 215, 215));
@@ -98,7 +106,7 @@ void PuzzleWindow::show() {
     }
 }
 
-void PuzzleWindow::order(Sprite *subimages, int *order) {
+void PuzzleWindow::order(Sprite *subimages, std::vector<int> order) {
     int id=0;
     for(int x=0;x<row;x++){
         for (int i = 0; i < col ; ++i) {

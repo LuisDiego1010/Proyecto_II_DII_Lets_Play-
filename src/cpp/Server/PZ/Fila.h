@@ -13,7 +13,8 @@ public:
     Fila(Fila mother, Fila father);
 
     static int col;
-    int gen=0;
+    static int row;
+    unsigned int gen=0;
 };
 
 

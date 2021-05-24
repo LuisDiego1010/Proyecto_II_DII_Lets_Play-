@@ -7,6 +7,7 @@
 
 
 #include "Individuo.h"
+#include "Generation.h"
 
 class PZ {
 public:
@@ -16,6 +17,7 @@ public:
     static std::vector<int> RFit;
     static std::vector<int> GFit;
     static std::vector<int> BFit;
+    static Generation* generations[15];
     void run();
     void calculate_Fitnnes(Individuo*);
 };

@@ -6,6 +6,8 @@
 #include <zmqpp/context.hpp>
 #include <nlohmann/json.hpp>
 #include "Socket_Server.h"
+#include "PZ/PZ.h"
+
 Socket_Server* Socket_Server::self= new Socket_Server();
 
 
@@ -29,7 +31,8 @@ int main(int argc, char *argv[]){
             //call to Game Engine
         } else if (Json["Game"] == "Genetic") {
             socket->send("connectect to Genetic");
-
+            auto Pz=PZ();
+            Pz.run();
             //call to Genetic Engine
         }
     }else if(msg=="/Stop"){

@@ -13,8 +13,8 @@ public:
     static int row;
     static int col;
     Fila* chromosomas;
-    int Genotype ;
-    int fitnnes;
+    int Genotype=0;
+    int fitnnes=0;
     Individuo();
     Individuo(Individuo* Father, Individuo* Mother);
     bool validar_Gen(Fila*);

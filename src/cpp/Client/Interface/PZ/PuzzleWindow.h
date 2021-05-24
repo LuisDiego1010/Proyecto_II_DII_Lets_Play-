@@ -24,7 +24,7 @@ public:
     static int length_y;
     PuzzleWindow();
     void show();
-    void order(Sprite *subimages, int *order );
+    void order(Sprite *subimages, std::vector<int> order );
 };
 
 
