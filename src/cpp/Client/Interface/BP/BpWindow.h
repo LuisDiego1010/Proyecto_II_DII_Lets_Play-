@@ -21,6 +21,11 @@ using namespace std;
 
 class BpWindow {
 public:
+
+
+    struct Point {
+        int x, y;
+    };
     BpWindow();
     void Show();
     int gameModePlayers;
@@ -31,11 +36,28 @@ public:
     void setGameModePlayers(int gameModePlayers);
 
 
+
     vector<Sprite> players;
     Sprite ballBackPath;
-    vector<int> backpath;
+    Sprite goalKLeft;
+    Sprite goalKRight;
+
+    char backtracking[9][14];
+
     void setPlayers(int n);
-    void displayBackpath();
+
+    int getPositionXBall();
+    int getPositionYBall();
+
+    int getPositionXGoalPlayer();
+    int getPositionYGoalPlayer();
+
+    int getPositionXGoalCpu();
+    int getPositionYGoalCpu();
+
+    void displayBacktracking();
+    void setBacktracking();
+
 
 
 

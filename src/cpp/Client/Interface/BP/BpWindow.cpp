@@ -1,18 +1,30 @@
 //
 // Created by garroakion on 10/5/21.
 //
-
+#include "Backtracking.h"
 #include "BpWindow.h"
 #include "bpGameMode.h"
+#include "../InputBox.h"
 
 BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
+
+
+
+
     bpGameMode game;
 
 
-    backpath = vector<int>(14*9,0);
-    RenderWindow window(sf::VideoMode(1440, 998), "BP GAME");
+    setBacktracking();
+
+
+
+    cout<<endl;
+
+
+
+    RenderWindow window(sf::VideoMode(1700, 998), "BP GAME");
 
     //Creacion de las texturas.
     Texture field;
@@ -23,11 +35,20 @@ void BpWindow::Show() {
     Texture goalLeft;
     Texture obstacule1;
     Texture obstacule2;
+    Texture leaderboard;
+    Texture btnNextPlayer;
 
 
 
+    if(!btnNextPlayer.loadFromFile("src/images/btn/nextPlayer.png")){
+        cout<<"Error to charge image";
+    }
 
     //Asignacion de las imagenes
+    if (!leaderboard.loadFromFile("src/images/leaderboard.png")) {
+
+    }
+
     if (!blockers.loadFromFile("src/images/blockers.png")) {
 
     }
@@ -53,17 +74,27 @@ void BpWindow::Show() {
     if (!square.loadFromFile("src/images/sprPlayer1.png")) {
 
     }
+    /*----------------NextPlayerButton-----------------*/
+    Sprite btnNextPlayerSprite;
+    btnNextPlayerSprite.setTexture(btnNextPlayer);
+    btnNextPlayerSprite.setOrigin(-1480,-750);
 
-    //Creacion de los sprites
+    /*----------------Field-----------------*/
     Sprite fieldSprite;
     fieldSprite.setTexture(field);
 
+    /*----------------Leaderboard-----------------*/
+    Sprite leaderboardSprite;
+    leaderboardSprite.setTexture(leaderboard);
+    leaderboardSprite.setOrigin(-1443, 0);
+
+
+    /*----------------Blockers-----------------*/
     Sprite blockersLateralLeft;
     blockersLateralLeft.setTexture(blockersLateral);
 
     Sprite blockersLateralLeftDown;
     blockersLateralLeftDown.setTexture(blockersLateral);
-
 
     Sprite blockersLateralRight;
     blockersLateralRight.setTexture(blockersLateral);
@@ -71,48 +102,51 @@ void BpWindow::Show() {
     Sprite blockersLateralRightDown;
     blockersLateralRightDown.setTexture(blockersLateral);
 
-    Sprite goalKLeft;
-    goalKLeft.setTexture(goalLeft);
-
-    Sprite goalKRight;
-    goalKRight.setTexture(goalLeft);
-
-
-
-    ballBackPath.setTexture(ball);
-    Sprite blockerSprite;
-    blockerSprite.setTexture(blockers);
-
     Sprite blockerSpriteDown;
     blockerSpriteDown.setTexture(blockers);
 
+    Sprite blockerSprite;
+    blockerSprite.setTexture(blockers);
 
+    blockerSprite.setOrigin(0, 0);
+    blockerSpriteDown.setOrigin(0, -972);
 
-    cout<<gameModeGoals;
-    setPlayers(gameModePlayers);        //Cantidad maxima 126
-    displayBackpath();
+    blockersLateralLeft.setOrigin(0, 0);
+    blockersLateralLeftDown.setOrigin(0, -658);
 
-    ballBackPath.setOrigin(-690, -465);
-    //Blockers horizontales
-
-    blockerSprite.setOrigin(0,0);
-    blockerSpriteDown.setOrigin(0,-972);
-
-    //Blockers laterales
-    blockersLateralLeft.setOrigin(0,0);
-    blockersLateralLeftDown.setOrigin(0,-658);
-
-    blockersLateralRight.setOrigin(-1415,0);
-    blockersLateralRightDown.setOrigin(-1415,-658);
+    blockersLateralRight.setOrigin(-1415, 0);
+    blockersLateralRightDown.setOrigin(-1415, -658);
 
 
 
-    goalKLeft.setOrigin(0,-342);
-    goalKRight.setOrigin(-1415,-342);
+    /*----------------Goals-----------------*/
+    goalKLeft.setTexture(goalLeft);
+    goalKRight.setTexture(goalLeft);
+
+    goalKLeft.setOrigin(0, -342);
+    goalKRight.setOrigin(-1415, -342);
+
+
+
+    /*----------------Ball-----------------*/
+    ballBackPath.setTexture(ball);
+   // ballBackPath.setOrigin(-690 + 80, -465 + 36);
+    ballBackPath.setOrigin(-200, -400);
+
+
+
+    /*----------------Game Init-----------------*/
+    setPlayers(gameModePlayers);
+    cout<<endl;
+    displayBacktracking();
+    cout<<endl;
+
 
 
 
     while (window.isOpen()) {
+
+
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
@@ -120,12 +154,28 @@ void BpWindow::Show() {
             if (event.type == Event::Closed) {
                 window.close();
             }
+            else if (event.type == Event::MouseButtonPressed) {
+                if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
+                    backtracking[getPositionYBall()][getPositionXBall()] = '1';
+                    backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
+                    Backtracking back;
+                    cout<<endl;
+                    cout<<getPositionYBall()<<" "<<getPositionXBall()<<endl;
+                    cout<<getPositionYGoalPlayer()<<" "<<getPositionXGoalPlayer()<<endl;
+                    back.pathMoves(backtracking, {getPositionYBall(),getPositionXBall()},{getPositionYGoalPlayer(),getPositionXGoalPlayer()});
+                    cout<<endl;
+                }
+            }
+
+
         }
 
         window.clear(Color::Transparent);
         window.draw(fieldSprite);
         window.draw(ballBackPath);
         window.draw(blockerSprite);
+        window.draw(leaderboardSprite);
+        window.draw(btnNextPlayerSprite);
         window.draw(blockersLateralLeft);
         window.draw(blockerSpriteDown);
         window.draw(blockersLateralLeftDown);
@@ -138,15 +188,14 @@ void BpWindow::Show() {
 
 
         for (int i = 0; i < players.size(); i++) {
-            if(i<players.size()/2){
+
+            if (i < players.size() / 2) {
                 players[i].setTexture(obstacule1);
                 window.draw(players[i]);
-            }
-            else if(i>=players.size()/2){
+            } else if (i >= players.size() / 2) {
                 players[i].setTexture(obstacule2);
                 window.draw(players[i]);
             }
-
 
 
         }
@@ -160,90 +209,101 @@ void BpWindow::Show() {
 
 
 void BpWindow::setPlayers(int n) {
-    //bola en la fila 5*8colum
 
-    int obst=0;
+
+    int obst = 0;
     time_t seconds;
     time(&seconds);
     srand((unsigned) seconds);
 
-    if(n%2==1){
-        obst = n+1;
-        cout<< "impar"<<endl;
-    }else{
+    if (n % 2 == 1) {
+        obst = n + 1;
+    } else {
         obst = n;
-        cout<< "par"<<endl;
     }
-
 
 
     for (int i = 0; i < obst;) {
 
-        if(i<(obst/2)){
 
 
-            int x = (rand() % 7 );
-            int y = (rand() % 9 );
+        if (i < (obst / 2)) {
+
+
+            int x = (rand() % 7);
+            int y = (rand() % 9);
             float xpos = -1 * 100 * x;
             float ypos = -1 * 100 * y;
             //Cuando se cumple que no esta en la misma posicion se aumenta el iterador
 
-            if(backpath[(y*14)+x]==1){
-                cout<<"Posicion igual"<<endl;
+            if (backtracking[y][x] == '2') {
+                cout << "Posicion de la bola" << endl;
+            }
+            if (backtracking[y][x] == '0') {
+                cout << "Posicion igual" << endl;
 
-            }else{
+            } else {
 
 
                 Sprite sprite;
                 sprite.setOrigin(xpos, ypos);
                 players.push_back(sprite);
-                backpath[(y*14)+x]=1;
+                backtracking[y][x] = '0';
                 i++;
             }
-        }else{
+        } else {
             int x = (rand() % 7 + 7);
-            int y = (rand() % 9 );
+            int y = (rand() % 9);
             float xpos = -1 * 100 * x;
             float ypos = -1 * 100 * y;
             //Cuando se cumple que no esta en la misma posicion se aumenta el iterador
+            if (backtracking[y][x] == '2') {
+                cout << "Posicion de la bola" << endl;
+            }
+            if (backtracking[y][x] == '0') {
+                cout << "Posicion igual" << endl;
 
-            if(backpath[(y*14)+x]==1){
-                cout<<"Posicion igual"<<endl;
-
-            }else{
+            } else {
 
 
                 Sprite sprite;
                 sprite.setOrigin(xpos, ypos);
                 players.push_back(sprite);
-                backpath[(y*14)+x]=1;
+                backtracking[y][x] = '0';
                 i++;
             }
         }
 
 
-
-
-
-
     }
 
 
 }
 
-void BpWindow::displayBackpath() {
-    int id=0;
-    for(int i = 0; i <= 9; i++){
-        cout<<endl;
-        for(int j = 0; j < 14; j++){
 
-            cout<<backpath[id];
-            id++;
 
-        }
-    }
+
+
+
+/*----------------Position Ball-----------------*/
+int BpWindow::getPositionXBall() {
+    return -(int) (ballBackPath.getOrigin().x / 100);
 }
 
+int BpWindow::getPositionYBall() {
+    return -(int) (ballBackPath.getOrigin().y / 100);
+}
+
+/*----------------Position Goal Player-----------------*/
+int BpWindow::getPositionXGoalPlayer() {
+    return -(int) (goalKLeft.getOrigin().x / 100);
+}
+
+int BpWindow::getPositionYGoalPlayer() {
+    return -(int) (goalKLeft.getOrigin().y / 100);
+}
+
+/*----------------Setters goals and players-----------------*/
 void BpWindow::setGameModePlayers(int gameModePlayers) {
     BpWindow::gameModePlayers = gameModePlayers;
 }
@@ -251,6 +311,41 @@ void BpWindow::setGameModePlayers(int gameModePlayers) {
 void BpWindow::setGameModeGoals(int gameModeGoals) {
     BpWindow::gameModeGoals = gameModeGoals;
 }
+
+
+/*----------------Backtracking-----------------*/
+void BpWindow::displayBacktracking() {
+    for(int i =0; i<9;i++){
+        cout<<endl;
+        for (int j=0 ;j<14;j++){
+            cout<<backtracking[i][j];
+        }
+    }
+}
+
+void BpWindow::setBacktracking() {
+    for(int i =0; i<9;i++){
+        for (int j=0 ;j<14;j++){
+            backtracking[i][j]= '1';
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
