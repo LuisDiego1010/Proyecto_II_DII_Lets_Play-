@@ -1,16 +1,18 @@
 //
 // Created by garroakion on 10/5/21.
 //
+#include <nlohmann/json.hpp>
 #include "Backtracking.h"
 #include "BpWindow.h"
 #include "bpGameMode.h"
 #include "../InputBox.h"
+#include "../../Socket_Client.h"
 
 BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
 
-
+    Socket_Client * socket = Socket_Client::self;
 
 
     bpGameMode game;
@@ -77,7 +79,7 @@ void BpWindow::Show() {
     /*----------------NextPlayerButton-----------------*/
     Sprite btnNextPlayerSprite;
     btnNextPlayerSprite.setTexture(btnNextPlayer);
-    btnNextPlayerSprite.setOrigin(-1480,-750);
+    btnNextPlayerSprite.setOrigin(-40,-40);
 
     /*----------------Field-----------------*/
     Sprite fieldSprite;
@@ -141,7 +143,8 @@ void BpWindow::Show() {
     displayBacktracking();
     cout<<endl;
 
-
+    /*-----Comunicatee standars------*/
+    nlohmann::json gameData;
 
 
     while (window.isOpen()) {
@@ -159,10 +162,16 @@ void BpWindow::Show() {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
                     backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
                     Backtracking back;
-                    cout<<endl;
-                    cout<<getPositionYBall()<<" "<<getPositionXBall()<<endl;
-                    cout<<getPositionYGoalPlayer()<<" "<<getPositionXGoalPlayer()<<endl;
-                    back.pathMoves(backtracking, {getPositionYBall(),getPositionXBall()},{getPositionYGoalPlayer(),getPositionXGoalPlayer()});
+                    gameData=nlohmann::basic_json<>();
+                    string backtrackingString;
+                    backtrackingString = backtracking[0];
+                    gameData["matrix"]=backtrackingString;
+                    gameData["XBall"]=getPositionXBall();
+                    gameData["YBall"]=getPositionYBall();
+                    cout<<to_string(gameData)<<" :String of nacktracking";
+                    string JsonServer;
+                    JsonServer= socket->comunicatte(to_string(gameData));
+                    gameData=nlohmann::basic_json<>::parse(JsonServer);
                     cout<<endl;
                 }
             }

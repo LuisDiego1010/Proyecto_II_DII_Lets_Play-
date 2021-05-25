@@ -21,7 +21,6 @@ int main(int argc, char *argv[]){
     std::cout<<"Socket inited";
     msg= socket->recieve();
 
-    // Call to engine loops
     nlohmann::json Json = nlohmann::json::parse(msg);
     std::cout << Json <<std::endl;
 

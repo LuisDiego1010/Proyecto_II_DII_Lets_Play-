@@ -89,6 +89,7 @@ void PZ::run() {
     data["generation"]=generations[0]->representation;
     socket->send(to_string(data));
     int position=0;
+//    comunicon con el cliente
     while(true){
         auto msg=socket->recieve();
         data= nlohmann::basic_json<>::parse(msg);
