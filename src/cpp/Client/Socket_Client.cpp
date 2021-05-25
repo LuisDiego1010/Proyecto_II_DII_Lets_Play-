@@ -14,9 +14,11 @@ void Socket_Client::Init() {
 
 std::string Socket_Client::comunicatte(std::string msg) {
     zmq::message_t msg_send(msg);
+    zmq::message_t msg_recieve;
     socket->send(msg_send,zmq::send_flags::none);
     std::cout<<"[C]Sended: "<<msg_send;
-    socket->recv(msg_send);
-    std::cout<<"[C]Recieved: "<<msg_send;
-    return msg_send.to_string();
+    socket->recv(msg_recieve);
+    std::cout<<"[C]Recieved: "<<msg_recieve;
+    msg=msg_recieve.to_string();
+    return msg;
 }

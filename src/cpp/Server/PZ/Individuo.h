@@ -12,6 +12,7 @@ class Individuo {
 public:
     static int row;
     static int col;
+    static int max;
     Fila* chromosomas;
     int Genotype=0;
     int fitnnes=0;

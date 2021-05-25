@@ -33,9 +33,9 @@ std::string Socket_Server::recieve() {
     return msg.to_string();
 }
 
-std::string Socket_Server::send(std::string) {
-    zmq::message_t msg;
-    socket->send(msg, zmq::send_flags::none);
-    std::cout<<"[S]Sended: "<<msg.to_string();
-    return msg.to_string();
+std::string Socket_Server::send(std::string msg) {
+        zmq::message_t msg_send(msg);
+    socket->send(msg_send, zmq::send_flags::none);
+    std::cout<<"[S]Sended: "<<msg_send.to_string();
+    return msg_send.to_string();
 }

@@ -20,8 +20,8 @@ class PuzzleWindow {
 public:
     static int col;
     static int row;
-    static int length_x;
-    static int length_y;
+    static float length_x;
+    static float length_y;
     PuzzleWindow();
     void show();
     void order(Sprite *subimages, std::vector<int> order );

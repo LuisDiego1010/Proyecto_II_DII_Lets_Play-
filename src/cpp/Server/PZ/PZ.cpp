@@ -16,9 +16,13 @@ std::vector<int> PZ::RFit;
 std::vector<int> PZ::GFit;
 std::vector<int> PZ::BFit;
 std::vector<int> PZ::Objective;
-Generation* PZ::generations[15]{};
+Generation* PZ::generations[25]{};
 
 void PZ::run() {
+    time_t seconds;
+    time(&seconds);
+    srand((unsigned) seconds);
+
     auto socket=Socket_Server::self;
     std::string Json_String=socket->recieve();
     nlohmann::basic_json<> data= nlohmann::basic_json<>::parse(Json_String);
@@ -34,8 +38,19 @@ void PZ::run() {
     Fila::col=col;
     Fila::row=row;
     std::cout<<"test"<<std::endl;
+
+    int max=0;
+    for (int i = 0; i < col*row; ++i) {
+        max=max|1<<i;
+
+    }
+    Individuo::max=max;
+
+    std::cout<<max<<std::endl;
+
+
     generations[0]= new Generation();
-    for (int j = 0; j < 8; ++j) {
+    for (int j = 0; j < 11; ++j) {
         calculate_Fitnnes(generations[0]->poblacion[j]);
     }
     generations[0]->declare_Parents();
@@ -43,8 +58,20 @@ void PZ::run() {
     for (int & j : generations[0]->representation) {
         std::cout<< j<<" ";
     }
-    for (int i = 1; i < 15; ++i) {
+    std::cout<< std::endl;
+
+    for (int i = 1; i < 25; ++i) {
+        if(i>3){
+            if(generations[i-1]->representation==generations[i-2]->representation){
+                generations[i]=generations[0]->mutation();
+                generations[i]->declare_Parents();
+                generations[i]->mutate();
+            }else{
+                generations[i]=generations[i-1]->children();
+            }
+        }else{
             generations[i]=generations[i-1]->children();
+        }
 
         for (auto & j : generations[i]->poblacion) {
             calculate_Fitnnes(j);
@@ -54,6 +81,8 @@ void PZ::run() {
         for (int & j : generations[i]->representation) {
             std::cout<< j<<" ";
         }
+        std::cout<<" ;"<< generations[i]->Mother->fitnnes<<"=Fitness ";
+
         std::cout<<std::endl;
     }
     data=nlohmann::basic_json<>();
@@ -65,9 +94,9 @@ void PZ::run() {
         data= nlohmann::basic_json<>::parse(msg);
         if(data.contains("action")){
             if(data["action"]=="+"){
-                position=(position+1)%8;
+                position=(position+1)%25;
             }else if(data["action"]=="-") {
-                position=(position-1)%8;
+                position=(position-1)%25;
             }else {
                 return;
             }
@@ -93,10 +122,10 @@ void PZ::calculate_Fitnnes(Individuo* especimen) {
                 break;
             }
             if((gen%2)==1){
+                r+=RFit[i]-count;
+                g+=GFit[i]-count;
+                b+=BFit[i]-count;
                 count++;
-                r+=RFit[i];
-                g+=GFit[i];
-                b+=BFit[i];
             }
             gen=gen>>1;
         }

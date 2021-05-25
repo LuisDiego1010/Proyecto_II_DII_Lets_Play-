@@ -9,27 +9,23 @@
 #include "Individuo.h"
 int Individuo::row=0;
 int Individuo::col=0;
+int Individuo::max=0;
 Individuo::Individuo() {
     Fila* tmp=(Fila*)malloc(sizeof(Fila)*row);
     chromosomas = tmp;
     for (int i = 0; i < row - 1; i) {
         auto fila = new Fila();
-        if (validar_Gen(fila)) {
-            aplicar_Gen(fila);
-            i++;
-        } else {
-            delete fila;
-        }
-
+        aplicar_Gen(fila);
+        i++;
     }
     Fila *fila = new Fila();
     fila->gen = ~Genotype;
     fila=new Fila(*fila,*fila);
-    if (validar_Gen(fila)) {
-        aplicar_Gen(fila);
-    }
+    aplicar_Gen(fila);
 }
 bool Individuo::validar_Gen(Fila* gen) {
+
+
 int gen_c=0;
     for (int i = 0; (i < row*col)&&(gen_c<col); ++i) {
         if(((gen->gen>>i)%2)!=0){
@@ -62,47 +58,48 @@ Individuo::Individuo(Individuo* Father, Individuo* Mother) {
     chromosomas = tmp;
     while (chromosome_c<row-1){
         //Herencia
-        Fila* fila=new Fila(Father->chromosomas[chromosome_c], Mother->chromosomas[chromosome_c]);
+        Fila* fila= nullptr;
+        int probability=rand();
+        if(probability%60<50){
+        if(probability%2==1){
+            fila=new Fila(Father->chromosomas[chromosome_c], Mother->chromosomas[chromosome_c]);
+
+        }else{
+            fila=new Fila(Mother->chromosomas[chromosome_c],Father->chromosomas[chromosome_c]);
+        }
         if(validar_Gen(fila)){
             aplicar_Gen(fila);
             chromosome_c++;
             continue;
         }
-        *fila= Fila(Mother->chromosomas[chromosome_c],Father->chromosomas[chromosome_c]);
-        if(validar_Gen(fila)){
-            aplicar_Gen(fila);
-            chromosome_c++;
-            continue;
-
-        }else{
-//          Mutacion
+        }if(probability%60<58){
+            //          Mutacion
             auto mutacion=Fila();
-            *fila= Fila(Mother->chromosomas[chromosome_c], mutacion);
+            if(probability%3==0){
+                fila=new Fila(Mother->chromosomas[chromosome_c], mutacion);
+
+            }else if(probability%3==1){
+                fila=new Fila(mutacion, Mother->chromosomas[chromosome_c]);
+
+            }else if(probability%3==2){
+                fila=new Fila(Father->chromosomas[chromosome_c],mutacion);
+
+            }else {
+                fila=new Fila(mutacion, Father->chromosomas[chromosome_c]);
+
+            }
+
             if(validar_Gen(fila)){
                 aplicar_Gen(fila);
                 chromosome_c++;
                 continue;
             }
-            *fila=Fila(mutacion, Mother->chromosomas[chromosome_c]);
-            if(validar_Gen(fila)){
-                aplicar_Gen(fila);
-                chromosome_c++;
-                continue;
-            }
-            *fila=Fila(Father->chromosomas[chromosome_c],mutacion);
-            if(validar_Gen(fila)){
-                aplicar_Gen(fila);
-                chromosome_c++;
-                continue;
-            }
-            *fila=Fila(mutacion, Father->chromosomas[chromosome_c]);
-            if(validar_Gen(fila)){
-                aplicar_Gen(fila);
-                chromosome_c++;
-                continue;
-            }else{
+        }else{
 //                Inversion
-                fila->gen=~Genotype;
+                Fila tmpFila=Fila();
+                fila= nullptr;
+                tmpFila.gen=(~Genotype);
+                fila=new Fila(tmpFila, tmpFila);
                 if(validar_Gen(fila)){
                     aplicar_Gen(fila);
                     chromosome_c++;
@@ -111,13 +108,12 @@ Individuo::Individuo(Individuo* Father, Individuo* Mother) {
 
             }
         }
-    }
-    Fila* fila=new Fila();
-    fila->gen=~Genotype;
+    Fila tmpFila=Fila();
+    Fila* fila= nullptr;
+    tmpFila.gen=(~Genotype);
+    fila=new Fila(tmpFila, tmpFila);
     if(validar_Gen(fila)){
         aplicar_Gen(fila);
         chromosome_c++;
     }
-
 }
-

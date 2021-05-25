@@ -12,9 +12,7 @@ int Fila::row=0;
 
 Fila::Fila() {
     gen= 0;
-    time_t seconds;
-    time(&seconds);
-    srand((unsigned) seconds);
+
     for (int i = 0; i < col; ++i) {
         int a_rand=rand()%(col*row);
         for (int j = 0; j < 1; j) {
@@ -30,9 +28,6 @@ Fila::Fila() {
 }
 
 Fila::Fila(Fila mother,Fila father ) {
-    time_t seconds;
-    time(&seconds);
-    srand((unsigned) seconds);
     gen= 0;
     unsigned int gen_F=father.gen;
     unsigned int gen_M=mother.gen;
@@ -46,7 +41,11 @@ Fila::Fila(Fila mother,Fila father ) {
         }
         gen_F=gen_F>>1;
         id_counter++;
+        if(id_counter>col*row){i++;}
+
     }
+    gen_F=gen_F<<id_counter;
+
     id_counter=0;
 
     for (int i = 0; i < M_c; i) {
@@ -56,7 +55,11 @@ Fila::Fila(Fila mother,Fila father ) {
             }
             gen_M=gen_M>>1;
             id_counter++;
+        if(id_counter>col*row){i++;}
+
     }
+    id_counter=0;
+
     for (int i = 0; i < F_c; i) {
         if(gen_F%2==1){
             gen=gen|(1<<id_counter);
@@ -64,7 +67,7 @@ Fila::Fila(Fila mother,Fila father ) {
         }
         gen_F=gen_F>>1;
         id_counter++;
-        if(id_counter>col*row){return;}
+        if(id_counter>col*row){i++;}
 
     }
 }

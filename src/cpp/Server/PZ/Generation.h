@@ -11,13 +11,15 @@
 
 class Generation {
 public:
-    Individuo* poblacion[8]{};
+    Individuo* poblacion[11]{};
     Individuo* Mother;
     Individuo* Father;
     std::vector<int> representation;
     Generation();
     Generation(bool);
     Generation* children();
+    Generation* mutation();
+    void mutate();
     void declare_Parents();
     void create_representation();
 };

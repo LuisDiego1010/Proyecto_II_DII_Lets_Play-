@@ -11,8 +11,8 @@
 PuzzleWindow::PuzzleWindow() {}
 int PuzzleWindow::row=0;
 int PuzzleWindow::col=0;
-int PuzzleWindow::length_x=0;
-int PuzzleWindow::length_y=0;
+float PuzzleWindow::length_x=0;
+float PuzzleWindow::length_y=0;
 void PuzzleWindow::show() {
     Socket_Client * socket = Socket_Client::self;
 
@@ -35,8 +35,8 @@ void PuzzleWindow::show() {
     vector<int>  redFrames(row*col);
     vector<int>  greenFrames(row*col);
     vector<int>  blueFrames(row*col);
-    length_x=CompleteImage.getSize().x/col;
-    length_y=CompleteImage.getSize().y/row;
+    length_x=(float)CompleteImage.getSize().x/col;
+    length_y=(float)CompleteImage.getSize().y/row;
     int id=0;
     int id_RGB=0;
     for(int x=0;x<row;x++){
@@ -50,9 +50,9 @@ void PuzzleWindow::show() {
             subImages[id]=sf::Texture();
             subImages[id].create(length_x,length_y);
             subImages[id].loadFromImage(CompleteImage, sf::IntRect(0+length_x*i,0+length_y*x,length_x,length_y));
-            colorR=(CompleteImage.getPixel(1 + length_x * i, 1 + length_y * x).r);
-            colorG=(CompleteImage.getPixel(1 + length_x * i, 1 + length_y * x).g);
-            colorB=(CompleteImage.getPixel(1 + length_x * i, 1 + length_y * x).b);
+            colorR=(CompleteImage.getPixel(1 + length_x * i, 1 + length_y * x).r)+i;
+            colorG=(CompleteImage.getPixel(1 + length_x * i, 1 + length_y * x).g)+i;
+            colorB=(CompleteImage.getPixel(1 + length_x * i, 1 + length_y * x).b)+i;
             r+= colorR;
             g+= colorG;
             b+= colorB;
@@ -79,6 +79,10 @@ void PuzzleWindow::show() {
     data["Columns"]= col;
     std::cout<<data;
     std::string startOrder=socket->comunicatte(to_string(data));
+    data=nlohmann::basic_json<>();
+    data=nlohmann::basic_json<>::parse(startOrder);
+    auto imageOrder =data["generation"].get<std::vector<int>>();
+    order(Frames,imageOrder);
 
     while (window.isOpen()) {
         Event event;
@@ -93,7 +97,7 @@ void PuzzleWindow::show() {
                 data["action"]="+";
                 std::string Order=socket->comunicatte(to_string(data));
                 data=nlohmann::basic_json<>::parse(Order);
-                auto imageOrder =data["Order"].get<std::vector<int>>();
+                imageOrder =data["Order"].get<std::vector<int>>();
                 order(Frames,imageOrder);
             }
         }
@@ -110,7 +114,11 @@ void PuzzleWindow::order(Sprite *subimages, std::vector<int> order) {
     int id=0;
     for(int x=0;x<row;x++){
         for (int i = 0; i < col ; ++i) {
-            subimages[order[id]].setPosition(140+length_x*i,140+length_y*x);
+            int image=order[id];
+            if(image>=row*col){
+                image=0;
+            }
+            subimages[image].setPosition(140+length_x*i,140+length_y*x);
             id++;
         }
     }
