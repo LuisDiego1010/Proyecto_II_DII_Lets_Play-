@@ -40,8 +40,8 @@ Fila::Fila(Fila mother,Fila father ) {
             i++;
         }
         gen_F=gen_F>>1;
-        id_counter++;
         if(id_counter>col*row){i++;}
+        id_counter++;
 
     }
     gen_F=gen_F<<id_counter;
@@ -70,4 +70,5 @@ Fila::Fila(Fila mother,Fila father ) {
         if(id_counter>col*row){i++;}
 
     }
+
 }

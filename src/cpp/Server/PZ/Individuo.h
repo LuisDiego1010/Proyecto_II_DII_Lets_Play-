@@ -14,7 +14,7 @@ public:
     static int col;
     static int max;
     Fila* chromosomas;
-    int Genotype=0;
+    unsigned int Genotype=0;
     int fitnnes=0;
     Individuo();
     Individuo(Individuo* Father, Individuo* Mother);

@@ -46,7 +46,6 @@ Generation* Generation::mutation() {
 
         Individuo* tmp= nullptr;
         if((rand()%2)==1){
-            auto mutation= new Individuo();
             tmp=new Individuo(Mother,this->poblacion[rand()%11]);
         }else {
             auto mutation= new Individuo();
@@ -98,7 +97,7 @@ void Generation::create_representation() {
 }
 
 void Generation::mutate() {
-    int sawp;
+    int sawp=0;
     while(sawp==0){
     sawp =rand()%Individuo::row;}
     Fila *tmp= &Mother->chromosomas[0];

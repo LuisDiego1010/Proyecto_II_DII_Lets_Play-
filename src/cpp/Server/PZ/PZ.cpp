@@ -98,13 +98,14 @@ void PZ::run() {
             }else if(data["action"]=="-") {
                 position=(position-1)%25;
             }else {
-                return;
+                break;
             }
         }
         data= nlohmann::basic_json<>();
         data["Order"]= generations[abs(position)]->representation;
         socket->send(to_string(data));
     }
+    return;
 }
 
 void PZ::calculate_Fitnnes(Individuo* especimen) {

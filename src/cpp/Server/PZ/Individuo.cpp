@@ -24,8 +24,6 @@ Individuo::Individuo() {
     aplicar_Gen(fila);
 }
 bool Individuo::validar_Gen(Fila* gen) {
-
-
 int gen_c=0;
     for (int i = 0; (i < row*col)&&(gen_c<col); ++i) {
         if(((gen->gen>>i)%2)!=0){
@@ -75,6 +73,8 @@ Individuo::Individuo(Individuo* Father, Individuo* Mother) {
         }if(probability%60<58){
             //          Mutacion
             auto mutacion=Fila();
+            delete fila;
+            fila= nullptr;
             if(probability%3==0){
                 fila=new Fila(Mother->chromosomas[chromosome_c], mutacion);
 
@@ -96,6 +96,7 @@ Individuo::Individuo(Individuo* Father, Individuo* Mother) {
             }
         }else{
 //                Inversion
+                delete fila;
                 Fila tmpFila=Fila();
                 fila= nullptr;
                 tmpFila.gen=(~Genotype);
