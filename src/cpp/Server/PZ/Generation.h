@@ -8,6 +8,7 @@
 
 #include <vector>
 #include "Individuo.h"
+#include <tinyxml2.h>
 
 class Generation {
 public:
@@ -19,6 +20,7 @@ public:
     Generation(bool);
     Generation* children();
     Generation* mutation();
+    tinyxml2::XMLElement *XML;
     void mutate();
     void declare_Parents();
     void create_representation();
