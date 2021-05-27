@@ -81,6 +81,9 @@ public:
     void updateDirectionLine();
 
     bool checkCollisionPoint(const Vector2f &mouse);
+
+    void collisionsBoards();
+
 };
 
 

@@ -174,7 +174,6 @@ void BpWindow::Show() {
 
     while (window.isOpen()) {
         Event event;
-        updateDirectionLine();
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
         while (window.pollEvent(event)) {
@@ -236,15 +235,9 @@ void BpWindow::Show() {
                 players[i].setTexture(obstacule2);
                 window.draw(players[i]);
             }
-
-
         }
         window.display();
-
-
     }
-
-
 }
 
 
@@ -264,8 +257,6 @@ void BpWindow::setPlayers(int n) {
 
 
     for (int i = 0; i < obst;) {
-
-
 
         if (i < (obst / 2)) {
 
@@ -317,12 +308,7 @@ void BpWindow::setPlayers(int n) {
 
     }
 
-
 }
-
-
-
-
 
 
 /*----------------Position Ball-----------------*/
@@ -378,14 +364,14 @@ void BpWindow::ballmove() {
 }
 void BpWindow::updateDirectionLine() {
     {
-        sf::Vector2f distance = (m_mouse - ballBackPath.getPosition());
+        sf::Vector2f distance = (m_mouse - ballBackPath.getOrigin());
         float distanceBetween = sqrt(distance.x*distance.x + distance.y*distance.y);
         sf::Vector2f invert = distance / distanceBetween;
         sf::Color directionColor = sf::Color(255, (255 - ((int)distanceBetween/2)%255), 0);
         if (distanceBetween > 510) { directionColor = sf::Color::Red; }
-        direction = new Line(ballBackPath.getPosition().x, ballBackPath.getPosition().y,
-                             ballBackPath.getPosition().x - distanceBetween * invert.x,
-                             ballBackPath.getPosition().y - distanceBetween * invert.y, directionColor);
+        direction = new Line(ballBackPath.getOrigin().x, ballBackPath.getOrigin().y,
+                             ballBackPath.getOrigin().x - distanceBetween * invert.x,
+                             ballBackPath.getOrigin().y - distanceBetween * invert.y, directionColor);
     }
 }
 
@@ -404,24 +390,6 @@ bool BpWindow::checkCollisionPoint(const sf::Vector2f& mouse)
     return false;
 }
 
+void BpWindow::collisionsBoards(){
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
