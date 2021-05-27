@@ -152,12 +152,10 @@ void BpWindow::Show() {
 
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
-   // ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    ballBackPath.setPosition(10,20);
-    cout<<"ORIGIN X BALL POS"<<ballBackPath.getPosition().x;
-    cout<<"ORIGIN Y BALL POS"<<ballBackPath.getPosition().y;
-    int x=ballBackPath.getPosition().x;
-    int y=ballBackPath.getPosition().y;
+    ballBackPath.setOrigin(-690 + 80, -465 + 36);
+    //ballBackPath.setPosition(450,500);
+    cout<<"ORIGIN X BALL POS: "<<ballBackPath.getOrigin().x<<endl;
+    cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getOrigin().y<<endl;
     const float movementSpeed=100.f;
     Vector2f velocity;
     Vector2f m_center=sf::Vector2f(100.f, 100.f);
@@ -175,8 +173,8 @@ void BpWindow::Show() {
 
 
     while (window.isOpen()) {
-        updateDirectionLine();
         Event event;
+        updateDirectionLine();
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
         while (window.pollEvent(event)) {
@@ -185,9 +183,8 @@ void BpWindow::Show() {
             }
             else if (event.type == Event::MouseButtonPressed) {
                 if (event.mouseButton.button== sf::Mouse::Right){
-
+                    updateDirectionLine();
                 }
-
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
                     backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
@@ -203,6 +200,10 @@ void BpWindow::Show() {
                     JsonServer= socket->comunicatte(to_string(gameData));
                     gameData=nlohmann::basic_json<>::parse(JsonServer);
                     cout<<endl;
+                }
+                if (event.MouseMoved){
+                  m_mouse.x=event.mouseMove.x;
+                  m_mouse.y=event.mouseMove.y;
                 }
             }
 
@@ -224,10 +225,8 @@ void BpWindow::Show() {
 
         window.draw(goalKRight);
         window.draw(goalKLeft);
+        window.draw(*direction);
 
-        if (dragged){
-            window.draw(*direction);
-        }
         for (int i = 0; i < players.size(); i++) {
 
             if (i < players.size() / 2) {
@@ -392,11 +391,14 @@ void BpWindow::updateDirectionLine() {
 
 bool BpWindow::checkCollisionPoint(const sf::Vector2f& mouse)
 {
+    float posxBall=ballBackPath.getOrigin().x;
+    float posyBall=ballBackPath.getOrigin().y;
     float x_mouse = mouse.x;
     float y_mouse = mouse.y;
-    if ( ((x_mouse - m_center.x)*(x_mouse - m_center.x) +
-          (y_mouse - m_center.y)*(y_mouse - m_center.y)) <= m_radius*m_radius )
+    if ( ((x_mouse - posxBall)*(x_mouse - posxBall) +
+          (y_mouse - posyBall)*(y_mouse - posyBall)) <=70)
     {
+        cout<<"FUNCIONA";
         return true;
     }
     return false;
