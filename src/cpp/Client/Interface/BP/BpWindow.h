@@ -43,7 +43,7 @@ public:
     void Show();
     int gameModePlayers;
     int gameModeGoals;
-    Line* direction;
+    Line* direction= nullptr;
     bool dragged;
     Vector2f velocity;
     Vector2f m_center;

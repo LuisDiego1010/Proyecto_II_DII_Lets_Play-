@@ -224,7 +224,9 @@ void BpWindow::Show() {
 
         window.draw(goalKRight);
         window.draw(goalKLeft);
-        window.draw(*direction);
+        if(direction != nullptr){
+//            window.draw(*direction);
+        }
 
         for (int i = 0; i < players.size(); i++) {
 
@@ -363,16 +365,21 @@ void BpWindow::ballmove() {
     //ballBackPath.setPosition(x+1,y);
 }
 void BpWindow::updateDirectionLine() {
-    {
+        auto tmp = direction;
+        direction=nullptr;
+        delete tmp;
+
         sf::Vector2f distance = (m_mouse - ballBackPath.getOrigin());
         float distanceBetween = sqrt(distance.x*distance.x + distance.y*distance.y);
         sf::Vector2f invert = distance / distanceBetween;
         sf::Color directionColor = sf::Color(255, (255 - ((int)distanceBetween/2)%255), 0);
-        if (distanceBetween > 510) { directionColor = sf::Color::Red; }
+        if (distanceBetween > 510) {
+            directionColor = sf::Color::Red;
+        }
         direction = new Line(ballBackPath.getOrigin().x, ballBackPath.getOrigin().y,
                              ballBackPath.getOrigin().x - distanceBetween * invert.x,
                              ballBackPath.getOrigin().y - distanceBetween * invert.y, directionColor);
-    }
+
 }
 
 bool BpWindow::checkCollisionPoint(const sf::Vector2f& mouse)
