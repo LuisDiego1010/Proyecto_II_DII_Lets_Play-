@@ -10,9 +10,21 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include "Line.h"
 
 
 
@@ -30,6 +42,11 @@ public:
     void Show();
     int gameModePlayers;
     int gameModeGoals;
+    Line* direction;
+    bool dragged;
+    Vector2f velocity;
+    Vector2f m_center;
+    float m_radius;
 
     void setGameModeGoals(int gameModeGoals);
 
@@ -41,6 +58,7 @@ public:
     Sprite ballBackPath;
     Sprite goalKLeft;
     Sprite goalKRight;
+    sf::Vector2f m_mouse;
 
     char backtracking[9][14];
 
@@ -58,9 +76,10 @@ public:
     void displayBacktracking();
     void setBacktracking();
 
+    void ballmove();
+    void updateDirectionLine();
 
-
-
+    bool checkCollisionPoint(const Vector2f &mouse);
 };
 
 

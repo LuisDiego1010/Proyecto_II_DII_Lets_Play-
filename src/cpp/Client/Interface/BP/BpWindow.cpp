@@ -8,6 +8,24 @@
 #include "../InputBox.h"
 #include "../../Socket_Client.h"
 
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <SFML/Window/WindowStyle.hpp>
+#include <cmath>
+#include <string>
 BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
@@ -27,6 +45,7 @@ void BpWindow::Show() {
 
 
     RenderWindow window(sf::VideoMode(1700, 998), "BP GAME");
+    window.setFramerateLimit(120);
 
     //Creacion de las texturas.
     Texture field;
@@ -133,8 +152,15 @@ void BpWindow::Show() {
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
    // ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    ballBackPath.setOrigin(-200, -400);
-
+    ballBackPath.setPosition(10,20);
+    cout<<"ORIGIN X BALL POS"<<ballBackPath.getPosition().x;
+    cout<<"ORIGIN Y BALL POS"<<ballBackPath.getPosition().y;
+    int x=ballBackPath.getPosition().x;
+    int y=ballBackPath.getPosition().y;
+    const float movementSpeed=100.f;
+    Vector2f velocity;
+    Vector2f m_center=sf::Vector2f(100.f, 100.f);
+    float m_radius=52.f;
 
 
     /*----------------Game Init-----------------*/
@@ -148,8 +174,7 @@ void BpWindow::Show() {
 
 
     while (window.isOpen()) {
-
-
+        updateDirectionLine();
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
@@ -158,6 +183,10 @@ void BpWindow::Show() {
                 window.close();
             }
             else if (event.type == Event::MouseButtonPressed) {
+                if (event.mouseButton.button== sf::Mouse::Right){
+
+                }
+
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
                     backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
@@ -178,7 +207,7 @@ void BpWindow::Show() {
 
 
         }
-
+        ballmove();
         window.clear(Color::Transparent);
         window.draw(fieldSprite);
         window.draw(ballBackPath);
@@ -195,7 +224,9 @@ void BpWindow::Show() {
         window.draw(goalKRight);
         window.draw(goalKLeft);
 
-
+        if (dragged){
+            window.draw(*direction);
+        }
         for (int i = 0; i < players.size(); i++) {
 
             if (i < players.size() / 2) {
@@ -340,10 +371,35 @@ void BpWindow::setBacktracking() {
     }
 }
 
+void BpWindow::ballmove() {
+    //velocity.x=0.f;
 
+    //ballBackPath.setPosition(x+1,y);
+}
+void BpWindow::updateDirectionLine() {
+    {
+        sf::Vector2f distance = (m_mouse - ballBackPath.getPosition());
+        float distanceBetween = sqrt(distance.x*distance.x + distance.y*distance.y);
+        sf::Vector2f invert = distance / distanceBetween;
+        sf::Color directionColor = sf::Color(255, (255 - ((int)distanceBetween/2)%255), 0);
+        if (distanceBetween > 510) { directionColor = sf::Color::Red; }
+        direction = new Line(ballBackPath.getPosition().x, ballBackPath.getPosition().y,
+                             ballBackPath.getPosition().x - distanceBetween * invert.x,
+                             ballBackPath.getPosition().y - distanceBetween * invert.y, directionColor);
+    }
+}
 
-
-
+bool BpWindow::checkCollisionPoint(const sf::Vector2f& mouse)
+{
+    float x_mouse = mouse.x;
+    float y_mouse = mouse.y;
+    if ( ((x_mouse - m_center.x)*(x_mouse - m_center.x) +
+          (y_mouse - m_center.y)*(y_mouse - m_center.y)) <= m_radius*m_radius )
+    {
+        return true;
+    }
+    return false;
+}
 
 
 
