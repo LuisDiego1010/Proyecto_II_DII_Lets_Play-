@@ -25,7 +25,6 @@
 #include <cstdlib>
 #include <ctime>
 #include "Line.h"
-#include "Line.cpp"
 
 
 

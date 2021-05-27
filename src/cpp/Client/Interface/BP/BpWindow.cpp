@@ -26,6 +26,7 @@
 #include <SFML/Window/WindowStyle.hpp>
 #include <cmath>
 #include <string>
+
 BpWindow::BpWindow() {}
 
 void BpWindow::Show() {

@@ -1,5 +1,10 @@
-#ifndef LINE_H
-#define LINE_H
+//
+// Created by diegoubuntu on 26/5/21.
+//
+
+#ifndef PROYECTO_II_LINE_H
+#define PROYECTO_II_LINE_H
+
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Drawable.hpp>
@@ -17,21 +22,20 @@
 class Line : public sf::Drawable, sf::Transformable
 {
 public:
-	Line();
-	Line(float x1, float y1, float x2, float y2, sf::Color color = sf::Color::White);
-	~Line();
-	
-	sf::VertexArray getPoints();
+    Line();
+    Line(float x1, float y1, float x2, float y2, sf::Color color = sf::Color::White);
+    ~Line();
 
-	void update();
-	void render(sf::RenderTarget& target);
+    sf::VertexArray getPoints();
+
+    void update();
+    void render(sf::RenderTarget& target);
 
 private:
-	sf::VertexArray m_points;
-	sf::Color m_color;
-	virtual void	draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    sf::VertexArray m_points;
+    sf::Color m_color;
+    virtual void	draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 
-#endif
-
+#endif //PROYECTO_II_LINE_H
