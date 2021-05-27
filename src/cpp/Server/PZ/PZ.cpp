@@ -4,11 +4,11 @@
 
 #include <nlohmann/json.hpp>
 #include <iostream>
-#include <bitset>
 #include "PZ.h"
 #include "../Socket_Server.h"
 #include "Individuo.h"
-
+#include <tinyxml2.h>
+#include <ctime>
 
 int PZ::row=0;
 int PZ::col=0;
@@ -50,8 +50,17 @@ void PZ::run() {
 
 
     generations[0]= new Generation();
+    auto individuo=generations[0]->XML->FirstChildElement();
+
     for (int j = 0; j < 11; ++j) {
         calculate_Fitnnes(generations[0]->poblacion[j]);
+        if(individuo!= nullptr){
+            individuo=individuo->NextSiblingElement();
+            if(individuo!= nullptr){
+                individuo->SetAttribute("Fitness", std::to_string(j).data());
+            }
+        }
+
     }
     generations[0]->declare_Parents();
     generations[0]->create_representation();
@@ -59,6 +68,7 @@ void PZ::run() {
         std::cout<< j<<" ";
     }
     std::cout<< std::endl;
+    generations[0]->XML->GetDocument()->SaveFile("Test.xml");
 
     for (int i = 1; i < 25; ++i) {
         if(i>3){
@@ -72,9 +82,15 @@ void PZ::run() {
         }else{
             generations[i]=generations[i-1]->children();
         }
-
-        for (auto & j : generations[i]->poblacion) {
-            calculate_Fitnnes(j);
+        individuo=generations[i]->XML->FirstChildElement();
+        for (int j=0;j<11;j++) {
+            calculate_Fitnnes(generations[i]->poblacion[j]);
+            if(individuo!= nullptr){
+                individuo=individuo->NextSiblingElement();
+                if(individuo!= nullptr){
+                    individuo->SetAttribute("Fitness", std::to_string(j).data());
+                }
+            }
         }
             generations[i]->declare_Parents();
             generations[i]->create_representation();
@@ -84,6 +100,11 @@ void PZ::run() {
         std::cout<<" ;"<< generations[i]->Mother->fitnnes<<"=Fitness ";
 
         std::cout<<std::endl;
+        time_t timeNow=time(nullptr);
+        char* Localtime=ctime(&timeNow);
+        std::string FileName="XML/"+std::to_string(i)+":"+ Localtime+".xml";
+        generations[i]->XML->Parent()->GetDocument()->SaveFile(FileName.data());
+
     }
     data=nlohmann::basic_json<>();
     data["generation"]=generations[0]->representation;
@@ -106,11 +127,11 @@ void PZ::run() {
         data["Order"]= generations[abs(position)]->representation;
         socket->send(to_string(data));
     }
-    return;
-}
+    }
 
 void PZ::calculate_Fitnnes(Individuo* especimen) {
     especimen->fitnnes=0;
+
     for (int i = 0; i < row; ++i) {
         int r=0;
         int g=0;

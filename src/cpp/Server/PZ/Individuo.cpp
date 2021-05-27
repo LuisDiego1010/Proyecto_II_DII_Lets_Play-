@@ -11,13 +11,16 @@ int Individuo::row=0;
 int Individuo::col=0;
 int Individuo::max=0;
 Individuo::Individuo() {
+
     Fila* tmp=(Fila*)malloc(sizeof(Fila)*row);
     chromosomas = tmp;
+
     for (int i = 0; i < row - 1; i) {
         auto fila = new Fila();
         aplicar_Gen(fila);
         i++;
     }
+
     Fila *fila = new Fila();
     fila->gen = ~Genotype;
     fila=new Fila(*fila,*fila);
