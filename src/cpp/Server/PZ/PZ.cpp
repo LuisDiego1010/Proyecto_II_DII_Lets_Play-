@@ -114,14 +114,10 @@ void PZ::run() {
     while(true){
         auto msg=socket->recieve();
         data= nlohmann::basic_json<>::parse(msg);
-        if(data.contains("action")){
-            if(data["action"]=="+"){
-                position=(position+1)%25;
-            }else if(data["action"]=="-") {
-                position=(position-1)%25;
-            }else {
-                break;
-            }
+        if(data.contains("GENERATION")){
+            position=data["GENERATION"].get<int>();
+        }else {
+            break;
         }
         data= nlohmann::basic_json<>();
         data["Order"]= generations[abs(position)]->representation;

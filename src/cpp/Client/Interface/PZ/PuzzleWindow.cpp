@@ -6,6 +6,7 @@
 #include <iterator>
 #include "PuzzleWindow.h"
 #include "../../Socket_Client.h"
+#include "../Scroll.h"
 
 
 PuzzleWindow::PuzzleWindow() {}
@@ -84,7 +85,20 @@ void PuzzleWindow::show() {
     auto imageOrder =data["generation"].get<std::vector<int>>();
     order(Frames,imageOrder);
 
+    auto scroll=Scroll(Vector2f(length_x*col+10,45));
+    scroll.setWindow(&window);
+    scroll.setPosition(140,40);
+
     while (window.isOpen()) {
+        scroll.scroll();
+        if(scroll.isTrigger()){
+                data=nlohmann::basic_json<>();
+                data["GENERATION"]=scroll.order;
+                std::string Order=socket->comunicatte(to_string(data));
+                data=nlohmann::basic_json<>::parse(Order);
+                imageOrder =data["Order"].get<std::vector<int>>();
+                order(Frames,imageOrder);
+        }
         Event event;
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
@@ -92,20 +106,13 @@ void PuzzleWindow::show() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if(event.type==Event::MouseButtonPressed){
-                data=nlohmann::basic_json<>();
-                data["action"]="+";
-                std::string Order=socket->comunicatte(to_string(data));
-                data=nlohmann::basic_json<>::parse(Order);
-                imageOrder =data["Order"].get<std::vector<int>>();
-                order(Frames,imageOrder);
-            }
         }
 
         window.clear(Color(120, 215, 215));
         for (const sf::Sprite& x:Frames) {
             window.draw(x);
         }
+        window.draw(scroll);
         window.display();
     }
 }
