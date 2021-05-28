@@ -46,6 +46,8 @@ public:
     Line* direction= nullptr;
     bool dragged;
     Vector2f velocity;
+    float dt;
+    Clock dt_clock;
     Vector2f m_center;
     float m_radius;
 

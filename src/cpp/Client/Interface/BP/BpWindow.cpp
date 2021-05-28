@@ -152,14 +152,11 @@ void BpWindow::Show() {
 
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
-    ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    //ballBackPath.setPosition(450,500);
-    cout<<"ORIGIN X BALL POS: "<<ballBackPath.getOrigin().x<<endl;
-    cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getOrigin().y<<endl;
-    const float movementSpeed=100.f;
-    Vector2f velocity;
+    //ballBackPath.setOrigin(-690 + 80, -465 + 36);
+    ballBackPath.setPosition(450,500);
+    cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
+    cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
     Vector2f m_center=sf::Vector2f(100.f, 100.f);
-    float m_radius=52.f;
 
 
     /*----------------Game Init-----------------*/
@@ -173,7 +170,11 @@ void BpWindow::Show() {
 
 
     while (window.isOpen()) {
+        dt = dt_clock.restart().asSeconds();
         Event event;
+        collisionsBoards();
+        ballmove();
+
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
         auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
         while (window.pollEvent(event)) {
@@ -360,9 +361,27 @@ void BpWindow::setBacktracking() {
 }
 
 void BpWindow::ballmove() {
-    //velocity.x=0.f;
+    ballBackPath.move(velocity);
+    //velocity.x=velocity.x*0.9999;
+    //velocity.y=velocity.y*0.9999;
 
-    //ballBackPath.setPosition(x+1,y);
+    const float movementSpeed=1.f;
+    if (Keyboard::isKeyPressed(Keyboard::W))
+    {
+        velocity.y += -movementSpeed * (dt);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::S))
+    {
+        velocity.y += movementSpeed * (dt);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::A))
+    {
+        velocity.x += -movementSpeed * (dt);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::D))
+    {
+        velocity.x += movementSpeed * (dt);
+    }
 }
 void BpWindow::updateDirectionLine() {
         auto tmp = direction;
@@ -398,5 +417,18 @@ bool BpWindow::checkCollisionPoint(const sf::Vector2f& mouse)
 }
 
 void BpWindow::collisionsBoards(){
-
+    //Collision screen
+    //Left collision
+    if (ballBackPath.getPosition().x < 0.f)
+        ballBackPath.setPosition(0.f, ballBackPath.getPosition().y);
+    //Top collision
+    if (ballBackPath.getPosition().y < 0.f)
+        ballBackPath.setPosition(ballBackPath.getPosition().x, 0.f);
+    //Right collision
+    if (ballBackPath.getPosition().x + ballBackPath.getGlobalBounds().width > 1450)
+        ballBackPath.setPosition(1450 - ballBackPath.getGlobalBounds().width, ballBackPath.getPosition().y);
+    //Bottom collision
+    if (ballBackPath.getPosition().y + ballBackPath.getGlobalBounds().height > 998)
+        ballBackPath.setPosition(ballBackPath.getPosition().x, 998 - ballBackPath.getGlobalBounds().height);
 }
+
