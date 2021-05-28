@@ -30,9 +30,8 @@ add_executable(client src/cpp/Client/main.cpp
         src/cpp/Client/Interface/PZ/puzzleGameMode.h
         src/cpp/Client/Interface/InputBox.cpp
         src/cpp/Client/Interface/InputBox.h
-        src/cpp/Client/Interface/BP/Backtracking.cpp
-        src/cpp/Client/Interface/BP/Backtracking.h
-        src/cpp/Client/Interface/BP/Line.cpp src/cpp/Client/Interface/BP/Line.h)
+        src/cpp/Client/Interface/BP/Line.cpp
+        src/cpp/Client/Interface/BP/Line.h)
 target_link_libraries(client
         sfml-graphics
         sfml-audio
@@ -45,8 +44,14 @@ add_executable(Server
         src/cpp/Server/PZ/PZ.cpp
         src/cpp/Server/PZ/PZ.h
         src/cpp/Server/PZ/Fila.cpp
+        src/cpp/Server/BpServer/Backtracking.cpp
+        src/cpp/Server/BpServer/Backtracking.h
+        src/cpp/Server/BpServer/BpServer.cpp
+        src/cpp/Server/BpServer/BpServer.h
         src/cpp/Server/PZ/Fila.h
         src/cpp/Server/PZ/Individuo.cpp
-        src/cpp/Server/PZ/Individuo.h src/cpp/Server/PZ/Generation.cpp src/cpp/Server/PZ/Generation.h)
+        src/cpp/Server/PZ/Individuo.h
+        src/cpp/Server/PZ/Generation.cpp
+        src/cpp/Server/PZ/Generation.h)
 target_link_libraries(Server
         ${CONAN_LIBS})

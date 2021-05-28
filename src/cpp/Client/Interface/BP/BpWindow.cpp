@@ -2,7 +2,6 @@
 // Created by garroakion on 10/5/21.
 //
 #include <nlohmann/json.hpp>
-#include "Backtracking.h"
 #include "BpWindow.h"
 #include "bpGameMode.h"
 #include "../InputBox.h"
@@ -32,18 +31,9 @@ BpWindow::BpWindow() {}
 void BpWindow::Show() {
 
     Socket_Client * socket = Socket_Client::self;
-
-
     bpGameMode game;
-
-
     setBacktracking();
-
-
-
     cout<<endl;
-
-
 
     RenderWindow window(sf::VideoMode(1700, 998), "BP GAME");
     window.setFramerateLimit(120);
@@ -182,13 +172,15 @@ void BpWindow::Show() {
                 window.close();
             }
             else if (event.type == Event::MouseButtonPressed) {
-                if (event.mouseButton.button== sf::Mouse::Right){
+                /*if (event.mouseButton.button== sf::Mouse::Right){
                     updateDirectionLine();
-                }
+                }*/
+
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
                     backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
-                    Backtracking back;
+                    cout<<endl;
+
                     gameData=nlohmann::basic_json<>();
                     string backtrackingString;
                     backtrackingString = backtracking[0];
@@ -200,7 +192,17 @@ void BpWindow::Show() {
                     JsonServer= socket->comunicatte(to_string(gameData));
                     gameData=nlohmann::basic_json<>::parse(JsonServer);
                     cout<<endl;
+                    if(gameData.contains("route")){
+
+                    }else{
+                        cout<<"no envia el server"<<endl;
+                    }
+
+
+
                 }
+
+
                 if (event.MouseMoved){
                   m_mouse.x=event.mouseMove.x;
                   m_mouse.y=event.mouseMove.y;
