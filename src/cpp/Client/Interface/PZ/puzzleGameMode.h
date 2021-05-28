@@ -17,6 +17,9 @@ using namespace std;
 
 class puzzleGameMode {
 public:
+    /**
+     * PZ game configuration Window
+     */
     puzzleGameMode();
     void show();
 };
