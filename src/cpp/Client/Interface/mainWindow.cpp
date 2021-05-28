@@ -15,7 +15,6 @@ void mainWindow::show() {
     Socket_Client * socket = Socket_Client::self;
 
     RenderWindow window(sf::VideoMode(1200, 750), "Let's Play");
-
     Texture BpGame;
     Texture PuzzleGame;
     if(!BpGame.loadFromFile("src/images/BPGAME.png")){
