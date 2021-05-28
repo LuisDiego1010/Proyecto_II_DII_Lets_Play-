@@ -1,6 +1,3 @@
-//
-// Created by garroakion on 24/5/21.
-//
 
 #include "Backtracking.h"
 
@@ -15,7 +12,7 @@ bool Backtracking::isValid(int row, int col)
 
 
 
-void Backtracking::pathMoves(char mat[][COL],
+string Backtracking::pathMoves(char mat[][COL],
                Point src, Point dest)
 {
     int d[ROW][COL];
@@ -99,9 +96,7 @@ void Backtracking::pathMoves(char mat[][COL],
             reverse(pathmoves.begin(),
                     pathmoves.end());
 
-            cout << pathmoves;
-            ok = true;
-            break;
+            return pathmoves;
         }
 
 

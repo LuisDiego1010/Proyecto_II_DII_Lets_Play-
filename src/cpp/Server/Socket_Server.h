@@ -24,7 +24,16 @@ public:
      * @return
      */
     std::string comunicatte(std::string);
+    /**
+     * Wait for a msg from the client
+     * @return the msg of the cleint as String
+     */
     std::string recieve();
+
+    /**
+     * send a msg to the client
+     * @return the same msg
+     */
     std::string send(std::string);
 
 };

@@ -17,6 +17,9 @@ using namespace std;
 
 class mainWindow {
 public:
+    /**
+     * Main Menu window
+     */
     mainWindow();
     void show();
 };

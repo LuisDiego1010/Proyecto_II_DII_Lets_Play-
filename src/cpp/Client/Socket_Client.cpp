@@ -22,3 +22,7 @@ std::string Socket_Client::comunicatte(std::string msg) {
     msg=msg_recieve.to_string();
     return msg;
 }
+
+Socket_Client *Socket_Client::getSocket() {
+    return self;
+}

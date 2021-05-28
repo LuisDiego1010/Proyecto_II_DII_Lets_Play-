@@ -6,6 +6,9 @@
 
 using namespace std;
 Socket_Client * Socket_Client::self= new Socket_Client();
+D
+
+
 int main() {
 
     Socket_Client * socket = Socket_Client::self;

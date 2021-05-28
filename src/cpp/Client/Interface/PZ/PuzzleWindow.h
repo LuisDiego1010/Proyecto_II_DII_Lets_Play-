@@ -22,8 +22,16 @@ public:
     static int row;
     static float length_x;
     static float length_y;
+    /**
+     * PZ Game window
+     */
     PuzzleWindow();
     void show();
+    /**
+     * Recieve a Matrix as Array as vector and reposition with the order of the id the sprtes in the window.
+     * @param subimages
+     * @param order
+     */
     void order(Sprite *subimages, std::vector<int> order );
 };
 
