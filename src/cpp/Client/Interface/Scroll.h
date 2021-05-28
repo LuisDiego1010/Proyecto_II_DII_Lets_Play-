@@ -27,6 +27,10 @@ public:
     RectangleShape square;
     RenderWindow* window= nullptr;
 
+    /**
+     *Set the window where calculate the movement
+     * @param window
+     */
     void setWindow(RenderWindow *window);
 
     int x=0;
@@ -34,18 +38,22 @@ public:
     bool trigger= false;
     int order=0;
 
-
+    /**
+     * detect order ID has change.
+     * @return
+     */
     bool isTrigger();
 
     /**
-     * Set the position of the BOX
+     * Set the position of the scroll
      * @param x
      * @param y
      */
     void setPosition(int x, int y);
     /**
-     * Expected to be in the event mouse mouve
-     * determine if the mouse have clicked in the input box
+     * Expected to be runned every frame
+     * detect the position of the mouse, change the scroll position and determine the change in the order
+     * If the position cause the change of order, trigger will change to true.
      * @param point
      */
     void scroll();
