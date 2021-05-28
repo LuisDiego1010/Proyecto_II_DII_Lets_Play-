@@ -198,11 +198,13 @@ void BpWindow::Show() {
                     JsonServer= socket->comunicatte(to_string(gameData));
                     gameData=nlohmann::basic_json<>::parse(JsonServer);
                     cout<<endl;
-                    if(gameData.contains("route")){
 
+                    if(gameData.contains("route")){
+                      route = gameData.get<string>();
                     }else{
-                        cout<<"no envia el server"<<endl;
+                        cout<<"Error"<<endl;
                     }
+
 
 
 

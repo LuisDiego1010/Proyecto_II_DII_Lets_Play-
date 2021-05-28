@@ -1,6 +1,7 @@
-//
-// Created by isaac on 22/5/21.
-//
+/**
+  * @file Generation.h
+  * */
+
 
 #ifndef PROYECTO_II_GENERATION_H
 #define PROYECTO_II_GENERATION_H

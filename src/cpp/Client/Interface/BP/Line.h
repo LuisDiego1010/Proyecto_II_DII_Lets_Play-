@@ -1,6 +1,6 @@
-//
-// Created by diegoubuntu on 26/5/21.
-//
+/**
+  * @file Line.h
+  * */
 
 #ifndef PROYECTO_II_LINE_H
 #define PROYECTO_II_LINE_H
@@ -19,22 +19,43 @@
 #include <SFML/Window.hpp>
 #include <vector>
 
-class Line : public sf::Drawable, sf::Transformable
-{
+class Line : public sf::Drawable, sf::Transformable {
 public:
+
+/**
+* @brief Constructor of the class
+*/
     Line();
+/**
+* @brief Constructor of the class
+*/
     Line(float x1, float y1, float x2, float y2, sf::Color color = sf::Color::White);
+
+/**
+* @brief Destructor of the class
+*/
     ~Line();
 
+/**
+* @brief Getter of the points
+*/
     sf::VertexArray getPoints();
-
+/**
+* @brief Method in charge of the line update
+*/
     void update();
-    void render(sf::RenderTarget& target);
+/**
+* @brief Method in charge of the render of the class
+*/
+    void render(sf::RenderTarget &target);
 
 private:
     sf::VertexArray m_points;
     sf::Color m_color;
-    virtual void	draw(sf::RenderTarget& target, sf::RenderStates states) const;
+/**
+* @brief Method in charge of draw the line of the shoot
+*/
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
 

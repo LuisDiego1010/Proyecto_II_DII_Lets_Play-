@@ -1,6 +1,6 @@
-//
-// Created by isaac on 11/5/21.
-//
+/**
+  * @file InputBox.h
+  * */
 
 #ifndef PROYECTO_II_INPUTBOX_H
 #define PROYECTO_II_INPUTBOX_H

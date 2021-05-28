@@ -1,9 +1,10 @@
-//
-// Created by garroakion on 10/5/21.
-//
+/**
+  * @file bpGameMode.h
+  * */
 
 #ifndef PROYECTO_II_BPGAMEMODE_H
 #define PROYECTO_II_BPGAMEMODE_H
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <SFML/Graphics/Color.hpp>
@@ -17,7 +18,15 @@ using namespace std;
 
 class bpGameMode {
 public:
+/**
+ * @brief Constructor de la clase
+ *
+ */
     bpGameMode();
+
+ /**
+ * @brief Responsible for displaying the configuration window.
+ */
     void show();
 
 };

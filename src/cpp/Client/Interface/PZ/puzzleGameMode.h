@@ -1,9 +1,10 @@
-//
-// Created by garroakion on 10/5/21.
-//
+/**
+  * @file puzzleGameMode.h
+  * */
 
 #ifndef PROYECTO_II_PUZZLEGAMEMODE_H
 #define PROYECTO_II_PUZZLEGAMEMODE_H
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <SFML/Graphics/Color.hpp>
@@ -17,10 +18,15 @@ using namespace std;
 
 class puzzleGameMode {
 public:
-    /**
-     * PZ game configuration Window
-     */
+
+/**
+* @brief  Constructor of the class
+*/
     puzzleGameMode();
+
+/**
+* @brief Method in charge of the graphic interface of the class
+*/
     void show();
 };
 

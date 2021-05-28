@@ -12,7 +12,7 @@ bool Backtracking::isValid(int row, int col)
 
 
 
-string Backtracking::pathMoves(char mat[][COL],
+string Backtracking::backtrackingRoute(char mat[][COL],
                Point src, Point dest)
 {
     int d[ROW][COL];

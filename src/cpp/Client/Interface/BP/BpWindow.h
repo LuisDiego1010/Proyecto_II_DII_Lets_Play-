@@ -1,9 +1,10 @@
-//
-// Created by garroakion on 10/5/21.
-//
+/**
+  * @file BpWindow.h
+  * */
 
 #ifndef PROYECTO_II_BPWINDOW_H
 #define PROYECTO_II_BPWINDOW_H
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <SFML/Graphics/Color.hpp>
@@ -28,67 +29,118 @@
 #include "Collision.h"
 
 
-
-
 using namespace sf;
 using namespace std;
 
 class BpWindow {
 public:
 
-
-    struct Point {
-        int x, y;
-    };
-    BpWindow();
-    void Show();
     int gameModePlayers;
     int gameModeGoals;
     int n_goalLeft;
     int n_goalRight;
     bool goalLeft;
     bool goalRight;
-    Line* direction= nullptr;
+    vector<Sprite> players;
+    Sprite ballBackPath;
+    Sprite goalKLeft;
+    Sprite goalKRight;
+    char backtracking[9][14];
+    string route;
+
+    Line *direction = nullptr;
     bool dragged;
     Vector2f velocity;
     float dt;
     Clock dt_clock;
     Vector2f m_center;
     float m_radius;
-
-    void setGameModeGoals(int gameModeGoals);
-
-    void setGameModePlayers(int gameModePlayers);
-
-
-
-    vector<Sprite> players;
-    Sprite ballBackPath;
-    Sprite goalKLeft;
-    Sprite goalKRight;
     sf::Vector2f m_mouse;
 
-    char backtracking[9][14];
 
+/**
+* @brief Constructor of the class
+*/
+    BpWindow();
+
+/**
+* @brief In charge of the initial configuration of the BpGame elements
+*/
+    void Show();
+
+/**
+* @brief Setter of match goals
+*/
+    void setGameModeGoals(int gameModeGoals);
+
+/**
+* @brief Setter of players obstacles
+*/
+    void setGameModePlayers(int gameModePlayers);
+
+/**
+* @brief Method for set the obstacles
+*/
     void setPlayers(int n);
 
+/**
+* @brief Getter the X position of the ball
+*/
     int getPositionXBall();
+
+/**
+* @brief Getter the Y position of the ball
+*/
     int getPositionYBall();
 
+/**
+* @brief Getter the X position of the goal player
+*/
     int getPositionXGoalPlayer();
+
+/**
+* @brief Getter the Y position of the goal player
+*/
     int getPositionYGoalPlayer();
 
+/**
+* @brief Getter the X position of the goal Cpu
+*/
     int getPositionXGoalCpu();
+
+/**
+* @brief Getter the Y position of the goal Cpu
+*/
     int getPositionYGoalCpu();
 
+/**
+* @brief Method for display binary
+*/
     void displayBacktracking();
+
+/**
+* @brief Method for set a binary matrix to use in the backtracking
+*/
     void setBacktracking();
 
+/**
+* @brief Method in charge of the move of the ball
+*/
     void ballmove();
+
+/**
+* @brief Method for update the line of the shoot
+*/
     void updateDirectionLine();
 
+/**
+* @brief Method in charge of the colision checks with obstacles
+*/
     bool checkCollisionPoint(const Vector2f &mouse);
 
+/**
+* @brief Method in charge of the colision checks with the limits
+*/
     void collisionsBoards();
 
     void collsionGoal();

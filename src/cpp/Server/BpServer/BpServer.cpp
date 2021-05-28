@@ -34,7 +34,7 @@ void BpServer::Run() {
             //pahtfinding
         }
         data = nlohmann::basic_json<>();
-        data["route"] = route.pathMoves(backtrackingServer, {Ypos, Xpos}, {3, 0});
+        data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
         socket->send(to_string(data));
 
         break;

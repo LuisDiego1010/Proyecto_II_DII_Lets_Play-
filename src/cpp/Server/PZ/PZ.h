@@ -1,6 +1,6 @@
-//
-// Created by isaac on 16/5/21.
-//
+/**
+  * @file PZ.h
+  * */
 
 #ifndef PROYECTO_II_PZ_H
 #define PROYECTO_II_PZ_H

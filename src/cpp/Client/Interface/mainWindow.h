@@ -1,9 +1,11 @@
-//
-// Created by garroakion on 10/5/21.
-//
+/**
+  * @file mainWindow.h
+  * */
+
 
 #ifndef PROYECTO_II_MAINWINDOW_H
 #define PROYECTO_II_MAINWINDOW_H
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <SFML/Graphics/Color.hpp>
@@ -17,10 +19,14 @@ using namespace std;
 
 class mainWindow {
 public:
-    /**
-     * Main Menu window
-     */
+/**
+* @brief Constructor of the class
+*/
     mainWindow();
+
+/**
+* @brief In charge of the graphic interface of the class
+*/
     void show();
 };
 

@@ -1,6 +1,6 @@
-//
-// Created by garroakion on 10/5/21.
-//
+/**
+  * @file PuzzleWindow.h
+  * */
 
 #ifndef PROYECTO_II_PUZZLEWINDOW_H
 #define PROYECTO_II_PUZZLEWINDOW_H
@@ -22,17 +22,23 @@ public:
     static int row;
     static float length_x;
     static float length_y;
-    /**
-     * PZ Game window
-     */
+
+/**
+* @brief Constructor of the class
+*/
     PuzzleWindow();
+
+/**
+* @brief In charge of the graphic interface of the class
+*/
     void show();
-    /**
-     * Recieve a Matrix as Array as vector and reposition with the order of the id the sprtes in the window.
-     * @param subimages
-     * @param order
-     */
-    void order(Sprite *subimages, std::vector<int> order );
+
+/**
+ * Recieve a Matrix as Array as vector and reposition with the order of the id the sprtes in the window.
+ * @param subimages
+ * @param order
+ */
+    void order(Sprite *subimages, std::vector<int> order);
 };
 
 

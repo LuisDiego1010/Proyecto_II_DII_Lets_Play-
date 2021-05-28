@@ -1,6 +1,7 @@
-//
-// Created by isaac on 16/5/21.
-//
+/**
+  * @file Individuo.h
+  * */
+
 
 #ifndef PROYECTO_II_INDIVIDUO_H
 #define PROYECTO_II_INDIVIDUO_H

@@ -1,6 +1,7 @@
-//
-// Created by isaac on 9/5/21.
-//
+/**
+  * @file Socket_Client.h
+  * */
+
 
 #ifndef PROYECTO_II_SOCKET_SERVER_H
 #define PROYECTO_II_SOCKET_H
