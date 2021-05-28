@@ -144,7 +144,7 @@ void BpWindow::Show() {
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
     //ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    ballBackPath.setPosition(450,500);
+    ballBackPath.setPosition(850,494);
     cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
     cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
     Vector2f m_center=sf::Vector2f(100.f, 100.f);
@@ -160,12 +160,15 @@ void BpWindow::Show() {
     nlohmann::json gameData;
 
 
-    /*----Variables for Collisions----*/
+    /*----Goals----*/
+    n_goalLeft=0;
+    n_goalRight=0;
 
     while (window.isOpen()) {
         dt = dt_clock.restart().asSeconds();
         Event event;
         collisionsBoards();
+        collisionGoal();
         ballmove();
 
         auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
@@ -319,7 +322,6 @@ void BpWindow::setPlayers(int n) {
 
 }
 
-
 /*----------------Position Ball-----------------*/
 int BpWindow::getPositionXBall() {
     return -(int) (ballBackPath.getOrigin().x / 100);
@@ -448,8 +450,34 @@ void BpWindow::collsionObstacles1(Sprite player){
         ballBackPath.move(-velocity);
     }
 }
+
 void BpWindow::collsionObstacles2(Sprite player){
     if (Collision::PixelPerfectTest(ballBackPath,player)){
         ballBackPath.move(-velocity);
+    }
+}
+
+bool BpWindow::collisionGoal(){
+    if (Collision::PixelPerfectTest(ballBackPath,goalKRight)){
+        n_goalLeft++;
+        cout<<"GOAL LEFT"<<endl;
+        cout<<"GOALS LEFT: "<<n_goalLeft<<endl;
+        ballBackPath.setPosition(850,494);
+        goalLeft= true;
+        velocity.x=0;
+        velocity.y=0;
+        ballBackPath.move(-velocity);
+        return goalLeft;
+    }
+    if (Collision::PixelPerfectTest(ballBackPath,goalKLeft)){
+        n_goalRight++;
+        cout<<"GOAL RIGHT"<<endl;
+        cout<<"GOALS RIGHT: "<<n_goalRight<<endl;
+        ballBackPath.setPosition(850,494);
+        goalRight= true;
+        velocity.x=0;
+        velocity.y=0;
+        ballBackPath.move(-velocity);
+        return goalRight;
     }
 }

@@ -45,7 +45,7 @@ public:
     int gameModePlayers;
     int gameModeGoals;
     int n_goalLeft;
-    int n_goalR;
+    int n_goalRight;
     bool goalLeft;
     bool goalRight;
     Line* direction= nullptr;
@@ -96,6 +96,8 @@ public:
     void collsionObstacles1(Sprite player);
 
     void collsionObstacles2(Sprite player);
+
+    bool collisionGoal();
 };
 
 
