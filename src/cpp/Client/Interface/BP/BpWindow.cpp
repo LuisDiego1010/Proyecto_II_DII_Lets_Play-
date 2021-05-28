@@ -8,6 +8,7 @@
 #include "../InputBox.h"
 #include "../../Socket_Client.h"
 
+
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -169,6 +170,8 @@ void BpWindow::Show() {
     nlohmann::json gameData;
 
 
+    /*----Variables for Collisions----*/
+
     while (window.isOpen()) {
         dt = dt_clock.restart().asSeconds();
         Event event;
@@ -209,7 +212,6 @@ void BpWindow::Show() {
 
 
         }
-        ballmove();
         window.clear(Color::Transparent);
         window.draw(fieldSprite);
         window.draw(ballBackPath);
@@ -234,8 +236,10 @@ void BpWindow::Show() {
             if (i < players.size() / 2) {
                 players[i].setTexture(obstacule1);
                 window.draw(players[i]);
+                collsionObstacles(players[i]);
             } else if (i >= players.size() / 2) {
                 players[i].setTexture(obstacule2);
+                collsionObstacles(players[i]);
                 window.draw(players[i]);
             }
         }
@@ -361,10 +365,9 @@ void BpWindow::setBacktracking() {
 }
 
 void BpWindow::ballmove() {
-    ballBackPath.move(velocity);
+
     //velocity.x=velocity.x*0.9999;
     //velocity.y=velocity.y*0.9999;
-
     const float movementSpeed=1.f;
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
@@ -382,6 +385,8 @@ void BpWindow::ballmove() {
     {
         velocity.x += movementSpeed * (dt);
     }
+    ballBackPath.move(velocity);
+
 }
 void BpWindow::updateDirectionLine() {
         auto tmp = direction;
@@ -432,3 +437,12 @@ void BpWindow::collisionsBoards(){
         ballBackPath.setPosition(ballBackPath.getPosition().x, 998 - ballBackPath.getGlobalBounds().height);
 }
 
+void BpWindow::collsionGoal(){
+
+}
+
+void BpWindow::collsionObstacles(Sprite player){
+    if (Collision::PixelPerfectTest(ballBackPath,player)){
+
+    }
+}

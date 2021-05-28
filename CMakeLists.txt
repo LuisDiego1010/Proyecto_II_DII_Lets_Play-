@@ -32,7 +32,7 @@ add_executable(client src/cpp/Client/main.cpp
         src/cpp/Client/Interface/InputBox.h
         src/cpp/Client/Interface/BP/Backtracking.cpp
         src/cpp/Client/Interface/BP/Backtracking.h
-        src/cpp/Client/Interface/BP/Line.cpp src/cpp/Client/Interface/BP/Line.h)
+        src/cpp/Client/Interface/BP/Line.cpp src/cpp/Client/Interface/BP/Line.h src/cpp/Client/Interface/BP/Collision.cpp src/cpp/Client/Interface/BP/Collision.h)
 target_link_libraries(client
         sfml-graphics
         sfml-audio

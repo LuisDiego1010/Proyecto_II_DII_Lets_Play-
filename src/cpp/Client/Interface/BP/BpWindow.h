@@ -25,6 +25,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "Line.h"
+#include "Collision.h"
 
 
 
@@ -43,6 +44,10 @@ public:
     void Show();
     int gameModePlayers;
     int gameModeGoals;
+    int n_goalLeft;
+    int n_goalR;
+    bool goalLeft;
+    bool goalRight;
     Line* direction= nullptr;
     bool dragged;
     Vector2f velocity;
@@ -86,6 +91,11 @@ public:
 
     void collisionsBoards();
 
+    void collsionGoal();
+
+    void collsionObstacles();
+
+    void collsionObstacles(Sprite player);
 };
 
 
