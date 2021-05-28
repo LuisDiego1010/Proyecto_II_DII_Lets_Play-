@@ -93,9 +93,9 @@ public:
 
     void collsionGoal();
 
-    void collsionObstacles();
+    void collsionObstacles1(Sprite player);
 
-    void collsionObstacles(Sprite player);
+    void collsionObstacles2(Sprite player);
 };
 
 

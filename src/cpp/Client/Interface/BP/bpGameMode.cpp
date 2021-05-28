@@ -79,8 +79,7 @@ void bpGameMode::show() {
 
                     }else{
                         cout<<"Espacios vacios"<<endl;
-                    }
-
+                    };
                 }else if (btnMSprite.getGlobalBounds().contains(translated_pos)) {
                     window.close();
                     return;

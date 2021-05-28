@@ -238,10 +238,10 @@ void BpWindow::Show() {
             if (i < players.size() / 2) {
                 players[i].setTexture(obstacule1);
                 window.draw(players[i]);
-                collsionObstacles(players[i]);
+                collsionObstacles1(players[i]);
             } else if (i >= players.size() / 2) {
                 players[i].setTexture(obstacule2);
-                collsionObstacles(players[i]);
+                collsionObstacles2(players[i]);
                 window.draw(players[i]);
             }
         }
@@ -443,8 +443,13 @@ void BpWindow::collsionGoal(){
 
 }
 
-void BpWindow::collsionObstacles(Sprite player){
+void BpWindow::collsionObstacles1(Sprite player){
     if (Collision::PixelPerfectTest(ballBackPath,player)){
-
+        ballBackPath.move(-velocity);
+    }
+}
+void BpWindow::collsionObstacles2(Sprite player){
+    if (Collision::PixelPerfectTest(ballBackPath,player)){
+        ballBackPath.move(-velocity);
     }
 }
