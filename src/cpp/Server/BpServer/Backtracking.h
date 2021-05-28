@@ -20,7 +20,7 @@ public:
 
     bool isValid(int row, int col);
 
-    void pathMoves(char mat[][COL], Point src, Point dest);
+    string pathMoves(char mat[][COL], Point src, Point dest);
 
 
 };
