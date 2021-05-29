@@ -48,16 +48,16 @@ void mainWindow::show() {
                     nlohmann::json game;
                     game["Game"]="BP";
                     std::cout<<socket->comunicatte(to_string(game));
+                    window.close();
                     bpGameMode.show();
-                    window.requestFocus();
                 }
             } else if (puzzleSprite.getGlobalBounds().contains(translated_pos)) {
                 if (event.type == Event::MouseButtonPressed) {
                     nlohmann::json game;
                     game["Game"]="Genetic";
                     std::cout<<socket->comunicatte(to_string(game));
+                    window.close();
                     puzzleGameMode.show();
-                    window.requestFocus();
                 }
             }
         }

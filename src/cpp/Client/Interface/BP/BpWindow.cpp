@@ -36,8 +36,8 @@ void BpWindow::Show() {
     setBacktracking();
     cout<<endl;
 
-    RenderWindow window(sf::VideoMode(1700, 998), "BP GAME");
-    window.setFramerateLimit(120);
+    window = new RenderWindow (sf::VideoMode(1700, 998), "BP GAME");
+    window->setFramerateLimit(120);
 
     //Creacion de las texturas.
     Texture field;
@@ -51,7 +51,9 @@ void BpWindow::Show() {
     Texture leaderboard;
     Texture btnNextPlayer;
 
-
+    if (!font.loadFromFile("src/cpp/Client/Interface/Fonts/Ubuntu-Bold.ttf")) {
+        cout << "Error to charge font";
+    }
 
     if(!btnNextPlayer.loadFromFile("src/images/btn/nextPlayer.png")){
         cout<<"Error to charge image";
@@ -144,7 +146,7 @@ void BpWindow::Show() {
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
     //ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    ballBackPath.setPosition(850,494);
+    ballBackPath.setPosition(725,494);
     cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
     cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
     Vector2f m_center=sf::Vector2f(100.f, 100.f);
@@ -164,18 +166,18 @@ void BpWindow::Show() {
     n_goalLeft=0;
     n_goalRight=0;
 
-    while (window.isOpen()) {
+    while (window->isOpen()) {
         dt = dt_clock.restart().asSeconds();
         Event event;
         collisionsBoards();
         collisionGoal();
         ballmove();
 
-        auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
-        auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
-        while (window.pollEvent(event)) {
+        auto mouse_pos = sf::Mouse::getPosition(*window); // Mouse position relative to the window
+        auto translated_pos = window->mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
+        while (window->pollEvent(event)) {
             if (event.type == Event::Closed) {
-                window.close();
+                window->close();
             }
             else if (event.type == Event::MouseButtonPressed) {
                 /*if (event.mouseButton.button== sf::Mouse::Right){
@@ -219,21 +221,21 @@ void BpWindow::Show() {
 
 
         }
-        window.clear(Color::Transparent);
-        window.draw(fieldSprite);
-        window.draw(ballBackPath);
-        window.draw(blockerSprite);
-        window.draw(leaderboardSprite);
-        window.draw(btnNextPlayerSprite);
-        window.draw(blockersLateralLeft);
-        window.draw(blockerSpriteDown);
-        window.draw(blockersLateralLeftDown);
-        window.draw(blockersLateralRight);
-        window.draw(blockersLateralRightDown);
+        window->clear(Color::Transparent);
+        window->draw(fieldSprite);
+        window->draw(ballBackPath);
+        window->draw(blockerSprite);
+        window->draw(leaderboardSprite);
+        window->draw(btnNextPlayerSprite);
+        window->draw(blockersLateralLeft);
+        window->draw(blockerSpriteDown);
+        window->draw(blockersLateralLeftDown);
+        window->draw(blockersLateralRight);
+        window->draw(blockersLateralRightDown);
 
 
-        window.draw(goalKRight);
-        window.draw(goalKLeft);
+        window->draw(goalKRight);
+        window->draw(goalKLeft);
         if(direction != nullptr){
 //            window.draw(*direction);
         }
@@ -242,15 +244,15 @@ void BpWindow::Show() {
 
             if (i < players.size() / 2) {
                 players[i].setTexture(obstacule1);
-                window.draw(players[i]);
+                window->draw(players[i]);
                 collsionObstacles1(players[i]);
             } else if (i >= players.size() / 2) {
                 players[i].setTexture(obstacule2);
                 collsionObstacles2(players[i]);
-                window.draw(players[i]);
+                window->draw(players[i]);
             }
         }
-        window.display();
+        window->display();
     }
 }
 
@@ -347,8 +349,9 @@ void BpWindow::setGameModePlayers(int gameModePlayers) {
     BpWindow::gameModePlayers = gameModePlayers;
 }
 
-void BpWindow::setGameModeGoals(int gameModeGoals) {
+int BpWindow::setGameModeGoals(int gameModeGoals) {
     BpWindow::gameModeGoals = gameModeGoals;
+    return gameModeGoals;
 }
 
 
@@ -390,6 +393,11 @@ void BpWindow::ballmove() {
     if (Keyboard::isKeyPressed(Keyboard::D))
     {
         velocity.x += movementSpeed * (dt);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Space))
+    {
+        velocity.x=0;
+        velocity.y=0;
     }
     ballBackPath.move(velocity);
 
@@ -443,10 +451,6 @@ void BpWindow::collisionsBoards(){
         ballBackPath.setPosition(ballBackPath.getPosition().x, 998 - ballBackPath.getGlobalBounds().height);
 }
 
-void BpWindow::collsionGoal(){
-
-}
-
 void BpWindow::collsionObstacles1(Sprite player){
     if (Collision::PixelPerfectTest(ballBackPath,player)){
         ballBackPath.move(-velocity);
@@ -464,7 +468,11 @@ bool BpWindow::collisionGoal(){
         n_goalLeft++;
         cout<<"GOAL LEFT"<<endl;
         cout<<"GOALS LEFT: "<<n_goalLeft<<endl;
-        ballBackPath.setPosition(850,494);
+        if (n_goalLeft>= gameModeGoals){
+            window->close();
+            GameOver("PLAYER 1");
+        }
+        ballBackPath.setPosition(725,494);
         goalLeft= true;
         velocity.x=0;
         velocity.y=0;
@@ -475,11 +483,52 @@ bool BpWindow::collisionGoal(){
         n_goalRight++;
         cout<<"GOAL RIGHT"<<endl;
         cout<<"GOALS RIGHT: "<<n_goalRight<<endl;
-        ballBackPath.setPosition(850,494);
+        if (n_goalRight>= gameModeGoals){
+            window->close();
+            GameOver("PLAYER 2");
+        }
+        ballBackPath.setPosition(725,494);
         goalRight= true;
         velocity.x=0;
         velocity.y=0;
         ballBackPath.move(-velocity);
         return goalRight;
+    }
+}
+
+void BpWindow::GameOver(string Player) {
+    RenderWindow windowOver(sf::VideoMode(1200, 800), "GAME OVER");
+    sf::Text text;
+
+    text.setFont(font);
+    text.setString("GAME OVER");
+    text.setCharacterSize(100); // in pixels, not points!
+    text.setFillColor(sf::Color::White);
+    text.setPosition(300, 110);
+
+    sf::Text atext;
+    atext.setFont(font);
+    atext.setString(Player + " WINS");
+    atext.setCharacterSize(105); // in pixels, not points!
+    atext.setFillColor(sf::Color::White);
+    atext.setPosition(275, 310);
+
+
+    BpWindow bpWindow;
+
+    while (windowOver.isOpen()) {
+        Event event;
+        windowOver.clear();
+        auto mouse_pos = sf::Mouse::getPosition(windowOver); // Mouse position relative to the window
+
+        while (windowOver.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                windowOver.close();
+            }
+            windowOver.clear(Color(35, 181, 184));
+            windowOver.draw(text);
+            windowOver.draw(atext);
+            windowOver.display();
+        }
     }
 }

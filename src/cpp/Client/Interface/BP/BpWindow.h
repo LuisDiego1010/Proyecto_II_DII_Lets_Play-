@@ -1,6 +1,6 @@
-/**
-  * @file BpWindow.h
-  * */
+//
+// Created by garroakion on 10/5/21.
+//
 
 #ifndef PROYECTO_II_BPWINDOW_H
 #define PROYECTO_II_BPWINDOW_H
@@ -35,6 +35,19 @@ using namespace std;
 class BpWindow {
 public:
 
+
+    struct Point {
+        int x, y;
+    };
+    /**
+   * @brief Constructor of the class
+   */
+    BpWindow();
+    /**
+    * @brief In charge of the initial configuration of the BpGame elements
+    */
+    void Show();
+    RenderWindow* window;
     int gameModePlayers;
     int gameModeGoals;
     int n_goalLeft;
@@ -56,22 +69,11 @@ public:
     Vector2f m_center;
     float m_radius;
     sf::Vector2f m_mouse;
-
-
-/**
-* @brief Constructor of the class
-*/
-    BpWindow();
-
-/**
-* @brief In charge of the initial configuration of the BpGame elements
-*/
-    void Show();
-
-/**
-* @brief Setter of match goals
-*/
-    void setGameModeGoals(int gameModeGoals);
+    sf::Font font;
+    /**
+    * @brief Setter of match goals
+    */
+    int setGameModeGoals(int gameModeGoals);
 
 /**
 * @brief Setter of players obstacles
@@ -142,14 +144,22 @@ public:
 * @brief Method in charge of the colision checks with the limits
 */
     void collisionsBoards();
-
-    void collsionGoal();
-
+/**
+* @brief Method in charge of the colision checks with the Obstacles 1
+*/
     void collsionObstacles1(Sprite player);
-
+/**
+* @brief Method in charge of the colision checks with the Obstacles 2
+*/
     void collsionObstacles2(Sprite player);
-
+/**
+* @brief Method in charge of the colision checks with the Goals
+*/
     bool collisionGoal();
+/**
+* @brief Method create a game over Window
+*/
+    void GameOver(string Player);
 };
 
 

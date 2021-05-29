@@ -72,11 +72,8 @@ void bpGameMode::show() {
                     if(n_Obstacles.text!="" && n_Annotations.text!=""){
                         bpWindow.setGameModePlayers(stoi(n_Obstacles.text));
                         bpWindow.setGameModeGoals(stoi(n_Annotations.text));
-                        bpWindow.Show();
-
                         window.close();
-
-
+                        bpWindow.Show();
                     }else{
                         cout<<"Espacios vacios"<<endl;
                     };
