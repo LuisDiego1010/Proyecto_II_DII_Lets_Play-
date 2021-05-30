@@ -140,7 +140,7 @@ public:
 */
     bool checkCollisionPoint(const Vector2f &mouse);
 
-/**
+/**ww
 * @brief Method in charge of the colision checks with the limits
 */
     void collisionsBoards();
