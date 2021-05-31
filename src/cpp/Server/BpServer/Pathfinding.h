@@ -23,6 +23,7 @@ class Pathfinding {
         double f, g, h;
     };
 
+
 /**
 * @brief Checks that if the adjacent cells are valid for the movement
 */
@@ -42,12 +43,16 @@ class Pathfinding {
 /**
 * @brief trace the path from the source to destination
 */
-    void tracePath(cell cellDetails[][COL], Pair dest);
+    void tracePath(Pair dest);
 public:
 /**
 * @brief Find the shortest path between a given source cell to a destination cell
 */
     void aStarSearch(int grid[][COL], Pair src, Pair dest);
+
+    cell AnswerPositions[ROW][COL]{};
+    vector<int> AnswersX;
+    vector<int> AnswersY;
 
 };
 

@@ -62,7 +62,7 @@ public:
     Sprite ballBackPath;
     Sprite goalKLeft;
     Sprite goalKRight;
-    char backtracking[9][14];
+    char backtracking[9][14]{};
     string route;
 
     Line *direction = nullptr;

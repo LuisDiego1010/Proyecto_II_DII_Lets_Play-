@@ -16,6 +16,8 @@ public:
     int pathfinding[9][14];
     int Xpos;
     int Ypos;
+    vector<int> PathX;
+    vector<int> Pathy;
     bool Player1;
 
 /**

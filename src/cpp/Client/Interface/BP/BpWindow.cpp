@@ -193,6 +193,7 @@ void BpWindow::Show() {
                     gameData=nlohmann::basic_json<>();
                     string backtrackingString;
                     backtrackingString = backtracking[0];
+                    backtrackingString=backtrackingString.substr(0,126);
                     gameData["matrix"]=backtrackingString;
                     gameData["XBall"]=getPositionXBall();
                     gameData["YBall"]=getPositionYBall();

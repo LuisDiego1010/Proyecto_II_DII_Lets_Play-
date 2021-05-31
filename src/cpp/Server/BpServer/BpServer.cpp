@@ -34,10 +34,13 @@ void BpServer::Run() {
         if (data.contains("YBall")) {
             Ypos = data["YBall"].get<int>();
 
-        } else if (data.contains("TYPE")) {
-            if(data["TYPE"].get<string>()=="B"){
+        }
+        if (data.contains("TYPE")) {
+            if(data["TYPE"].get<string>()==string("B")){
+                data = nlohmann::basic_json<>();
                 data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
-            }else if (data["TYPE"].get<string>()=="P"){
+            }else if (data["TYPE"].get<string>()==string("P")){
+                data = nlohmann::basic_json<>();
                 PathfindingPlayer();
             }
 
@@ -47,7 +50,6 @@ void BpServer::Run() {
         }else{
             Player1=true;
         }
-        data = nlohmann::basic_json<>();
         socket->send(to_string(data));
 
     }
@@ -87,5 +89,6 @@ void BpServer::PathfindingPlayer(){
     }
 
     player.aStarSearch(pathfinding, src, dest);
+
 }
 
