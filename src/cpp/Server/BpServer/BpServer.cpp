@@ -39,9 +39,14 @@ void BpServer::Run() {
             if(data["TYPE"].get<string>()==string("B")){
                 data = nlohmann::basic_json<>();
                 data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
+                PathfindingPlayer();
+                data["routeX"]=PlayerPath.AnswersX;
+                data["routeY"]=PlayerPath.AnswersY;
             }else if (data["TYPE"].get<string>()==string("P")){
                 data = nlohmann::basic_json<>();
                 PathfindingPlayer();
+                data["routeX"]=PlayerPath.AnswersX;
+                data["routeY"]=PlayerPath.AnswersY;
             }
 
         }
@@ -77,18 +82,24 @@ BpServer::BpServer() {
 }
 
 void BpServer::PathfindingPlayer(){
-    Pathfinding player;
+    PlayerPath= Pathfinding();
 
     Pair src=make_pair(Xpos,Ypos);
 
     Pair dest;
     if(Player1){
-        dest=make_pair(13,3);
+        dest=make_pair(3,13);
     }else{
-        dest=make_pair(0,3);
+        dest=make_pair(3,0);
     }
 
-    player.aStarSearch(pathfinding, src, dest);
+    PlayerPath.aStarSearch(pathfinding, src, dest);
+    cout<<endl;
+
+    for (int i = 13; i > 0; --i) {
+        cout<<PlayerPath.AnswersX[i]<<",";
+        cout<<PlayerPath.AnswersY[i]<<endl;
+    }
 
 }
 

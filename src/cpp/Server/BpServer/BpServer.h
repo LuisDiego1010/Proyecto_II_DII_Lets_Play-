@@ -6,6 +6,7 @@
 #define PROYECTO_II_BPSERVER_H
 
 #include <string>
+#include "Pathfinding.h"
 
 using namespace std;
 
@@ -16,9 +17,8 @@ public:
     int pathfinding[9][14];
     int Xpos;
     int Ypos;
-    vector<int> PathX;
-    vector<int> Pathy;
     bool Player1;
+    Pathfinding PlayerPath;
 
 /**
 * @brief Constructor of the class
