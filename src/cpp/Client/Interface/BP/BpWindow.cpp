@@ -202,7 +202,7 @@ void BpWindow::Show() {
                     cout<<endl;
 
                     if(gameData.contains("route")){
-                      route = gameData.get<string>();
+                      route = gameData["route"].get<string>();
                     }else{
                         cout<<"Error"<<endl;
                     }

@@ -18,6 +18,9 @@ void BpServer::Run() {
 
     while (true) {
         auto msg = socket->recieve();
+        if(msg.empty()){
+            break;
+        }
         data = nlohmann::basic_json<>::parse(msg);
         if (data.contains("matrix")) {
             matrix = data["matrix"].get<string>();
@@ -36,8 +39,6 @@ void BpServer::Run() {
         data = nlohmann::basic_json<>();
         data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
         socket->send(to_string(data));
-
-        break;
 
     }
 
