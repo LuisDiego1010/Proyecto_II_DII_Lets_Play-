@@ -7,7 +7,7 @@
 bool Pathfinding::isValid(int row, int col) {
     return (row >= 0) && (row < ROW) && (col >= 0) && (col < COL);
 }
-bool Pathfinding::isUnBlocked(int (*grid)[10], int row, int col) {
+bool Pathfinding::isUnBlocked(int (*grid)[14], int row, int col) {
     if (grid[row][col] == 1)
         return (true);
     else
@@ -25,7 +25,7 @@ double Pathfinding::calculateHValue(int row, int col, Pair dest) {
             + (col - dest.second) * (col - dest.second)));
 }
 
-void Pathfinding::tracePath(cell (*cellDetails)[10], Pair dest) {
+void Pathfinding::tracePath(cell (*cellDetails)[14], Pair dest) {
     cout<<"\nThe Path is ";
     int row = dest.first;
     int col = dest.second;
@@ -51,7 +51,7 @@ void Pathfinding::tracePath(cell (*cellDetails)[10], Pair dest) {
     return;
 }
 
-void Pathfinding::aStarSearch(int (*grid)[10], Pair src, Pair dest) {
+void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
     if (isValid(src.first, src.second) == false) {
         printf("Source is invalid\n");
         return;
@@ -62,15 +62,12 @@ void Pathfinding::aStarSearch(int (*grid)[10], Pair src, Pair dest) {
         return;
     }
 
-    if (isUnBlocked(grid, src.first, src.second) == false
-        || isUnBlocked(grid, dest.first, dest.second)
-           == false) {
+    if (isUnBlocked(grid, src.first, src.second) == false|| isUnBlocked(grid, dest.first, dest.second)== false) {
         printf("Source or the destination is blocked\n");
         return;
     }
 
-    if (isDestination(src.first, src.second, dest)
-        == true) {
+    if (isDestination(src.first, src.second, dest)== true) {
         printf("We are already at the destination\n");
         return;
     }
@@ -194,8 +191,7 @@ void Pathfinding::aStarSearch(int (*grid)[10], Pair src, Pair dest) {
             }
 
             else if (closedList[i][j + 1] == false
-                     && isUnBlocked(grid, i, j + 1)
-                        == true) {
+                     && isUnBlocked(grid, i, j + 1)== true) {
                 gNew = cellDetails[i][j].g + 1.0;
                 hNew = calculateHValue(i, j + 1, dest);
                 fNew = gNew + hNew;
@@ -290,8 +286,7 @@ void Pathfinding::aStarSearch(int (*grid)[10], Pair src, Pair dest) {
                 return;
             }
 
-            else if (closedList[i - 1][j - 1] == false
-                     && isUnBlocked(grid, i - 1, j - 1)== true) {
+            else if (closedList[i - 1][j - 1] == false && isUnBlocked(grid, i - 1, j - 1)== true) {
                 gNew = cellDetails[i][j].g + 1.414;
                 hNew = calculateHValue(i - 1, j - 1, dest);
                 fNew = gNew + hNew;
@@ -322,8 +317,7 @@ void Pathfinding::aStarSearch(int (*grid)[10], Pair src, Pair dest) {
                 return;
             }
 
-            else if (closedList[i + 1][j + 1] == false
-                     && isUnBlocked(grid, i + 1, j + 1)== true) {
+            else if (closedList[i + 1][j + 1] == false && isUnBlocked(grid, i + 1, j + 1)== true) {
                 gNew = cellDetails[i][j].g + 1.414;
                 hNew = calculateHValue(i + 1, j + 1, dest);
                 fNew = gNew + hNew;
@@ -353,8 +347,7 @@ void Pathfinding::aStarSearch(int (*grid)[10], Pair src, Pair dest) {
                 return;
             }
 
-            else if (closedList[i + 1][j - 1] == false
-                     && isUnBlocked(grid, i + 1, j - 1)== true) {
+            else if (closedList[i + 1][j - 1] == false && isUnBlocked(grid, i + 1, j - 1)== true) {
                 gNew = cellDetails[i][j].g + 1.414;
                 hNew = calculateHValue(i + 1, j - 1, dest);
                 fNew = gNew + hNew;

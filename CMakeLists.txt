@@ -57,6 +57,7 @@ add_executable(Server
         src/cpp/Server/PZ/Individuo.h
         src/cpp/Server/PZ/Generation.cpp
         src/cpp/Server/PZ/Generation.h
-        src/cpp/Server/BpServer/Pathfinding.cpp src/cpp/Server/BpServer/Pathfinding.h)
+        src/cpp/Server/BpServer/Pathfinding.cpp
+        src/cpp/Server/BpServer/Pathfinding.h)
 target_link_libraries(Server
         ${CONAN_LIBS})
