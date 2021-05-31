@@ -27,6 +27,7 @@
 #include <ctime>
 #include "Line.h"
 #include "Collision.h"
+#include <queue>
 
 
 using namespace sf;
@@ -39,6 +40,8 @@ public:
     struct Point {
         int x, y;
     };
+
+
 
     /**
    * @brief Constructor of the class

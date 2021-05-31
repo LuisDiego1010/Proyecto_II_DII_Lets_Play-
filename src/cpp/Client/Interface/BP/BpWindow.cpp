@@ -31,12 +31,12 @@ BpWindow::BpWindow() {}
 
 void BpWindow::Show() {
 
-    Socket_Client * socket = Socket_Client::self;
+    Socket_Client *socket = Socket_Client::self;
     bpGameMode game;
     setBacktracking();
-    cout<<endl;
+    cout << endl;
 
-    window = new RenderWindow (sf::VideoMode(1700, 998), "BP GAME");
+    window = new RenderWindow(sf::VideoMode(1700, 998), "BP GAME");
     window->setFramerateLimit(120);
 
     //Creacion de las texturas.
@@ -55,8 +55,8 @@ void BpWindow::Show() {
         cout << "Error to charge font";
     }
 
-    if(!btnNextPlayer.loadFromFile("src/images/btn/nextPlayer.png")){
-        cout<<"Error to charge image";
+    if (!btnNextPlayer.loadFromFile("src/images/btn/nextPlayer.png")) {
+        cout << "Error to charge image";
     }
 
     //Asignacion de las imagenes
@@ -86,13 +86,14 @@ void BpWindow::Show() {
 
     }
 
+
     if (!square.loadFromFile("src/images/sprPlayer1.png")) {
 
     }
     /*----------------NextPlayerButton-----------------*/
     Sprite btnNextPlayerSprite;
     btnNextPlayerSprite.setTexture(btnNextPlayer);
-    btnNextPlayerSprite.setOrigin(-40,-40);
+    btnNextPlayerSprite.setOrigin(-40, -40);
 
     /*----------------Field-----------------*/
     Sprite fieldSprite;
@@ -145,26 +146,26 @@ void BpWindow::Show() {
 
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
-    //ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    ballBackPath.setPosition(725,494);
-    cout<<"position X BALL POS: "<<ballBackPath.getPosition().x<<endl;
-    cout<<"position Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
-    Vector2f m_center=sf::Vector2f(100.f, 100.f);
+    ballBackPath.setOrigin(-690 + 80, -465 + 36);
+    //ballBackPath.setPosition(725, 494);
+    cout << "position X BALL POS: " << ballBackPath.getPosition().x << endl;
+    cout << "position Y BALL POS: " << ballBackPath.getPosition().y << endl;
+    Vector2f m_center = sf::Vector2f(100.f, 100.f);
 
 
     /*----------------Game Init-----------------*/
     setPlayers(gameModePlayers);
-    cout<<endl;
+    cout << endl;
     displayBacktracking();
-    cout<<endl;
+    cout << endl;
 
     /*-----Comunicatee standars------*/
     nlohmann::json gameData;
 
 
     /*----Goals----*/
-    n_goalLeft=0;
-    n_goalRight=0;
+    n_goalLeft = 0;
+    n_goalRight = 0;
 
     while (window->isOpen()) {
         dt = dt_clock.restart().asSeconds();
@@ -173,14 +174,12 @@ void BpWindow::Show() {
         collisionGoal();
         ballmove();
 
-
         auto mouse_pos = sf::Mouse::getPosition(*window); // Mouse position relative to the window
         auto translated_pos = window->mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
         while (window->pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window->close();
-            }
-            else if (event.type == Event::MouseButtonPressed) {
+            } else if (event.type == Event::MouseButtonPressed) {
                 /*if (event.mouseButton.button== sf::Mouse::Right){
                     updateDirectionLine();
                 }*/
@@ -188,36 +187,34 @@ void BpWindow::Show() {
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
                     backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
-                    cout<<endl;
+                    cout << endl;
 
-                    gameData=nlohmann::basic_json<>();
+                    gameData = nlohmann::basic_json<>();
                     string backtrackingString;
                     backtrackingString = backtracking[0];
-                    backtrackingString=backtrackingString.substr(0,126);
-                    gameData["matrix"]=backtrackingString;
-                    gameData["XBall"]=getPositionXBall();
-                    gameData["YBall"]=getPositionYBall();
-                    gameData["TYPE"]=string("B");
+                    backtrackingString = backtrackingString.substr(0, 126);
+                    gameData["matrix"] = backtrackingString;
+                    gameData["XBall"] = getPositionXBall();
+                    gameData["YBall"] = getPositionYBall();
+                    gameData["TYPE"] = string("B");
                     string JsonServer;
-                    JsonServer= socket->comunicatte(to_string(gameData));
-                    gameData=nlohmann::basic_json<>::parse(JsonServer);
-                    cout<<endl;
+                    JsonServer = socket->comunicatte(to_string(gameData));
+                    gameData = nlohmann::basic_json<>::parse(JsonServer);
+                    cout << endl;
 
-                    if(gameData.contains("route")){
-                      route = gameData["route"].get<string>();
-                    }else{
-                        cout<<"Not Backtracking"<<endl;
+                    if (gameData.contains("route")) {
+                        route = gameData["route"].get<string>();
+
+
+                    } else {
+                        cout << "Not Backtracking" << endl;
                     }
-
-
-
 
                 }
 
-
-                if (event.MouseMoved){
-                  m_mouse.x=event.mouseMove.x;
-                  m_mouse.y=event.mouseMove.y;
+                if (event.MouseMoved) {
+                    m_mouse.x = event.mouseMove.x;
+                    m_mouse.y = event.mouseMove.y;
                 }
             }
 
@@ -234,13 +231,12 @@ void BpWindow::Show() {
         window->draw(blockersLateralLeftDown);
         window->draw(blockersLateralRight);
         window->draw(blockersLateralRightDown);
-
-
         window->draw(goalKRight);
         window->draw(goalKLeft);
-        if(direction != nullptr){
+        if (direction != nullptr) {
 //            window.draw(*direction);
         }
+        drawRoute();
 
         for (int i = 0; i < players.size(); i++) {
 
@@ -254,6 +250,8 @@ void BpWindow::Show() {
                 window->draw(players[i]);
             }
         }
+
+
         window->display();
     }
 }
@@ -356,7 +354,6 @@ int BpWindow::getPositionYGoalCpu() {
 }
 
 
-
 /*----------------Setters goals and players-----------------*/
 void BpWindow::setGameModePlayers(int gameModePlayers) {
     BpWindow::gameModePlayers = gameModePlayers;
@@ -370,18 +367,18 @@ int BpWindow::setGameModeGoals(int gameModeGoals) {
 
 /*----------------Backtracking-----------------*/
 void BpWindow::displayBacktracking() {
-    for(int i =0; i<9;i++){
-        cout<<endl;
-        for (int j=0 ;j<14;j++){
-            cout<<backtracking[i][j];
+    for (int i = 0; i < 9; i++) {
+        cout << endl;
+        for (int j = 0; j < 14; j++) {
+            cout << backtracking[i][j];
         }
     }
 }
 
 void BpWindow::setBacktracking() {
-    for(int i =0; i<9;i++){
-        for (int j=0 ;j<14;j++){
-            backtracking[i][j]= '1';
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 14; j++) {
+            backtracking[i][j] = '1';
         }
     }
 }
@@ -390,65 +387,59 @@ void BpWindow::ballmove() {
 
     //velocity.x=velocity.x*0.9999;
     //velocity.y=velocity.y*0.9999;
-    const float movementSpeed=1.f;
-    if (Keyboard::isKeyPressed(Keyboard::W))
-    {
+    const float movementSpeed = 1.f;
+    if (Keyboard::isKeyPressed(Keyboard::W)) {
         velocity.y += -movementSpeed * (dt);
     }
-    if (Keyboard::isKeyPressed(Keyboard::S))
-    {
+    if (Keyboard::isKeyPressed(Keyboard::S)) {
         velocity.y += movementSpeed * (dt);
     }
-    if (Keyboard::isKeyPressed(Keyboard::A))
-    {
+    if (Keyboard::isKeyPressed(Keyboard::A)) {
         velocity.x += -movementSpeed * (dt);
     }
-    if (Keyboard::isKeyPressed(Keyboard::D))
-    {
+    if (Keyboard::isKeyPressed(Keyboard::D)) {
         velocity.x += movementSpeed * (dt);
     }
-    if (Keyboard::isKeyPressed(Keyboard::Space))
-    {
-        velocity.x=0;
-        velocity.y=0;
+    if (Keyboard::isKeyPressed(Keyboard::Space)) {
+        velocity.x = 0;
+        velocity.y = 0;
     }
     ballBackPath.move(velocity);
 
 }
-void BpWindow::updateDirectionLine() {
-        auto tmp = direction;
-        direction=nullptr;
-        delete tmp;
 
-        sf::Vector2f distance = (m_mouse - ballBackPath.getOrigin());
-        float distanceBetween = sqrt(distance.x*distance.x + distance.y*distance.y);
-        sf::Vector2f invert = distance / distanceBetween;
-        sf::Color directionColor = sf::Color(255, (255 - ((int)distanceBetween/2)%255), 0);
-        if (distanceBetween > 510) {
-            directionColor = sf::Color::Red;
-        }
-        direction = new Line(ballBackPath.getOrigin().x, ballBackPath.getOrigin().y,
-                             ballBackPath.getOrigin().x - distanceBetween * invert.x,
-                             ballBackPath.getOrigin().y - distanceBetween * invert.y, directionColor);
+void BpWindow::updateDirectionLine() {
+    auto tmp = direction;
+    direction = nullptr;
+    delete tmp;
+
+    sf::Vector2f distance = (m_mouse - ballBackPath.getOrigin());
+    float distanceBetween = sqrt(distance.x * distance.x + distance.y * distance.y);
+    sf::Vector2f invert = distance / distanceBetween;
+    sf::Color directionColor = sf::Color(255, (255 - ((int) distanceBetween / 2) % 255), 0);
+    if (distanceBetween > 510) {
+        directionColor = sf::Color::Red;
+    }
+    direction = new Line(ballBackPath.getOrigin().x, ballBackPath.getOrigin().y,
+                         ballBackPath.getOrigin().x - distanceBetween * invert.x,
+                         ballBackPath.getOrigin().y - distanceBetween * invert.y, directionColor);
 
 }
 
-bool BpWindow::checkCollisionPoint(const sf::Vector2f& mouse)
-{
-    float posxBall=ballBackPath.getOrigin().x;
-    float posyBall=ballBackPath.getOrigin().y;
+bool BpWindow::checkCollisionPoint(const sf::Vector2f &mouse) {
+    float posxBall = ballBackPath.getOrigin().x;
+    float posyBall = ballBackPath.getOrigin().y;
     float x_mouse = mouse.x;
     float y_mouse = mouse.y;
-    if ( ((x_mouse - posxBall)*(x_mouse - posxBall) +
-          (y_mouse - posyBall)*(y_mouse - posyBall)) <=70)
-    {
-        cout<<"FUNCIONA";
+    if (((x_mouse - posxBall) * (x_mouse - posxBall) +
+         (y_mouse - posyBall) * (y_mouse - posyBall)) <= 70) {
+        cout << "FUNCIONA";
         return true;
     }
     return false;
 }
 
-void BpWindow::collisionsBoards(){
+void BpWindow::collisionsBoards() {
     //Collision screen
     //Left collision
     if (ballBackPath.getPosition().x < 0.f)
@@ -464,46 +455,46 @@ void BpWindow::collisionsBoards(){
         ballBackPath.setPosition(ballBackPath.getPosition().x, 998 - ballBackPath.getGlobalBounds().height);
 }
 
-void BpWindow::collsionObstacles1(Sprite player){
-    if (Collision::PixelPerfectTest(ballBackPath,player)){
+void BpWindow::collsionObstacles1(Sprite player) {
+    if (Collision::PixelPerfectTest(ballBackPath, player)) {
         ballBackPath.move(-velocity);
     }
 }
 
-void BpWindow::collsionObstacles2(Sprite player){
-    if (Collision::PixelPerfectTest(ballBackPath,player)){
+void BpWindow::collsionObstacles2(Sprite player) {
+    if (Collision::PixelPerfectTest(ballBackPath, player)) {
         ballBackPath.move(-velocity);
     }
 }
 
-bool BpWindow::collisionGoal(){
-    if (Collision::PixelPerfectTest(ballBackPath,goalKRight)){
+bool BpWindow::collisionGoal() {
+    if (Collision::PixelPerfectTest(ballBackPath, goalKRight)) {
         n_goalLeft++;
-        cout<<"GOAL LEFT"<<endl;
-        cout<<"GOALS LEFT: "<<n_goalLeft<<endl;
-        if (n_goalLeft>= gameModeGoals){
+        cout << "GOAL LEFT" << endl;
+        cout << "GOALS LEFT: " << n_goalLeft << endl;
+        if (n_goalLeft >= gameModeGoals) {
             window->close();
             GameOver("PLAYER 1");
         }
-        ballBackPath.setPosition(725,494);
-        goalLeft= true;
-        velocity.x=0;
-        velocity.y=0;
+        ballBackPath.setPosition(725, 494);
+        goalLeft = true;
+        velocity.x = 0;
+        velocity.y = 0;
         ballBackPath.move(-velocity);
         return goalLeft;
     }
-    if (Collision::PixelPerfectTest(ballBackPath,goalKLeft)){
+    if (Collision::PixelPerfectTest(ballBackPath, goalKLeft)) {
         n_goalRight++;
-        cout<<"GOAL RIGHT"<<endl;
-        cout<<"GOALS RIGHT: "<<n_goalRight<<endl;
-        if (n_goalRight>= gameModeGoals){
+        cout << "GOAL RIGHT" << endl;
+        cout << "GOALS RIGHT: " << n_goalRight << endl;
+        if (n_goalRight >= gameModeGoals) {
             window->close();
             GameOver("PLAYER 2");
         }
-        ballBackPath.setPosition(725,494);
-        goalRight= true;
-        velocity.x=0;
-        velocity.y=0;
+        ballBackPath.setPosition(725, 494);
+        goalRight = true;
+        velocity.x = 0;
+        velocity.y = 0;
         ballBackPath.move(-velocity);
         return goalRight;
     }
@@ -546,3 +537,45 @@ void BpWindow::GameOver(string Player) {
     }
 }
 
+void BpWindow::drawRoute() {
+    int sz = route.size();
+    char buffer[sz];
+    strcpy(buffer, route.c_str());
+    float tempX = ballBackPath.getOrigin().x;
+    float tempY = ballBackPath.getOrigin().y;
+    for (int i = 0; i < sz; i++) {
+
+        Sprite routeSprite;
+        if (buffer[i] == 'U') {
+            tempY += 100;
+            routeSprite.setOrigin(tempX, tempY);
+            drawRouteSprites.push_back(routeSprite);
+
+        } else if (buffer[i] == 'D') {
+            tempY -= 100;
+            routeSprite.setOrigin(tempX, tempY);
+            drawRouteSprites.push_back(routeSprite);
+        } else if (buffer[i] == 'L') {
+            tempX += 100;
+            routeSprite.setOrigin(tempX, tempY);
+            drawRouteSprites.push_back(routeSprite);
+        } else if (buffer[i] == 'R') {
+            tempX -= 100;
+            routeSprite.setOrigin(tempX, tempY);
+            drawRouteSprites.push_back(routeSprite);
+        }
+
+
+
+    }
+    for (int i = 0; i < drawRouteSprites.size(); i++) {
+        Texture square;
+        if (!square.loadFromFile("src/images/squarelit.png")) {
+
+        }
+        drawRouteSprites[i].setTexture(square);
+        window->draw(drawRouteSprites[i]);
+
+
+    }
+}
