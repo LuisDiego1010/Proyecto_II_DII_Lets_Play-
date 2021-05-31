@@ -16,7 +16,7 @@ public:
     int pathfinding[9][14];
     int Xpos;
     int Ypos;
-
+    bool Player1;
 
 /**
 * @brief Constructor of the class
@@ -33,6 +33,10 @@ public:
 */
     void addToMatrix(string &matrix);
 
+/**
+ * calle rof the path finding logic
+ */
+    void PathfindingPlayer();
 };
 
 

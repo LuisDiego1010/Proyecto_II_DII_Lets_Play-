@@ -6,6 +6,7 @@
 #include "../Socket_Server.h"
 #include <bits/stdc++.h>
 #include "Backtracking.h"
+#include "Pathfinding.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ void BpServer::Run() {
     nlohmann::basic_json<> data;
     string matrix;
     Backtracking route;
-
+    Player1=true;
     while (true) {
         auto msg = socket->recieve();
         if(msg.empty()){
@@ -33,11 +34,20 @@ void BpServer::Run() {
         if (data.contains("YBall")) {
             Ypos = data["YBall"].get<int>();
 
-        } else if (data.contains("pathfinding")) {
-            //pahtfinding
+        } else if (data.contains("TYPE")) {
+            if(data["TYPE"].get<string>()=="B"){
+                data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
+            }else if (data["TYPE"].get<string>()=="P"){
+                PathfindingPlayer();
+            }
+
+        }
+        if(Player1){
+            Player1=false;
+        }else{
+            Player1=true;
         }
         data = nlohmann::basic_json<>();
-        data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
         socket->send(to_string(data));
 
     }
@@ -64,4 +74,18 @@ BpServer::BpServer() {
 
 }
 
+void BpServer::PathfindingPlayer(){
+    Pathfinding player;
+
+    Pair src=make_pair(Xpos,Ypos);
+
+    Pair dest;
+    if(Player1){
+        dest=make_pair(13,3);
+    }else{
+        dest=make_pair(0,3);
+    }
+
+    player.aStarSearch(pathfinding, src, dest);
+}
 

@@ -195,6 +195,7 @@ void BpWindow::Show() {
                     gameData["matrix"]=backtrackingString;
                     gameData["XBall"]=getPositionXBall();
                     gameData["YBall"]=getPositionYBall();
+                    gameData["TYPE"]=string("B");
                     cout<<to_string(gameData)<<" :String of nacktracking";
                     string JsonServer;
                     JsonServer= socket->comunicatte(to_string(gameData));
@@ -204,7 +205,7 @@ void BpWindow::Show() {
                     if(gameData.contains("route")){
                       route = gameData["route"].get<string>();
                     }else{
-                        cout<<"Error"<<endl;
+                        cout<<"Not Backtracking"<<endl;
                     }
 
 

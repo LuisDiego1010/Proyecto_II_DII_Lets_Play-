@@ -43,6 +43,7 @@ class Pathfinding {
 * @brief trace the path from the source to destination
 */
     void tracePath(cell cellDetails[][COL], Pair dest);
+public:
 /**
 * @brief Find the shortest path between a given source cell to a destination cell
 */
