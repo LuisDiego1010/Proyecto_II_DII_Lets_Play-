@@ -173,6 +173,7 @@ void BpWindow::Show() {
         collisionGoal();
         ballmove();
 
+
         auto mouse_pos = sf::Mouse::getPosition(*window); // Mouse position relative to the window
         auto translated_pos = window->mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
         while (window->pollEvent(event)) {
@@ -196,7 +197,6 @@ void BpWindow::Show() {
                     gameData["XBall"]=getPositionXBall();
                     gameData["YBall"]=getPositionYBall();
                     gameData["TYPE"]=string("B");
-                    cout<<to_string(gameData)<<" :String of nacktracking";
                     string JsonServer;
                     JsonServer= socket->comunicatte(to_string(gameData));
                     gameData=nlohmann::basic_json<>::parse(JsonServer);
@@ -344,6 +344,17 @@ int BpWindow::getPositionXGoalPlayer() {
 int BpWindow::getPositionYGoalPlayer() {
     return -(int) (goalKLeft.getOrigin().y / 100);
 }
+
+/*----------------Position Goal Player-----------------*/
+int BpWindow::getPositionXGoalCpu() {
+    return -(int) (goalKRight.getOrigin().x / 100);
+}
+
+int BpWindow::getPositionYGoalCpu() {
+    return -(int) (goalKRight.getOrigin().y / 100);
+}
+
+
 
 /*----------------Setters goals and players-----------------*/
 void BpWindow::setGameModePlayers(int gameModePlayers) {
@@ -533,3 +544,4 @@ void BpWindow::GameOver(string Player) {
         }
     }
 }
+

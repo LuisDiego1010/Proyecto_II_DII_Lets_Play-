@@ -39,15 +39,18 @@ public:
     struct Point {
         int x, y;
     };
+
     /**
    * @brief Constructor of the class
    */
     BpWindow();
+
     /**
     * @brief In charge of the initial configuration of the BpGame elements
     */
     void Show();
-    RenderWindow* window;
+
+    RenderWindow *window;
     int gameModePlayers;
     int gameModeGoals;
     int n_goalLeft;
@@ -55,6 +58,7 @@ public:
     bool goalLeft;
     bool goalRight;
     vector<Sprite> players;
+    vector<Sprite> drawRouteSprites;
     Sprite ballBackPath;
     Sprite goalKLeft;
     Sprite goalKRight;
@@ -70,6 +74,7 @@ public:
     float m_radius;
     sf::Vector2f m_mouse;
     sf::Font font;
+
     /**
     * @brief Setter of match goals
     */
@@ -144,22 +149,34 @@ public:
 * @brief Method in charge of the colision checks with the limits
 */
     void collisionsBoards();
+
 /**
 * @brief Method in charge of the colision checks with the Obstacles 1
 */
     void collsionObstacles1(Sprite player);
+
 /**
 * @brief Method in charge of the colision checks with the Obstacles 2
 */
     void collsionObstacles2(Sprite player);
+
 /**
 * @brief Method in charge of the colision checks with the Goals
 */
     bool collisionGoal();
+
 /**
 * @brief Method create a game over Window
 */
     void GameOver(string Player);
+
+/*----------------Position Goal Player-----------------*/
+
+
+
+    void drawRoute();
+
+    // void showDrawRoute();
 };
 
 
