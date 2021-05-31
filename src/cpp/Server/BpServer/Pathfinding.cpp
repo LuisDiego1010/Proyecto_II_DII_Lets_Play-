@@ -33,8 +33,8 @@ void Pathfinding::tracePath(Pair dest) {
     int row = dest.first;
     int col = dest.second;
 
-    AnswersX=vector<int>();
-    AnswersY=vector<int>();
+    AnswersX = vector<int>();
+    AnswersY = vector<int>();
 
     while (!(AnswerPositions[row][col].parent_i == row
              && AnswerPositions[row][col].parent_j == col)) {
@@ -45,33 +45,34 @@ void Pathfinding::tracePath(Pair dest) {
         row = temp_row;
         col = temp_col;
     }
-    int pos=0;
-    while (pos!=AnswersY.size()) {
-        printf("-> (%d,%d) ", AnswersX[pos], AnswersY[pos]);
-        pos++;
-    }
+
+//    int pos = 0;
+//    while (pos != AnswersY.size()) {
+//        printf("-> (%d,%d) ", AnswersX[pos], AnswersY[pos]);
+//        pos++;
+//    }
 
 }
 
 void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
 
     if (!isValid(src.first, src.second)) {
-        printf("Source is invalid\n");
+        cout << "Source is invalid\n";
         return;
     }
 
     if (!isValid(dest.first, dest.second)) {
-        printf("Destination is invalid\n");
+        cout << "Destination is invalid\n";
         return;
     }
 
     if (!isUnBlocked(grid, src.first, src.second) || !isUnBlocked(grid, dest.first, dest.second)) {
-        printf("Source or the destination is blocked\n");
+        cout << "Source or the destination is blocked\n";
         return;
     }
 
     if (isDestination(src.first, src.second, dest)) {
-        printf("We are already at the destination\n");
+        cout << "We are already at the destination\n";
         return;
     }
 
@@ -119,7 +120,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             if (isDestination(i - 1, j, dest)) {
                 AnswerPositions[i - 1][j].parent_i = i;
                 AnswerPositions[i - 1][j].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -148,7 +149,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             if (isDestination(i + 1, j, dest)) {
                 AnswerPositions[i + 1][j].parent_i = i;
                 AnswerPositions[i + 1][j].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -178,7 +179,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
 
                 AnswerPositions[i][j + 1].parent_i = i;
                 AnswerPositions[i][j + 1].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -206,7 +207,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             if (isDestination(i, j - 1, dest)) {
                 AnswerPositions[i][j - 1].parent_i = i;
                 AnswerPositions[i][j - 1].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -235,7 +236,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             if (isDestination(i - 1, j + 1, dest)) {
                 AnswerPositions[i - 1][j + 1].parent_i = i;
                 AnswerPositions[i - 1][j + 1].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -265,7 +266,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             if (isDestination(i - 1, j - 1, dest)) {
                 AnswerPositions[i - 1][j - 1].parent_i = i;
                 AnswerPositions[i - 1][j - 1].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -294,7 +295,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
 
                 AnswerPositions[i + 1][j + 1].parent_i = i;
                 AnswerPositions[i + 1][j + 1].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -322,7 +323,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             if (isDestination(i + 1, j - 1, dest)) {
                 AnswerPositions[i + 1][j - 1].parent_i = i;
                 AnswerPositions[i + 1][j - 1].parent_j = j;
-                printf("The destination cell is found\n");
+                cout << "founded\n";
                 tracePath(dest);
                 foundDest = true;
                 return;
@@ -347,5 +348,5 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
     }
 
     if (!foundDest)
-        printf("Failed to find the Destination Cell\n");
+        cout << "Failed to find the Destination Cell\n";
 }

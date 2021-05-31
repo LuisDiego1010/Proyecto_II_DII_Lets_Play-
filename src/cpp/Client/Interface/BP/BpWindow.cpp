@@ -147,8 +147,8 @@ void BpWindow::Show() {
     ballBackPath.setTexture(ball);
     //ballBackPath.setOrigin(-690 + 80, -465 + 36);
     ballBackPath.setPosition(725,494);
-    cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
-    cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
+    cout<<"position X BALL POS: "<<ballBackPath.getPosition().x<<endl;
+    cout<<"position Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
     Vector2f m_center=sf::Vector2f(100.f, 100.f);
 
 
