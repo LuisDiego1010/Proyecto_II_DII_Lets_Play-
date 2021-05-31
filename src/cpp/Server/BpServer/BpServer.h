@@ -13,6 +13,7 @@ class BpServer {
 public:
 
     char backtrackingServer[9][14];
+    int pathfinding[9][14];
     int Xpos;
     int Ypos;
 

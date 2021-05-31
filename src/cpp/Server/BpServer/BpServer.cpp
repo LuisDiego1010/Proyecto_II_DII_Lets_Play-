@@ -50,8 +50,11 @@ void BpServer::addToMatrix(string &matrix) {
 
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 14; j++) {
-            backtrackingServer[i][j] = *matrix.data();
-            matrix.pop_back();
+            char tmp;
+            tmp=*matrix.data();
+            backtrackingServer[i][j] = matrix[i*9+j];
+            pathfinding[i][j] = (int)matrix[i*9+j]-48;
+
         }
     }
 

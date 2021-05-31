@@ -47,6 +47,7 @@ class Pathfinding {
 * @brief Find the shortest path between a given source cell to a destination cell
 */
     void aStarSearch(int grid[][COL], Pair src, Pair dest);
+
 };
 
 #endif //PROYECTO_II_PATHFINDING_H
