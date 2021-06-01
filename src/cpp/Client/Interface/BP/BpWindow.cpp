@@ -139,6 +139,14 @@ void BpWindow::Show() {
     goalKLeft.setOrigin(0, -342);
     goalKRight.setOrigin(-1415, -342);
 
+    allGoals.setFont(font);
+    strallscore = std::to_string(gameModeGoals);
+    allGoals.setString("MAX GOALS: "+ strallscore);
+    allGoals.setCharacterSize(30); // in pixels, not points!
+    allGoals.setFillColor(sf::Color::Blue);
+    allGoals.setOutlineColor(sf::Color::Blue);
+    allGoals.setPosition(1500, 840);
+
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
     ballBackPath.setPosition(725,494);
@@ -160,8 +168,9 @@ void BpWindow::Show() {
 
 
     /*----Goals----*/
-    n_goalLeft = 0;
-    n_goalRight = 0;
+    n_goaLPlayer1 = 0;
+    n_goaLPlayer2 = 0;
+
 
     while (window->isOpen()) {
         moving =true;
@@ -225,10 +234,11 @@ void BpWindow::Show() {
         window->draw(blockersLateralLeftDown);
         window->draw(blockersLateralRight);
         window->draw(blockersLateralRightDown);
-
         window->draw(goalKRight);
         window->draw(goalKLeft);
+        window->draw(allGoals);
         updateDirectionLine();
+        scoreboard(n_goaLPlayer1,n_goaLPlayer2);
         //window->draw(line);
 
         if( moving== true){
@@ -381,16 +391,16 @@ void BpWindow::ballmove() {
     //velocity.y=velocity.y*0.9999;
     const float movementSpeed = 1.f;
     if (Keyboard::isKeyPressed(Keyboard::W)) {
-        velocity.y += -movementSpeed;
+        velocity.y += (-movementSpeed)/500;
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        velocity.y += movementSpeed;
+        velocity.y += (movementSpeed)/500;
     }
     if (Keyboard::isKeyPressed(Keyboard::A)) {
-        velocity.x += -movementSpeed;
+        velocity.x += (-movementSpeed)/500;
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-        velocity.x += movementSpeed;
+        velocity.x += (movementSpeed)/500;
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         velocity.x = 0;
@@ -465,10 +475,8 @@ void BpWindow::collsionObstacles2(Sprite player) {
 
 bool BpWindow::collisionGoal() {
     if (Collision::PixelPerfectTest(ballBackPath, goalKRight)) {
-        n_goalLeft++;
-        cout << "GOAL LEFT" << endl;
-        cout << "GOALS LEFT: " << n_goalLeft << endl;
-        if (n_goalLeft >= gameModeGoals) {
+        n_goaLPlayer1++;
+        if (n_goaLPlayer1 >= gameModeGoals) {
             window->close();
             GameOver("PLAYER 1");
         }
@@ -480,10 +488,8 @@ bool BpWindow::collisionGoal() {
         return goalLeft;
     }
     if (Collision::PixelPerfectTest(ballBackPath, goalKLeft)) {
-        n_goalRight++;
-        cout << "GOAL RIGHT" << endl;
-        cout << "GOALS RIGHT: " << n_goalRight << endl;
-        if (n_goalRight >= gameModeGoals) {
+        n_goaLPlayer2++;
+        if (n_goaLPlayer2 >= gameModeGoals) {
             window->close();
             GameOver("PLAYER 2");
         }
@@ -576,5 +582,23 @@ void BpWindow::drawRoute() {
     }
 }
 
+void BpWindow::scoreboard(int n_goalPLayer1, int n_goalPLayer2){
+    scorePlayer1.setFont(font);
+    strscorePlayer1 = std::to_string(n_goaLPlayer1);
+    scorePlayer1.setString(strscorePlayer1);
+    scorePlayer1.setCharacterSize(85); // in pixels, not points!
+    scorePlayer1.setFillColor(sf::Color::Green);
+    scorePlayer1.setOutlineColor(sf::Color::Blue);
+    scorePlayer1.setPosition(1680, 440);
 
+    scorePlayer2.setFont(font);
+    strscorePlayer2 = std::to_string(n_goaLPlayer2);
+    scorePlayer2.setString(strscorePlayer2);
+    scorePlayer2.setCharacterSize(85); // in pixels, not points!
+    scorePlayer2.setFillColor(sf::Color::Green);
+    scorePlayer1.setOutlineColor(sf::Color::Red);
+    scorePlayer2.setPosition(1680, 600);
 
+    window->draw(scorePlayer1);
+    window->draw(scorePlayer2);
+}

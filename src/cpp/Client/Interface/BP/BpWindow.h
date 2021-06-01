@@ -55,8 +55,14 @@ public:
     RenderWindow *window;
     int gameModePlayers;
     int gameModeGoals;
-    int n_goalLeft;
-    int n_goalRight;
+    int n_goaLPlayer1;
+    int n_goaLPlayer2;
+    sf::Text scorePlayer1;
+    sf::Text scorePlayer2;
+    sf::Text allGoals;
+    string strscorePlayer1;
+    string strscorePlayer2;
+    string strallscore;
     bool goalLeft;
     bool goalRight;
     bool turnPlayer=false;
@@ -73,9 +79,6 @@ public:
     Vector2f position;
     float dt;
     Clock dt_clock;
-    Vector2f m_center;
-    float m_radius;
-    sf::Vector2f m_mouse;
     sf::Font font;
 
 
@@ -176,6 +179,8 @@ public:
 
     void drawRoute();
 
+    // void showDrawRoute();
+    void scoreboard(int n_goalPLayer1, int n_goalPLayer2);
 };
 
 
