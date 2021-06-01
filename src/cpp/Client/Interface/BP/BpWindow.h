@@ -68,12 +68,17 @@ public:
     bool turnPlayer=false;
     vector<Sprite> players;
     vector<Sprite> drawRouteSprites;
+    vector<Sprite> pathSprites;
     Sprite ballBackPath;
     Sprite goalKLeft;
     Sprite goalKRight;
     char backtracking[9][14]{};
     string route;
     bool moving;
+    bool path;
+
+    vector<int> pathX;
+    vector<int> pathY;
 
     Vector2f velocity;
     Vector2f position;
@@ -179,8 +184,10 @@ public:
 
     void drawRoute();
 
+    void drawPath();
     // void showDrawRoute();
     void scoreboard(int n_goalPLayer1, int n_goalPLayer2);
+
 };
 
 

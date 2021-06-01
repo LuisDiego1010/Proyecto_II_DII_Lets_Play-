@@ -43,12 +43,16 @@ void BpWindow::Show() {
     Texture obstacule2;
     Texture leaderboard;
     Texture btnNextPlayer;
+    Texture pathButton;
 
     if (!font.loadFromFile("src/cpp/Client/Interface/Fonts/Ubuntu-Bold.ttf")) {
         cout << "Error to charge font";
     }
 
     if (!btnNextPlayer.loadFromFile("src/images/backtracking.png")) {
+        cout << "Error to charge image";
+    }
+    if (!pathButton.loadFromFile("src/images/pathfinding.png")) {
         cout << "Error to charge image";
     }
 
@@ -87,6 +91,11 @@ void BpWindow::Show() {
     Sprite btnNextPlayerSprite;
     btnNextPlayerSprite.setTexture(btnNextPlayer);
     btnNextPlayerSprite.setOrigin(-1450, -700);
+
+    /*----------------Pathfinding Button-----------------*/
+    Sprite pathButtonSprite;
+    pathButtonSprite.setTexture(pathButton);
+    pathButtonSprite.setOrigin(-1450, -750);
 
     /*----------------Field-----------------*/
     Sprite fieldSprite;
@@ -139,7 +148,7 @@ void BpWindow::Show() {
 
     allGoals.setFont(font);
     strallscore = std::to_string(gameModeGoals);
-    allGoals.setString("MAX GOALS: "+ strallscore);
+    allGoals.setString("MAX GOALS: " + strallscore);
     allGoals.setCharacterSize(30); // in pixels, not points!
     allGoals.setFillColor(sf::Color::Blue);
     allGoals.setOutlineColor(sf::Color::Blue);
@@ -147,9 +156,9 @@ void BpWindow::Show() {
 
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
-    ballBackPath.setPosition(725,494);
-    cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
-    cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
+    ballBackPath.setPosition(725, 494);
+    cout << "ORIGIN X BALL POS: " << ballBackPath.getPosition().x << endl;
+    cout << "ORIGIN Y BALL POS: " << ballBackPath.getPosition().y << endl;
 
     /*----------------Turns Players-----------------*/
     turnPlayer = true;
@@ -169,9 +178,9 @@ void BpWindow::Show() {
     n_goaLPlayer1 = 0;
     n_goaLPlayer2 = 0;
 
-
+    path=false;
     while (window->isOpen()) {
-        moving =true;
+        moving = true;
         dt = dt_clock.restart().asSeconds();
         Event event;
         collisionsBoards();
@@ -184,9 +193,9 @@ void BpWindow::Show() {
                 window->close();
             }
             if (event.type == Event::MouseButtonPressed) {
-                if (event.mouseButton.button==sf::Mouse::Right&&turnPlayer){
-                    velocity=(sf::Vector2f((ballBackPath.getPosition().x - position.x)/500,
-                                           (ballBackPath.getPosition().y - position.y)/500));
+                if (event.mouseButton.button == sf::Mouse::Right && turnPlayer) {
+                    velocity = (sf::Vector2f((ballBackPath.getPosition().x - position.x) / 500,
+                                             (ballBackPath.getPosition().y - position.y) / 500));
                 }
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
@@ -215,9 +224,34 @@ void BpWindow::Show() {
                     }
 
                 }
-            }if (event.type==sf::Event::MouseMoved){
-                position.x=event.mouseMove.x;
-                position.y=event.mouseMove.y;
+                if (pathButtonSprite.getGlobalBounds().contains(translated_pos)) {
+                    path=true;
+
+                    gameData = nlohmann::basic_json<>();
+                    string pathfindingString;
+                    pathfindingString = backtracking[0];
+                    pathfindingString = pathfindingString.substr(0, 126);
+                    gameData["matrix"] = pathfindingString;
+                    gameData["XBall"] = getPositionXBall();
+                    gameData["YBall"] = getPositionYBall();
+                    gameData["TYPE"] = string("P");
+                    string JsonServer;
+                    JsonServer = socket->comunicatte(to_string(gameData));
+                    gameData = nlohmann::basic_json<>::parse(JsonServer);
+                    cout << endl;
+                    if (gameData.contains("routeX")) {
+                        pathX = gameData["routeX"].get<vector<int>>();
+                    }
+                    if (gameData.contains("routeY")) {
+                        pathY = gameData["routeY"].get<vector<int>>();
+                    }
+
+
+                }
+            }
+            if (event.type == sf::Event::MouseMoved) {
+                position.x = event.mouseMove.x;
+                position.y = event.mouseMove.y;
             }
 
         }
@@ -227,6 +261,7 @@ void BpWindow::Show() {
         window->draw(blockerSprite);
         window->draw(leaderboardSprite);
         window->draw(btnNextPlayerSprite);
+        window->draw(pathButtonSprite);
         window->draw(blockersLateralLeft);
         window->draw(blockerSpriteDown);
         window->draw(blockersLateralLeftDown);
@@ -236,17 +271,20 @@ void BpWindow::Show() {
         window->draw(goalKLeft);
         window->draw(allGoals);
         updateDirectionLine();
-        scoreboard(n_goaLPlayer1,n_goaLPlayer2);
+        scoreboard(n_goaLPlayer1, n_goaLPlayer2);
         //window->draw(line);
 
-        if( moving== true){
+        if (moving == true) {
             drawRouteSprites.clear();
             route.clear();
         }
 
-        if(!route.empty() && moving== false){
+        if (!route.empty() && moving == false) {
             drawRoute();
 
+        }
+        if(path==true){
+            drawPath();
         }
 
         for (int i = 0; i < players.size(); i++) {
@@ -383,65 +421,69 @@ void BpWindow::setBacktracking() {
         }
     }
 }
+
 void BpWindow::ballmove() {
 
     //velocity.x=velocity.x*0.9999;
     //velocity.y=velocity.y*0.9999;
     const float movementSpeed = 1.f;
     if (Keyboard::isKeyPressed(Keyboard::W)) {
-        velocity.y += (-movementSpeed)/250;
+        velocity.y += (-movementSpeed) / 250;
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        velocity.y += (movementSpeed)/250;
+        velocity.y += (movementSpeed) / 250;
     }
     if (Keyboard::isKeyPressed(Keyboard::A)) {
-        velocity.x += (-movementSpeed)/250;
+        velocity.x += (-movementSpeed) / 250;
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-        velocity.x += (movementSpeed)/250;
+        velocity.x += (movementSpeed) / 250;
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         velocity.x = 0;
         velocity.y = 0;
     }
-    if(velocity.x == 0 && velocity.y == 0){
+    if (velocity.x == 0 && velocity.y == 0) {
         moving = false;
     }
-    float Fgx= (-velocity.x*dt)/6;
-    float Fgy=(-velocity.y*dt)/6;
-    if(abs(Fgx)<0.0004 && abs(Fgy)<0.0004 && abs(Fgx)!=abs(Fgy)){
-        velocity=Vector2f(0,0);
-        if(turnPlayer){
-            turnPlayer=false;
-            cout<<"change of player 1";
-        }else{
-            turnPlayer=true;
-            cout<<"change of player 2";
+    float Fgx = (-velocity.x * dt) / 6;
+    float Fgy = (-velocity.y * dt) / 6;
+    if (abs(Fgx) < 0.0004 && abs(Fgy) < 0.0004 && abs(Fgx) != abs(Fgy)) {
+        velocity = Vector2f(0, 0);
+        if (turnPlayer) {
+            turnPlayer = false;
+            cout << "change of player 1";
+        } else {
+            turnPlayer = true;
+            cout << "change of player 2";
         }
-    }else{
-        velocity+=Vector2f(Fgx,Fgy);
+    } else {
+        velocity += Vector2f(Fgx, Fgy);
     }
     ballBackPath.move(velocity);
 
 }
+
 void BpWindow::updateDirectionLine() {
-    sf::Vector2f distance = (position-ballBackPath.getPosition());
+    sf::Vector2f distance = (position - ballBackPath.getPosition());
     float distanceBetween = sqrt(distance.x * distance.x + distance.y + distance.y);
     sf::Vector2f invert = distance / distanceBetween;
-    sf::Color directionColor = sf::Color(255, (255 - ((int)distanceBetween/2)%255), 0);
+    sf::Color directionColor = sf::Color(255, (255 - ((int) distanceBetween / 2) % 255), 0);
     if (distanceBetween > 510) { directionColor = sf::Color::Red; }
-    sf::Vertex line2[]=
+    sf::Vertex line2[] =
             {
-                    sf::Vertex(sf::Vector2f(ballBackPath.getPosition().x,ballBackPath.getPosition().y)),//Posición inicial con coordenadas (x,y)
+                    sf::Vertex(sf::Vector2f(ballBackPath.getPosition().x,
+                                            ballBackPath.getPosition().y)),//Posición inicial con coordenadas (x,y)
                     sf::Vertex(sf::Vector2f(ballBackPath.getPosition().x - distanceBetween * invert.x,
-                                            ballBackPath.getPosition().y - distanceBetween * invert.y),directionColor) //Posición final con coordebadas (x,y)
+                                            ballBackPath.getPosition().y - distanceBetween * invert.y),
+                               directionColor) //Posición final con coordebadas (x,y)
             };
 
-    window->draw(line2,2,sf::Lines);
+    window->draw(line2, 2, sf::Lines);
 
 }
 
-void BpWindow::collisionsBoards(){
+void BpWindow::collisionsBoards() {
     //Collision screen
     //Left collision
     if (ballBackPath.getPosition().x < 0.f)
@@ -459,15 +501,15 @@ void BpWindow::collisionsBoards(){
 
 void BpWindow::collsionObstacles1(Sprite player) {
     if (Collision::PixelPerfectTest(ballBackPath, player)) {
-        ballBackPath.move(Vector2f(-velocity.x,-velocity.y));
-        velocity=Vector2f(0,0);
+        ballBackPath.move(Vector2f(-velocity.x, -velocity.y));
+        velocity = Vector2f(0, 0);
     }
 }
 
 void BpWindow::collsionObstacles2(Sprite player) {
     if (Collision::PixelPerfectTest(ballBackPath, player)) {
-        ballBackPath.move(Vector2f(-velocity.x,-velocity.y));
-        velocity=Vector2f(0,0);
+        ballBackPath.move(Vector2f(-velocity.x, -velocity.y));
+        velocity = Vector2f(0, 0);
     }
 }
 
@@ -566,7 +608,6 @@ void BpWindow::drawRoute() {
         }
 
 
-
     }
     for (int i = 0; i < drawRouteSprites.size(); i++) {
         Texture square;
@@ -580,7 +621,7 @@ void BpWindow::drawRoute() {
     }
 }
 
-void BpWindow::scoreboard(int n_goalPLayer1, int n_goalPLayer2){
+void BpWindow::scoreboard(int n_goalPLayer1, int n_goalPLayer2) {
     scorePlayer1.setFont(font);
     strscorePlayer1 = std::to_string(n_goaLPlayer1);
     scorePlayer1.setString(strscorePlayer1);
@@ -600,3 +641,29 @@ void BpWindow::scoreboard(int n_goalPLayer1, int n_goalPLayer2){
     window->draw(scorePlayer1);
     window->draw(scorePlayer2);
 }
+
+void BpWindow::drawPath() {
+    int sz = pathX.size();
+    for (int i = 0; i < sz; i++) {
+        int tempX = -pathX[i]*100;
+        int tempY = -pathY[i]*100;
+
+        Sprite pathSprite;
+        pathSprite.setOrigin(tempX, tempY);
+        pathSprites.push_back(pathSprite);
+    }
+    for (int i = 0; i < pathSprites.size(); i++) {
+        Texture square;
+        if (!square.loadFromFile("src/images/squarelit.png")) {
+
+        }
+        pathSprites[i].setTexture(square);
+        window->draw(pathSprites[i]);
+
+
+    }
+
+}
+
+
+
