@@ -374,20 +374,27 @@ void BpWindow::ballmove() {
     //velocity.y=velocity.y*0.9999;
     const float movementSpeed = 1.f;
     if (Keyboard::isKeyPressed(Keyboard::W)) {
-        velocity.y += -movementSpeed * (dt);
+        velocity.y += -movementSpeed;
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        velocity.y += movementSpeed * (dt);
+        velocity.y += movementSpeed;
     }
     if (Keyboard::isKeyPressed(Keyboard::A)) {
-        velocity.x += -movementSpeed * (dt);
+        velocity.x += -movementSpeed;
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-        velocity.x += movementSpeed * (dt);
+        velocity.x += movementSpeed;
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         velocity.x = 0;
         velocity.y = 0;
+    }
+    float Fgx= (-velocity.x*dt)/6;
+    float Fgy=(-velocity.y*dt)/6;
+    if(abs(Fgx)<0.0004 && abs(Fgy)<0.0004 && abs(Fgx)!=abs(Fgy)){
+        velocity=Vector2f(0,0);
+    }else{
+        velocity+=Vector2f(Fgx,Fgy);
     }
     ballBackPath.move(velocity);
 
@@ -427,13 +434,15 @@ void BpWindow::collisionsBoards(){
 
 void BpWindow::collsionObstacles1(Sprite player) {
     if (Collision::PixelPerfectTest(ballBackPath, player)) {
-        ballBackPath.move(-velocity);
+        ballBackPath.move(Vector2f(-velocity.x,-velocity.y));
+        velocity=Vector2f(0,0);
     }
 }
 
 void BpWindow::collsionObstacles2(Sprite player) {
     if (Collision::PixelPerfectTest(ballBackPath, player)) {
-        ballBackPath.move(-velocity);
+        ballBackPath.move(Vector2f(-velocity.x,-velocity.y));
+        velocity=Vector2f(0,0);
     }
 }
 
@@ -552,4 +561,3 @@ void BpWindow::drawRoute() {
 
 
 
-}

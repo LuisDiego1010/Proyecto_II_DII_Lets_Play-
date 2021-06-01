@@ -39,7 +39,7 @@ void BpServer::Run() {
             if(data["TYPE"].get<string>()==string("B")){
                 data = nlohmann::basic_json<>();
                 data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
-                PathfindingPlayer();
+//                PathfindingPlayer();
                 data["routeX"]=PlayerPath.AnswersX;
                 data["routeY"]=PlayerPath.AnswersY;
             }else if (data["TYPE"].get<string>()==string("P")){

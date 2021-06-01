@@ -66,7 +66,7 @@ namespace Collision
             sf::Uint8* mask1 = Bitmasks.GetMask(Object1.getTexture());
             sf::Uint8* mask2 = Bitmasks.GetMask(Object2.getTexture());
 
-            // Loop through our pixels
+            // Loop through pixels
             for (int i = Intersection.left; i < Intersection.left+Intersection.width; i++) {
                 for (int j = Intersection.top; j < Intersection.top+Intersection.height; j++) {
 
