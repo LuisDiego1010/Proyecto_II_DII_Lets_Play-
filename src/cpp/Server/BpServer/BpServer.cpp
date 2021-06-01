@@ -44,7 +44,7 @@ void BpServer::Run() {
                 data["routeY"]=PlayerPath.AnswersY;
             }else if (data["TYPE"].get<string>()==string("P")){
                 data = nlohmann::basic_json<>();
-                PathfindingPlayer();
+                //PathfindingPlayer();
                 data["routeX"]=PlayerPath.AnswersX;
                 data["routeY"]=PlayerPath.AnswersY;
             }

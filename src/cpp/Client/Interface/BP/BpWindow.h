@@ -67,6 +67,7 @@ public:
     Sprite goalKRight;
     char backtracking[9][14]{};
     string route;
+    bool moving;
 
     Vector2f velocity;
     Vector2f position;
@@ -76,6 +77,7 @@ public:
     float m_radius;
     sf::Vector2f m_mouse;
     sf::Font font;
+
 
     /**
     * @brief Setter of match goals
@@ -174,7 +176,6 @@ public:
 
     void drawRoute();
 
-    // void showDrawRoute();
 };
 
 

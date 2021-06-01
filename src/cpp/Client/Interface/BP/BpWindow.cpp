@@ -50,7 +50,7 @@ void BpWindow::Show() {
         cout << "Error to charge font";
     }
 
-    if (!btnNextPlayer.loadFromFile("src/images/btn/nextPlayer.png")) {
+    if (!btnNextPlayer.loadFromFile("src/images/backtracking.png")) {
         cout << "Error to charge image";
     }
 
@@ -88,7 +88,7 @@ void BpWindow::Show() {
     /*----------------NextPlayerButton-----------------*/
     Sprite btnNextPlayerSprite;
     btnNextPlayerSprite.setTexture(btnNextPlayer);
-    btnNextPlayerSprite.setOrigin(-40, -40);
+    btnNextPlayerSprite.setOrigin(-1450, -700);
 
     /*----------------Field-----------------*/
     Sprite fieldSprite;
@@ -141,7 +141,6 @@ void BpWindow::Show() {
 
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
-    //ballBackPath.setOrigin(-690 + 80, -465 + 36);
     ballBackPath.setPosition(725,494);
     cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
     cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
@@ -165,6 +164,7 @@ void BpWindow::Show() {
     n_goalRight = 0;
 
     while (window->isOpen()) {
+        moving =true;
         dt = dt_clock.restart().asSeconds();
         Event event;
         collisionsBoards();
@@ -226,11 +226,20 @@ void BpWindow::Show() {
         window->draw(blockersLateralRight);
         window->draw(blockersLateralRightDown);
 
-
         window->draw(goalKRight);
         window->draw(goalKLeft);
         updateDirectionLine();
         //window->draw(line);
+
+        if( moving== true){
+            drawRouteSprites.clear();
+            route.clear();
+        }
+
+        if(!route.empty() && moving== false){
+            drawRoute();
+
+        }
 
         for (int i = 0; i < players.size(); i++) {
 
@@ -322,11 +331,11 @@ void BpWindow::setPlayers(int n) {
 
 /*----------------Position Ball-----------------*/
 int BpWindow::getPositionXBall() {
-    return -(int) (ballBackPath.getOrigin().x / 100);
+    return (int) (ballBackPath.getPosition().x / 100);
 }
 
 int BpWindow::getPositionYBall() {
-    return -(int) (ballBackPath.getOrigin().y / 100);
+    return (int) (ballBackPath.getPosition().y / 100);
 }
 
 /*----------------Position Goal Player-----------------*/
@@ -386,6 +395,9 @@ void BpWindow::ballmove() {
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         velocity.x = 0;
         velocity.y = 0;
+    }
+    if(velocity.x == 0 && velocity.y == 0){
+        moving = false;
     }
     float Fgx= (-velocity.x*dt)/6;
     float Fgy=(-velocity.y*dt)/6;
@@ -525,8 +537,8 @@ void BpWindow::drawRoute() {
     int sz = route.size();
     char buffer[sz];
     strcpy(buffer, route.c_str());
-    float tempX = ballBackPath.getOrigin().x;
-    float tempY = ballBackPath.getOrigin().y;
+    float tempX = -ballBackPath.getPosition().x;
+    float tempY = -ballBackPath.getPosition().y;
     for (int i = 0; i < sz; i++) {
 
         Sprite routeSprite;
