@@ -6,8 +6,6 @@
 #include "bpGameMode.h"
 #include "../InputBox.h"
 #include "../../Socket_Client.h"
-
-
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -186,7 +184,7 @@ void BpWindow::Show() {
                 window->close();
             }
             if (event.type == Event::MouseButtonPressed) {
-                if (event.mouseButton.button==sf::Mouse::Right){
+                if (event.mouseButton.button==sf::Mouse::Right&&turnPlayer){
                     velocity=(sf::Vector2f((ballBackPath.getPosition().x - position.x)/500,
                                            (ballBackPath.getPosition().y - position.y)/500));
                 }
@@ -391,16 +389,16 @@ void BpWindow::ballmove() {
     //velocity.y=velocity.y*0.9999;
     const float movementSpeed = 1.f;
     if (Keyboard::isKeyPressed(Keyboard::W)) {
-        velocity.y += (-movementSpeed)/500;
+        velocity.y += (-movementSpeed)/250;
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        velocity.y += (movementSpeed)/500;
+        velocity.y += (movementSpeed)/250;
     }
     if (Keyboard::isKeyPressed(Keyboard::A)) {
-        velocity.x += (-movementSpeed)/500;
+        velocity.x += (-movementSpeed)/250;
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-        velocity.x += (movementSpeed)/500;
+        velocity.x += (movementSpeed)/250;
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         velocity.x = 0;
@@ -415,10 +413,10 @@ void BpWindow::ballmove() {
         velocity=Vector2f(0,0);
         if(turnPlayer){
             turnPlayer=false;
-            cout<<"change of player";
+            cout<<"change of player 1";
         }else{
             turnPlayer=true;
-            cout<<"change of player";
+            cout<<"change of player 2";
         }
     }else{
         velocity+=Vector2f(Fgx,Fgy);
