@@ -25,7 +25,6 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include "Line.h"
 #include "Collision.h"
 #include <queue>
 
@@ -60,6 +59,10 @@ public:
     int n_goalRight;
     bool goalLeft;
     bool goalRight;
+    bool turnPlayer1;
+    bool turnPlayer2;
+    bool move;
+    bool selected;
     vector<Sprite> players;
     vector<Sprite> drawRouteSprites;
     Sprite ballBackPath;
@@ -68,9 +71,8 @@ public:
     char backtracking[9][14]{};
     string route;
 
-    Line *direction = nullptr;
-    bool dragged;
     Vector2f velocity;
+    Vector2f position;
     float dt;
     Clock dt_clock;
     Vector2f m_center;
@@ -172,10 +174,6 @@ public:
 * @brief Method create a game over Window
 */
     void GameOver(string Player);
-
-/*----------------Position Goal Player-----------------*/
-
-
 
     void drawRoute();
 

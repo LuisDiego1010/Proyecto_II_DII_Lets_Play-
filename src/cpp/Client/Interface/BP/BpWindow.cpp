@@ -9,21 +9,16 @@
 
 
 #include <SFML/Audio/Sound.hpp>
-#include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/VideoMode.hpp>
-#include <SFML/Window/WindowStyle.hpp>
 #include <cmath>
 #include <string>
 
@@ -104,6 +99,9 @@ void BpWindow::Show() {
     leaderboardSprite.setTexture(leaderboard);
     leaderboardSprite.setOrigin(-1443, 0);
 
+    /*----------------Player Turns-----------------*/
+    turnPlayer1 = true;
+    turnPlayer2 = false;
 
     /*----------------Blockers-----------------*/
     Sprite blockersLateralLeft;
@@ -142,15 +140,16 @@ void BpWindow::Show() {
     goalKLeft.setOrigin(0, -342);
     goalKRight.setOrigin(-1415, -342);
 
-
-
     /*----------------Ball-----------------*/
     ballBackPath.setTexture(ball);
-    ballBackPath.setOrigin(-690 + 80, -465 + 36);
-    //ballBackPath.setPosition(725, 494);
-    cout << "position X BALL POS: " << ballBackPath.getPosition().x << endl;
-    cout << "position Y BALL POS: " << ballBackPath.getPosition().y << endl;
-    Vector2f m_center = sf::Vector2f(100.f, 100.f);
+    //ballBackPath.setOrigin(-690 + 80, -465 + 36);
+    ballBackPath.setPosition(725,494);
+    cout<<"ORIGIN X BALL POS: "<<ballBackPath.getPosition().x<<endl;
+    cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
+
+    /*----------------Turns Players-----------------*/
+    turnPlayer1 = true;
+    turnPlayer2 = false;
 
 
     /*----------------Game Init-----------------*/
@@ -173,17 +172,17 @@ void BpWindow::Show() {
         collisionsBoards();
         collisionGoal();
         ballmove();
-
         auto mouse_pos = sf::Mouse::getPosition(*window); // Mouse position relative to the window
         auto translated_pos = window->mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
         while (window->pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window->close();
-            } else if (event.type == Event::MouseButtonPressed) {
-                /*if (event.mouseButton.button== sf::Mouse::Right){
-                    updateDirectionLine();
-                }*/
-
+            }
+            if (event.type == Event::MouseButtonPressed) {
+                if (event.mouseButton.button==sf::Mouse::Right){
+                    velocity=(sf::Vector2f((ballBackPath.getPosition().x - position.x)/500,
+                                           (ballBackPath.getPosition().y - position.y)/500));
+                }
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
                     backtracking[getPositionYGoalPlayer()][getPositionXGoalPlayer()] = '1';
@@ -211,13 +210,10 @@ void BpWindow::Show() {
                     }
 
                 }
-
-                if (event.MouseMoved) {
-                    m_mouse.x = event.mouseMove.x;
-                    m_mouse.y = event.mouseMove.y;
-                }
+            }if (event.type==sf::Event::MouseMoved){
+                position.x=event.mouseMove.x;
+                position.y=event.mouseMove.y;
             }
-
 
         }
         window->clear(Color::Transparent);
@@ -231,12 +227,12 @@ void BpWindow::Show() {
         window->draw(blockersLateralLeftDown);
         window->draw(blockersLateralRight);
         window->draw(blockersLateralRightDown);
+
+
         window->draw(goalKRight);
         window->draw(goalKLeft);
-        if (direction != nullptr) {
-//            window.draw(*direction);
-        }
-        drawRoute();
+        updateDirectionLine();
+        //window->draw(line);
 
         for (int i = 0; i < players.size(); i++) {
 
@@ -344,16 +340,6 @@ int BpWindow::getPositionYGoalPlayer() {
     return -(int) (goalKLeft.getOrigin().y / 100);
 }
 
-/*----------------Position Goal Player-----------------*/
-int BpWindow::getPositionXGoalCpu() {
-    return -(int) (goalKRight.getOrigin().x / 100);
-}
-
-int BpWindow::getPositionYGoalCpu() {
-    return -(int) (goalKRight.getOrigin().y / 100);
-}
-
-
 /*----------------Setters goals and players-----------------*/
 void BpWindow::setGameModePlayers(int gameModePlayers) {
     BpWindow::gameModePlayers = gameModePlayers;
@@ -382,7 +368,6 @@ void BpWindow::setBacktracking() {
         }
     }
 }
-
 void BpWindow::ballmove() {
 
     //velocity.x=velocity.x*0.9999;
@@ -407,39 +392,24 @@ void BpWindow::ballmove() {
     ballBackPath.move(velocity);
 
 }
-
 void BpWindow::updateDirectionLine() {
-    auto tmp = direction;
-    direction = nullptr;
-    delete tmp;
-
-    sf::Vector2f distance = (m_mouse - ballBackPath.getOrigin());
-    float distanceBetween = sqrt(distance.x * distance.x + distance.y * distance.y);
+    sf::Vector2f distance = (position-ballBackPath.getPosition());
+    float distanceBetween = sqrt(distance.x * distance.x + distance.y + distance.y);
     sf::Vector2f invert = distance / distanceBetween;
-    sf::Color directionColor = sf::Color(255, (255 - ((int) distanceBetween / 2) % 255), 0);
-    if (distanceBetween > 510) {
-        directionColor = sf::Color::Red;
-    }
-    direction = new Line(ballBackPath.getOrigin().x, ballBackPath.getOrigin().y,
-                         ballBackPath.getOrigin().x - distanceBetween * invert.x,
-                         ballBackPath.getOrigin().y - distanceBetween * invert.y, directionColor);
+    sf::Color directionColor = sf::Color(255, (255 - ((int)distanceBetween/2)%255), 0);
+    if (distanceBetween > 510) { directionColor = sf::Color::Red; }
+    sf::Vertex line2[]=
+            {
+                    sf::Vertex(sf::Vector2f(ballBackPath.getPosition().x,ballBackPath.getPosition().y)),//Posición inicial con coordenadas (x,y)
+                    sf::Vertex(sf::Vector2f(ballBackPath.getPosition().x - distanceBetween * invert.x,
+                                            ballBackPath.getPosition().y - distanceBetween * invert.y),directionColor) //Posición final con coordebadas (x,y)
+            };
+
+    window->draw(line2,2,sf::Lines);
 
 }
 
-bool BpWindow::checkCollisionPoint(const sf::Vector2f &mouse) {
-    float posxBall = ballBackPath.getOrigin().x;
-    float posyBall = ballBackPath.getOrigin().y;
-    float x_mouse = mouse.x;
-    float y_mouse = mouse.y;
-    if (((x_mouse - posxBall) * (x_mouse - posxBall) +
-         (y_mouse - posyBall) * (y_mouse - posyBall)) <= 70) {
-        cout << "FUNCIONA";
-        return true;
-    }
-    return false;
-}
-
-void BpWindow::collisionsBoards() {
+void BpWindow::collisionsBoards(){
     //Collision screen
     //Left collision
     if (ballBackPath.getPosition().x < 0.f)
@@ -578,4 +548,8 @@ void BpWindow::drawRoute() {
 
 
     }
+}
+
+
+
 }
