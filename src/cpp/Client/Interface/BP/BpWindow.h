@@ -59,7 +59,7 @@ public:
     int n_goalRight;
     bool goalLeft;
     bool goalRight;
-    bool turnPlayer;
+    bool turnPlayer=false;
     vector<Sprite> players;
     vector<Sprite> drawRouteSprites;
     Sprite ballBackPath;

@@ -100,8 +100,7 @@ void BpWindow::Show() {
     leaderboardSprite.setOrigin(-1443, 0);
 
     /*----------------Player Turns-----------------*/
-    turnPlayer1 = true;
-    turnPlayer2 = false;
+    turnPlayer = true;
 
     /*----------------Blockers-----------------*/
     Sprite blockersLateralLeft;
@@ -148,8 +147,7 @@ void BpWindow::Show() {
     cout<<"ORIGIN Y BALL POS: "<<ballBackPath.getPosition().y<<endl;
 
     /*----------------Turns Players-----------------*/
-    turnPlayer1 = true;
-    turnPlayer2 = false;
+    turnPlayer = true;
 
 
     /*----------------Game Init-----------------*/
@@ -393,6 +391,13 @@ void BpWindow::ballmove() {
     float Fgy=(-velocity.y*dt)/6;
     if(abs(Fgx)<0.0004 && abs(Fgy)<0.0004 && abs(Fgx)!=abs(Fgy)){
         velocity=Vector2f(0,0);
+        if(turnPlayer){
+            turnPlayer=false;
+            cout<<"change of player";
+        }else{
+            turnPlayer=true;
+            cout<<"change of player";
+        }
     }else{
         velocity+=Vector2f(Fgx,Fgy);
     }
