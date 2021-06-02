@@ -110,7 +110,6 @@ void BpWindow::Show() {
     leaderboardSprite.setOrigin(-1443, 0);
 
     /*----------------Player Turns-----------------*/
-    turnPlayer = true;
 
     /*----------------Blockers-----------------*/
     Sprite blockersLateralLeft;
