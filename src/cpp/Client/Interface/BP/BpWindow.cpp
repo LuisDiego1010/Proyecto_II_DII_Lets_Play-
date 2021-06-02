@@ -164,7 +164,7 @@ void BpWindow::Show() {
     cout << "ORIGIN Y BALL POS: " << ballBackPath.getPosition().y << endl;
 
     /*----------------Turns Players-----------------*/
-    turnPlayer = true;
+    turnPlayer = false;
 
 
     /*----------------Game Init-----------------*/
@@ -196,7 +196,7 @@ void BpWindow::Show() {
                 window->close();
             }
             if (event.type == Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Right && turnPlayer) {
+                if (event.mouseButton.button == sf::Mouse::Right && !turnPlayer) {
                     velocity = (sf::Vector2f((ballBackPath.getPosition().x - position.x) / 500,
                                              (ballBackPath.getPosition().y - position.y) / 500));
                     turnPlayer=false;
@@ -616,7 +616,6 @@ void BpWindow::drawRoute() {
             routeSprite.setOrigin(tempX, tempY);
             drawRouteSprites.push_back(routeSprite);
         }
-
 
     }
     for (int i = 0; i < drawRouteSprites.size(); i++) {
