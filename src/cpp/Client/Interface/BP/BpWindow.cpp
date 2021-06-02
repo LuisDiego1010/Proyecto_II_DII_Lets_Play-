@@ -199,6 +199,9 @@ void BpWindow::Show() {
                 if (event.mouseButton.button == sf::Mouse::Right && !turnPlayer) {
                     velocity = (sf::Vector2f((ballBackPath.getPosition().x - position.x) / 500,
                                              (ballBackPath.getPosition().y - position.y) / 500));
+
+
+
                     turnPlayer=false;
                 }
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
@@ -229,6 +232,7 @@ void BpWindow::Show() {
 
                 }
                 if (pathButtonSprite.getGlobalBounds().contains(translated_pos)) {
+
                     path=true;
 
                     gameData = nlohmann::basic_json<>();
@@ -287,6 +291,8 @@ void BpWindow::Show() {
 
         if (!route.empty() && !moving) {
             drawRoute();
+            velocity = (sf::Vector2f((- goalKLeft.getOrigin().x - ballBackPath.getPosition().x ) / 500,
+                                     (- goalKLeft.getOrigin().y - ballBackPath.getPosition().y ) / 500));
 
         }
 
@@ -367,8 +373,6 @@ void BpWindow::setPlayers(int n) {
                 cout << "Posicion igual" << endl;
 
             } else {
-
-
                 Sprite sprite;
                 sprite.setOrigin(xpos, ypos);
                 players.push_back(sprite);
@@ -657,6 +661,7 @@ void BpWindow::drawPath() {
         pathSprite.setOrigin(tempX, tempY);
         pathSprites.push_back(pathSprite);
     }
+    dirBacktrack=pathSprites.back();
     for (int i = 0; i < pathSprites.size(); i++) {
         window->draw(pathSprites[i]);
     }

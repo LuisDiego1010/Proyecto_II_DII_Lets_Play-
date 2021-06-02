@@ -72,6 +72,7 @@ public:
     Sprite ballBackPath;
     Sprite goalKLeft;
     Sprite goalKRight;
+    Sprite dirBacktrack;
     char backtracking[9][14]{};
     string route;
     bool moving;
