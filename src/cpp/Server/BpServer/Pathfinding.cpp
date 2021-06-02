@@ -4,31 +4,33 @@
 
 #include "Pathfinding.h"
 
-bool Pathfinding::isValid(int row, int col) {
+/*----------------Verify Celd Valid-----------------*/
+bool Pathfinding::celdValid(int row, int col) {
     return (row >= 0) && (row < ROW) && (col >= 0) && (col < COL);
 }
 
-bool Pathfinding::isUnBlocked(int (*grid)[14], int row, int col) {
+/*----------------Verify Celd Blocked-----------------*/
+bool Pathfinding::celdUnBlocked(int (**grid), int row, int col) {
     if (grid[row][col] == 1)
         return (true);
     else
         return (false);
 }
-
-bool Pathfinding::isDestination(int row, int col, Pair dest) {
+/*----------------Verify is Goal-----------------*/
+bool Pathfinding::goal(int row, int col, Pair dest) {
     if (row == dest.first && col == dest.second)
         return (true);
     else
         return (false);
 }
-
+/*----------------Calculate is HValue-----------------*/
 double Pathfinding::calculateHValue(int row, int col, Pair dest) {
     return ((double) sqrt(
             (row - dest.first) * (row - dest.first)
             + (col - dest.second) * (col - dest.second)));
 }
-
-void Pathfinding::tracePath(Pair dest) {
+/*----------------Show Search Result-----------------*/
+void Pathfinding::showPath(Pair dest) {
     cout << "\nThe Path is ";
     int row = dest.first;
     int col = dest.second;
@@ -53,26 +55,26 @@ void Pathfinding::tracePath(Pair dest) {
 //    }
 
 }
+/*----------------Find Route-----------------*/
+void Pathfinding::findRoute(int (**grid), Pair src, Pair dest) {
 
-void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
-
-    if (!isValid(src.first, src.second)) {
-        cout << "Source is invalid\n";
+    if (!celdValid(src.first, src.second)) {
+        //Invalid Start
         return;
     }
 
-    if (!isValid(dest.first, dest.second)) {
-        cout << "Destination is invalid\n";
+    if (!celdValid(dest.first, dest.second)) {
+        //Invalid Destination
         return;
     }
 
-    if (!isUnBlocked(grid, src.first, src.second) || !isUnBlocked(grid, dest.first, dest.second)) {
-        cout << "Source or the destination is blocked\n";
+    if (!celdUnBlocked(grid, src.first, src.second) || !celdUnBlocked(grid, dest.first, dest.second)) {
+        //Destination Blocked";
         return;
     }
 
-    if (isDestination(src.first, src.second, dest)) {
-        cout << "We are already at the destination\n";
+    if (goal(src.first, src.second, dest)) {
+        //Is in the destination
         return;
     }
 
@@ -81,6 +83,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
 
     int i, j;
 
+    //Matrix for details of cell
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
             AnswerPositions[i][j].f = FLT_MAX;
@@ -90,7 +93,7 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             AnswerPositions[i][j].parent_j = -1;
         }
     }
-
+    //Initialising the parameters of the starting node
     i = src.first, j = src.second;
     AnswerPositions[i][j].f = 0.0;
     AnswerPositions[i][j].g = 0.0;
@@ -107,25 +110,29 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
     while (!openList.empty()) {
         pPair p = *openList.begin();
 
+        // Remove this vertex from the open list
         openList.erase(openList.begin());
 
+        // Add this vertex to the closed list
         i = p.second.first;
         j = p.second.second;
         closedList[i][j] = true;
 
+        // To save the 'g', 'h' and 'f' of the 8 successors
         double gNew, hNew, fNew;
 
-        if (isValid(i - 1, j)) {
+        //Firts Successor
+        if (celdValid(i - 1, j)) {
 
-            if (isDestination(i - 1, j, dest)) {
+            if (goal(i - 1, j, dest)) {
                 AnswerPositions[i - 1][j].parent_i = i;
                 AnswerPositions[i - 1][j].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
             } else if (!closedList[i - 1][j]
-                       && isUnBlocked(grid, i - 1, j)) {
+                       && celdUnBlocked(grid, i - 1, j)) {
                 gNew = AnswerPositions[i][j].g + 1.0;
                 hNew = calculateHValue(i - 1, j, dest);
                 fNew = gNew + hNew;
@@ -144,17 +151,18 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
             }
         }
 
-        if (isValid(i + 1, j)) {
+        //Second Successor
+        if (celdValid(i + 1, j)) {
 
-            if (isDestination(i + 1, j, dest)) {
+            if (goal(i + 1, j, dest)) {
                 AnswerPositions[i + 1][j].parent_i = i;
                 AnswerPositions[i + 1][j].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
             } else if (!closedList[i + 1][j]
-                       && isUnBlocked(grid, i + 1, j)) {
+                       && celdUnBlocked(grid, i + 1, j)) {
                 gNew = AnswerPositions[i][j].g + 1.0;
                 hNew = calculateHValue(i + 1, j, dest);
                 fNew = gNew + hNew;
@@ -172,19 +180,19 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
                 }
             }
         }
+        // Successor Third
+        if (celdValid(i, j + 1)) {
 
-        if (isValid(i, j + 1)) {
-
-            if (isDestination(i, j + 1, dest)) {
+            if (goal(i, j + 1, dest)) {
 
                 AnswerPositions[i][j + 1].parent_i = i;
                 AnswerPositions[i][j + 1].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
             } else if (!closedList[i][j + 1]
-                       && isUnBlocked(grid, i, j + 1)) {
+                       && celdUnBlocked(grid, i, j + 1)) {
                 gNew = AnswerPositions[i][j].g + 1.0;
                 hNew = calculateHValue(i, j + 1, dest);
                 fNew = gNew + hNew;
@@ -202,17 +210,17 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
                 }
             }
         }
-
-        if (isValid(i, j - 1)) {
-            if (isDestination(i, j - 1, dest)) {
+        // Successor fourth
+        if (celdValid(i, j - 1)) {
+            if (goal(i, j - 1, dest)) {
                 AnswerPositions[i][j - 1].parent_i = i;
                 AnswerPositions[i][j - 1].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
             } else if (!closedList[i][j - 1]
-                       && isUnBlocked(grid, i, j - 1)) {
+                       && celdUnBlocked(grid, i, j - 1)) {
                 gNew = AnswerPositions[i][j].g + 1.0;
                 hNew = calculateHValue(i, j - 1, dest);
                 fNew = gNew + hNew;
@@ -230,18 +238,18 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
                 }
             }
         }
+        // Successor fifth
+        if (celdValid(i - 1, j + 1)) {
 
-        if (isValid(i - 1, j + 1)) {
-
-            if (isDestination(i - 1, j + 1, dest)) {
+            if (goal(i - 1, j + 1, dest)) {
                 AnswerPositions[i - 1][j + 1].parent_i = i;
                 AnswerPositions[i - 1][j + 1].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
             } else if (!closedList[i - 1][j + 1]
-                       && isUnBlocked(grid, i - 1, j + 1)) {
+                       && celdUnBlocked(grid, i - 1, j + 1)) {
                 gNew = AnswerPositions[i][j].g + 1.414;
                 hNew = calculateHValue(i - 1, j + 1, dest);
                 fNew = gNew + hNew;
@@ -260,17 +268,17 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
                 }
             }
         }
+        // Successor sixth
+        if (celdValid(i - 1, j - 1)) {
 
-        if (isValid(i - 1, j - 1)) {
-
-            if (isDestination(i - 1, j - 1, dest)) {
+            if (goal(i - 1, j - 1, dest)) {
                 AnswerPositions[i - 1][j - 1].parent_i = i;
                 AnswerPositions[i - 1][j - 1].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
-            } else if (!closedList[i - 1][j - 1] && isUnBlocked(grid, i - 1, j - 1)) {
+            } else if (!closedList[i - 1][j - 1] && celdUnBlocked(grid, i - 1, j - 1)) {
                 gNew = AnswerPositions[i][j].g + 1.414;
                 hNew = calculateHValue(i - 1, j - 1, dest);
                 fNew = gNew + hNew;
@@ -288,18 +296,18 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
                 }
             }
         }
+        // Successor seventh
+        if (celdValid(i + 1, j + 1)) {
 
-        if (isValid(i + 1, j + 1)) {
-
-            if (isDestination(i + 1, j + 1, dest)) {
+            if (goal(i + 1, j + 1, dest)) {
 
                 AnswerPositions[i + 1][j + 1].parent_i = i;
                 AnswerPositions[i + 1][j + 1].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
-            } else if (!closedList[i + 1][j + 1] && isUnBlocked(grid, i + 1, j + 1)) {
+            } else if (!closedList[i + 1][j + 1] && celdUnBlocked(grid, i + 1, j + 1)) {
                 gNew = AnswerPositions[i][j].g + 1.414;
                 hNew = calculateHValue(i + 1, j + 1, dest);
                 fNew = gNew + hNew;
@@ -317,17 +325,17 @@ void Pathfinding::aStarSearch(int (*grid)[14], Pair src, Pair dest) {
                 }
             }
         }
+        //Succesor eighth
+        if (celdValid(i + 1, j - 1)) {
 
-        if (isValid(i + 1, j - 1)) {
-
-            if (isDestination(i + 1, j - 1, dest)) {
+            if (goal(i + 1, j - 1, dest)) {
                 AnswerPositions[i + 1][j - 1].parent_i = i;
                 AnswerPositions[i + 1][j - 1].parent_j = j;
                 cout << "founded\n";
-                tracePath(dest);
+                showPath(dest);
                 foundDest = true;
                 return;
-            } else if (!closedList[i + 1][j - 1] && isUnBlocked(grid, i + 1, j - 1)) {
+            } else if (!closedList[i + 1][j - 1] && celdUnBlocked(grid, i + 1, j - 1)) {
                 gNew = AnswerPositions[i][j].g + 1.414;
                 hNew = calculateHValue(i + 1, j - 1, dest);
                 fNew = gNew + hNew;
