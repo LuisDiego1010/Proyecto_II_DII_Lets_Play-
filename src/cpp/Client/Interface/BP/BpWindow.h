@@ -76,6 +76,7 @@ public:
     string route;
     bool moving;
     bool path;
+    Texture squarepath;
 
     vector<int> pathX;
     vector<int> pathY;

@@ -28,17 +28,17 @@ void BpServer::Run() {
             addToMatrix(matrix);
         }
         if (data.contains("XBall")) {
-            Xpos = data["XBall"].get<int>();
+            column = data["XBall"].get<int>();
 
         }
         if (data.contains("YBall")) {
-            Ypos = data["YBall"].get<int>();
+            row = data["YBall"].get<int>();
 
         }
         if (data.contains("TYPE")) {
             if(data["TYPE"].get<string>()==string("B")){
                 data = nlohmann::basic_json<>();
-                data["route"] = route.backtrackingRoute(backtrackingServer, {Ypos, Xpos}, {3, 0});
+                data["route"] = route.backtrackingRoute(backtrackingServer, {row, column}, {3, 0});
                // PathfindingPlayer();
                 data["routeX"]=PlayerPath.AnswersX;
                 data["routeY"]=PlayerPath.AnswersY;
@@ -84,19 +84,21 @@ BpServer::BpServer() {
 void BpServer::PathfindingPlayer(){
 
     PlayerPath= Pathfinding();
-    Pair src=make_pair(Xpos,Ypos);
+    Pair src=make_pair(row, column);
 
     Pair dest;
     if(Player1){
         dest=make_pair(3,13);
+    }else{
+        dest=make_pair(3,0);
     }
     PlayerPath.aStarSearch(pathfinding, src, dest);
     cout<<endl;
 
-    for (int i = 13; i > 0; --i) {
-        cout<<PlayerPath.AnswersX[i]<<",";
-        cout<<PlayerPath.AnswersY[i]<<endl;
-    }
+//    for (int i = 13; i > 0; --i) {
+//        cout<<PlayerPath.AnswersX[i]<<",";
+//        cout<<PlayerPath.AnswersY[i]<<endl;
+//    }
 
 }
 

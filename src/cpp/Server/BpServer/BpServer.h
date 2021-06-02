@@ -15,8 +15,8 @@ public:
 
     char backtrackingServer[9][14];
     int pathfinding[9][14];
-    int Xpos;
-    int Ypos;
+    int column;
+    int row;
     bool Player1;
     Pathfinding PlayerPath;
 

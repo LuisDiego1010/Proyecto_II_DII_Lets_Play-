@@ -37,6 +37,7 @@ void BpWindow::Show() {
     Texture ball;
     Texture blockers;
     Texture square;
+    squarepath=Texture();
     Texture blockersLateral;
     Texture goalLeft;
     Texture obstacule1;
@@ -82,7 +83,9 @@ void BpWindow::Show() {
     if (!ball.loadFromFile("src/images/sprball.png")) {
 
     }
-
+    if (!squarepath.loadFromFile("src/images/squarelit.png")) {
+    cout<<"square path fail";
+    }
 
     if (!square.loadFromFile("src/images/sprPlayer1.png")) {
 
@@ -196,6 +199,7 @@ void BpWindow::Show() {
                 if (event.mouseButton.button == sf::Mouse::Right && turnPlayer) {
                     velocity = (sf::Vector2f((ballBackPath.getPosition().x - position.x) / 500,
                                              (ballBackPath.getPosition().y - position.y) / 500));
+                    turnPlayer=false;
                 }
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
@@ -274,16 +278,19 @@ void BpWindow::Show() {
         scoreboard(n_goaLPlayer1, n_goaLPlayer2);
         //window->draw(line);
 
-        if (moving == true) {
+        if (moving) {
             drawRouteSprites.clear();
             route.clear();
+            pathSprites.clear();
+            path=false;
         }
 
-        if (!route.empty() && moving == false) {
+        if (!route.empty() && !moving) {
             drawRoute();
 
         }
-        if(path==true){
+
+        if(path){
             drawPath();
         }
 
@@ -586,8 +593,11 @@ void BpWindow::drawRoute() {
     float tempX = -ballBackPath.getPosition().x;
     float tempY = -ballBackPath.getPosition().y;
     for (int i = 0; i < sz; i++) {
-
+        if(route.empty()){
+            break;
+        }
         Sprite routeSprite;
+        routeSprite.setTexture(squarepath);
         if (buffer[i] == 'U') {
             tempY += 100;
             routeSprite.setOrigin(tempX, tempY);
@@ -610,14 +620,7 @@ void BpWindow::drawRoute() {
 
     }
     for (int i = 0; i < drawRouteSprites.size(); i++) {
-        Texture square;
-        if (!square.loadFromFile("src/images/squarelit.png")) {
-
-        }
-        drawRouteSprites[i].setTexture(square);
         window->draw(drawRouteSprites[i]);
-
-
     }
 }
 
@@ -645,24 +648,21 @@ void BpWindow::scoreboard(int n_goalPLayer1, int n_goalPLayer2) {
 void BpWindow::drawPath() {
     int sz = pathX.size();
     for (int i = 0; i < sz; i++) {
+        if(pathX.empty()){
+            break;
+        }
         int tempX = -pathX[i]*100;
         int tempY = -pathY[i]*100;
-
         Sprite pathSprite;
+        pathSprite.setTexture(squarepath);
         pathSprite.setOrigin(tempX, tempY);
         pathSprites.push_back(pathSprite);
     }
     for (int i = 0; i < pathSprites.size(); i++) {
-        Texture square;
-        if (!square.loadFromFile("src/images/squarelit.png")) {
-
-        }
-        pathSprites[i].setTexture(square);
         window->draw(pathSprites[i]);
-
-
     }
-
+    pathX.clear();
+    pathY.clear();
 }
 
 
