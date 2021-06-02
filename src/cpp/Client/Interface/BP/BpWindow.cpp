@@ -19,6 +19,8 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <cmath>
 #include <string>
+#include <unistd.h>
+
 
 BpWindow::BpWindow() {}
 
@@ -37,7 +39,7 @@ void BpWindow::Show() {
     Texture ball;
     Texture blockers;
     Texture square;
-    squarepath=Texture();
+    squarepath = Texture();
     Texture blockersLateral;
     Texture goalLeft;
     Texture obstacule1;
@@ -45,6 +47,7 @@ void BpWindow::Show() {
     Texture leaderboard;
     Texture btnNextPlayer;
     Texture pathButton;
+    Texture goButton;
 
     if (!font.loadFromFile("src/cpp/Client/Interface/Fonts/Ubuntu-Bold.ttf")) {
         cout << "Error to charge font";
@@ -53,7 +56,11 @@ void BpWindow::Show() {
     if (!btnNextPlayer.loadFromFile("src/images/backtracking.png")) {
         cout << "Error to charge image";
     }
+
     if (!pathButton.loadFromFile("src/images/pathfinding.png")) {
+        cout << "Error to charge image";
+    }
+    if (!goButton.loadFromFile("src/images/gobutton.png")) {
         cout << "Error to charge image";
     }
 
@@ -84,7 +91,7 @@ void BpWindow::Show() {
 
     }
     if (!squarepath.loadFromFile("src/images/squarelit.png")) {
-    cout<<"square path fail";
+        cout << "square path fail";
     }
 
     if (!square.loadFromFile("src/images/sprPlayer1.png")) {
@@ -99,6 +106,11 @@ void BpWindow::Show() {
     Sprite pathButtonSprite;
     pathButtonSprite.setTexture(pathButton);
     pathButtonSprite.setOrigin(-1450, -750);
+
+    /*----------------Go Button-----------------*/
+    Sprite goButtonSprite;
+    goButtonSprite.setTexture(goButton);
+    goButtonSprite.setOrigin(-1710, -700);
 
     /*----------------Field-----------------*/
     Sprite fieldSprite;
@@ -180,7 +192,8 @@ void BpWindow::Show() {
     n_goaLPlayer1 = 0;
     n_goaLPlayer2 = 0;
 
-    path=false;
+    path = false;
+    bool go=false;
     while (window->isOpen()) {
         moving = true;
         dt = dt_clock.restart().asSeconds();
@@ -200,8 +213,7 @@ void BpWindow::Show() {
                                              (ballBackPath.getPosition().y - position.y) / 500));
 
 
-
-                    turnPlayer=false;
+                    turnPlayer = false;
                 }
                 if (btnNextPlayerSprite.getGlobalBounds().contains(translated_pos)) {
                     backtracking[getPositionYBall()][getPositionXBall()] = '1';
@@ -232,7 +244,7 @@ void BpWindow::Show() {
                 }
                 if (pathButtonSprite.getGlobalBounds().contains(translated_pos)) {
 
-                    path=true;
+                    path = true;
 
                     gameData = nlohmann::basic_json<>();
                     string pathfindingString;
@@ -253,6 +265,14 @@ void BpWindow::Show() {
                         pathY = gameData["routeY"].get<vector<int>>();
                     }
 
+
+                }
+                if (goButtonSprite.getGlobalBounds().contains(translated_pos)) {
+                    if(go==true){
+                        velocity = (sf::Vector2f((-goalKLeft.getOrigin().x - ballBackPath.getPosition().x) / 500,
+                                                 (-goalKLeft.getOrigin().y - ballBackPath.getPosition().y) / 500));
+                        go=false;
+                    }
 
                 }
             }
@@ -276,6 +296,7 @@ void BpWindow::Show() {
         window->draw(blockersLateralRightDown);
         window->draw(goalKRight);
         window->draw(goalKLeft);
+        window->draw(goButtonSprite);
         window->draw(allGoals);
         updateDirectionLine();
         scoreboard(n_goaLPlayer1, n_goaLPlayer2);
@@ -285,17 +306,19 @@ void BpWindow::Show() {
             drawRouteSprites.clear();
             route.clear();
             pathSprites.clear();
-            path=false;
+            path = false;
         }
 
         if (!route.empty() && !moving) {
             drawRoute();
-            velocity = (sf::Vector2f((- goalKLeft.getOrigin().x - ballBackPath.getPosition().x ) / 500,
-                                     (- goalKLeft.getOrigin().y - ballBackPath.getPosition().y ) / 500));
+            go = true;
+
+
+
 
         }
 
-        if(path){
+        if (path) {
             drawPath();
         }
 
@@ -596,7 +619,7 @@ void BpWindow::drawRoute() {
     float tempX = -ballBackPath.getPosition().x;
     float tempY = -ballBackPath.getPosition().y;
     for (int i = 0; i < sz; i++) {
-        if(route.empty()){
+        if (route.empty()) {
             break;
         }
         Sprite routeSprite;
@@ -650,17 +673,17 @@ void BpWindow::scoreboard(int n_goalPLayer1, int n_goalPLayer2) {
 void BpWindow::drawPath() {
     int sz = pathX.size();
     for (int i = 0; i < sz; i++) {
-        if(pathX.empty()){
+        if (pathX.empty()) {
             break;
         }
-        int tempX = -pathX[i]*100;
-        int tempY = -pathY[i]*100;
+        int tempX = -pathX[i] * 100;
+        int tempY = -pathY[i] * 100;
         Sprite pathSprite;
         pathSprite.setTexture(squarepath);
         pathSprite.setOrigin(tempX, tempY);
         pathSprites.push_back(pathSprite);
     }
-    dirBacktrack=pathSprites.back();
+    dirBacktrack = pathSprites.back();
     for (int i = 0; i < pathSprites.size(); i++) {
         window->draw(pathSprites[i]);
     }
