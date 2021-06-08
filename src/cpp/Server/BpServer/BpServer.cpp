@@ -92,7 +92,7 @@ void BpServer::PathfindingPlayer(){
     }else{
         dest=make_pair(3,0);
     }
-    PlayerPath.findRoute(pathfinding, src, dest);
+    PlayerPath.aStarSearch(pathfinding, src, dest);
     cout<<endl;
 
 //    for (int i = 13; i > 0; --i) {

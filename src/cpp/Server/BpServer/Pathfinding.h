@@ -27,15 +27,15 @@ class Pathfinding {
 /**
 * @brief Checks that if the adjacent cells are valid for the movement
 */
-    bool celdValid(int row, int col);
+    bool isValid(int row, int col);
 /**
 * @brief Checks whether the given cell is blocked or not
 */
-    bool celdUnBlocked (int **grid, int row, int col);
+    bool isUnBlocked (int grid[][COL], int row, int col);
 /**
 * @brief Checks whether destination cell has been reached or not
 */
-    bool goal(int row, int col, Pair dest);
+    bool isDestination(int row, int col, Pair dest);
 /**
 * @brief Calculate H value
 */
@@ -43,12 +43,12 @@ class Pathfinding {
 /**
 * @brief trace the path from the source to destination
 */
-    void showPath(Pair dest);
+    void tracePath(Pair dest);
 public:
 /**
 * @brief Find the shortest path between a given source cell to a destination cell
 */
-    void findRoute(int **grid, Pair src, Pair dest);
+    void aStarSearch(int grid[][COL], Pair src, Pair dest);
 
     cell AnswerPositions[ROW][COL]{};
     vector<int> AnswersX;
